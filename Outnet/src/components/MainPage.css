@@ -1,0 +1,46 @@
+
+.Texto{
+    width: 600px;
+}
+
+.Imagen{
+    max-width: 588px;
+    max-height: 537px;
+}
+
+.main-container {
+    margin-right: 350px;
+    max-height: auto;
+    max-width: auto; /* Ajusta este valor según tus necesidades */
+  }
+
+.Search{
+    margin-top: 30px;
+}
+
+.BotAyuda{
+    width: 537px;
+    height: 147px;
+}
+
+.BtnTxt{
+    width: 100px;
+}
+
+.BtnImagen{
+    width: 100px;
+}
+
+.containerShop{
+    border-radius: 400px;
+}
+
+.poppins-regular {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+.disable-scroll {
+    overflow: hidden;
+  }
