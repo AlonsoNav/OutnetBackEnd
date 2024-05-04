@@ -1,0 +1,22 @@
+.custom-nav-brand {
+    color: #FFFFFF;
+}
+
+.custom-nav-brand:hover {
+    color: #FFFFFF;
+}
+
+.custom-nav-link{
+    color: #FEFEFE;
+}
+
+.custom-nav-link:hover{
+    color: #FEFEFE;
+    filter: brightness(90%);
+}
+
+@media (max-width: 992px) {
+    .border-sm-top {
+        border-top: 1px solid white;
+    }
+}

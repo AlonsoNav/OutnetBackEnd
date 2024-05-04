@@ -1,6 +1,6 @@
 import './Style.css'
 import logo from '../assets/logo_white.svg'
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {useNavigate, Link} from 'react-router-dom';
 import {postController} from "../context/Actions.jsx";
 import Toast from 'react-bootstrap/Toast';
