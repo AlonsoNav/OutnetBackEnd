@@ -1,0 +1,61 @@
+.bg-F4F6F0 {
+    background-color: #F4F6F0;
+}
+
+.bg-99BA57{
+    background-color: #99BA57;
+}
+
+.fg-white{
+    color: #fff;
+}
+
+.fg-black{
+    color: #000;
+}
+
+.fill-white{
+    fill: #ffffff;
+}
+
+.principal-btn:hover,
+.principal-btn:focus,
+.principal-btn:active{
+    background-color: #BAD08D
+}
+
+.danger-btn{
+    background-color: #DD2902;
+}
+
+.danger-btn:hover,
+.danger-btn:focus,
+.danger-btn:active{
+    background-color: #CD1901;
+}
+
+.secondary-btn{
+    background-color: #fff;
+    color: #000;
+}
+
+.secondary-btn:hover,
+.secondary-btn:focus,
+.secondary-btn:active{
+    background-color: #D9D9D9
+}
+
+.text-underline-99BA57{
+    text-decoration: underline;
+    text-decoration-color: #99BA57;
+}
+
+.image-button{
+    cursor: pointer;
+}
+
+.image-button:hover,
+.image-button:focus,
+.image-button:active{
+    filter: brightness(110%);
+}
