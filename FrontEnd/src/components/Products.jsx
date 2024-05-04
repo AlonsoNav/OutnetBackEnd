@@ -3,7 +3,7 @@ import './Products.css'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {Badge, Form, InputGroup, Card,FormControl, Button,DropdownButton, Dropdown } from 'react-bootstrap';
+import { Form, InputGroup, FormControl, Button,DropdownButton, Dropdown } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 
 const Products = () => {

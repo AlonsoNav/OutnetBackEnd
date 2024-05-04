@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Subasta from "../assets/Subasta.png";
+import Subasta from "../assets/auction.png";
 import Carro from "../assets/cart.png";
 import User from "../assets/user.png";
 import "./Header.css"
