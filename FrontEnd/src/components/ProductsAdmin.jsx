@@ -274,7 +274,6 @@ const ProductsAdmin = () => {
                 </div>
             </div>
         </div>
-
     );
 };
 
