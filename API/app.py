@@ -31,5 +31,20 @@ def update_user():
     return functions.update_user(engine)
 
 
+@app.route('/get_categories', methods=['GET'])
+def get_categories():
+    return functions.get(engine, "SP_get_categories")
+
+
+@app.route('/get_brands', methods=['GET'])
+def get_brands():
+    return functions.get(engine, "SP_get_brands")
+
+
+@app.route('/get_products', methods=['GET'])
+def get_products():
+    return functions.get_products(engine)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

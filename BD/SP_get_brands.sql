@@ -1,0 +1,9 @@
+DROP PROCEDURE IF EXISTS SP_get_brands;
+GO
+CREATE PROCEDURE SP_get_brands
+AS
+BEGIN
+    SELECT name
+    FROM Brand
+    ORDER BY name;
+END;

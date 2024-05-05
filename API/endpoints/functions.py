@@ -61,3 +61,33 @@ def update_user(engine):
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def get(engine, sp):
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC {sp}")).fetchall()
+        conn.commit()
+        conn.close()
+
+        list = [{'name': row.name} for row in result]
+        return jsonify({'list': list}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def get_products(engine):
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC SP_get_products")).fetchall()
+        conn.commit()
+        conn.close()
+
+        products_list = [{'name': row.name, 'description': row.description, 'outlet_price': row.outlet_price,
+                            'price': row.price, 'discount': row.discount, 'amount': row.amount, 'brand': row.brand,
+                            'category': row.category} for row in result]
+        return jsonify({'products': products_list}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401

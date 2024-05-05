@@ -20,7 +20,7 @@ go
 
 create table dbo.Brand
 (
-    brand_id smallint    not null
+    brand_id smallint identity
         constraint PK_Brand
             primary key,
     name     varchar(50) not null
@@ -29,7 +29,7 @@ go
 
 create table dbo.Category
 (
-    category_id     smallint    not null
+    category_id     smallint identity
         constraint PK_Category
             primary key,
     name            varchar(50) not null,
@@ -80,7 +80,7 @@ go
 
 create table dbo.Product
 (
-    product_id   bigint       not null
+    product_id   bigint identity
         constraint PK_Product
             primary key,
     name         varchar(30)  not null,
@@ -92,10 +92,10 @@ create table dbo.Product
     category_id  smallint     not null
         constraint FK_Product_Category
             references dbo.Category,
-    state_id     tinyint      not null
+    state_id     tinyint
         constraint FK_Product_ProductState
             references dbo.ProductState,
-    brand_id     smallint     not null
+    brand_id     smallint
         constraint FK_Product_Brand
             references dbo.Brand
 )
@@ -440,6 +440,35 @@ BEGIN
     SET @message = N'Usuario registrado exitosamente, por favor inicie sesión.'
     SET @code = 200;
     SELECT @code AS code, @message AS message;
+END;
+go
+
+CREATE PROCEDURE SP_get_brands
+AS
+BEGIN
+    SELECT name
+    FROM Brand
+    ORDER BY name;
+END;
+go
+
+CREATE PROCEDURE SP_get_categories
+AS
+BEGIN
+    SELECT name
+    FROM Category
+    ORDER BY name;
+END;
+go
+
+CREATE PROCEDURE SP_get_products
+AS
+BEGIN
+    SELECT p.name, p.description, p.outlet_price, p.price, p.discount, p.amount, b.name AS brand, c.name AS category
+    FROM Product p
+    LEFT JOIN Brand b on p.brand_id = b.brand_id
+    LEFT JOIN Category c on p.category_id = c.category_id
+    ORDER BY p.name;
 END;
 go
 
