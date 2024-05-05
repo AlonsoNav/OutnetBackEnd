@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Profile from "./components/Profile.jsx";
 import AdminHeader from "./components/AdminHeader.jsx";
 import ProductsAdmin from "./components/ProductsAdmin.jsx";
+import ProductsAddAdmin from "./components/ProductsAddAdmin.jsx";
 
 function App() {
     const renderWithAdminHeader = (Component) => (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/register" element={<Register/>} />
             <Route path="/profile" element={localStorage.getItem('userData') ? <Profile/> : <Navigate to="/login" />} />
             <Route path="/admin/products" element={renderWithAdminHeader(ProductsAdmin)} />
+            <Route path="/admin/products/add" element={renderWithAdminHeader(ProductsAddAdmin)} />
         </Routes>
     </BrowserRouter>
     )

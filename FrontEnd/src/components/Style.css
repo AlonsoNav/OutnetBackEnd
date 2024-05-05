@@ -44,7 +44,7 @@
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active{
-    background-color: #BAD08D;
+    background-color: #BAD08D !important;
     border-color: rgba(153, 186, 87, 0.25);
 }
 
@@ -122,6 +122,28 @@
     scrollbar-color: #99BA57 #F4F6F0;
 }
 
+.carousel-image-button-scroll{
+    max-height: calc(100vh - 396px - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #99BA57 #F4F6F0;
+}
+
 .custom-icon-color{
     color: #99BA57;
+}
+
+.carousel-image-button{
+    width: auto;
+    height: 30px;
+}
+
+.carousel-image-button:hover,
+.carousel-image-button:focus,
+.carousel-image-button:active{
+    border: 1px solid rgba(153, 186, 87, 0.25);
+}
+
+.carousel-image-button.selected {
+    border: 2px solid #99BA57;
 }
