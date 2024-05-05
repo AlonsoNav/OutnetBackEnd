@@ -46,5 +46,15 @@ def get_products():
     return functions.get_products(engine)
 
 
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    return functions.upload_image(engine)
+
+
+@app.route('/get_images', methods=['GET'])
+def get_images():
+    return functions.get_images(engine)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

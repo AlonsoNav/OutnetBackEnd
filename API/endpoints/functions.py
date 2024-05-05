@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from sqlalchemy import text
+import base64
 
 
 def login(engine):
@@ -31,7 +32,8 @@ def register(engine):
 
     try:
         conn = engine.connect()
-        result = conn.execute(text(f"EXEC SP_create_user @name = '{name}', @email = '{email}', @password = '{password}', @telephone = '{phone}'")).fetchone()
+        result = conn.execute(text(
+            f"EXEC SP_create_user @name = '{name}', @email = '{email}', @password = '{password}', @telephone = '{phone}'")).fetchone()
         conn.commit()
         conn.close()
 
@@ -85,9 +87,39 @@ def get_products(engine):
         conn.close()
 
         products_list = [{'name': row.name, 'description': row.description, 'outlet_price': row.outlet_price,
-                            'price': row.price, 'discount': row.discount, 'amount': row.amount, 'brand': row.brand,
-                            'category': row.category} for row in result]
+                          'price': row.price, 'discount': row.discount, 'amount': row.amount, 'brand': row.brand,
+                          'category': row.category} for row in result]
         return jsonify({'products': products_list}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def upload_image(engine):
+    image = request.files['image'].read()
+    description = request.form.get('description')
+    try:
+        conn = engine.connect()
+        result = conn.execute(text("EXEC sp_upload_image @description = :description, @image = :image"),
+                              {'description': description, 'image': image})
+        conn.commit()
+        conn.close()
+        return jsonify({'message': 'Imagen subida exitosamente'}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def get_images(engine):
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC SP_get_images")).fetchall()
+        conn.commit()
+        conn.close()
+
+        images_list = [{'id': row.pic_id, 'description': row.description,
+                        'image': base64.b64encode(row.image).decode('utf-8')} for row in result]
+        return jsonify({'images': images_list}), 200
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
