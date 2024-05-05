@@ -53,6 +53,8 @@ const Profile = () => {
                 if (response.ok){
                     setToastBg("success")
                     setToastTitle("Modificación exitoso")
+                    setUserData(userEditData)
+                    localStorage.setItem('userData', JSON.stringify(userEditData));
                 }else{
                     setToastBg("danger")
                     setToastTitle("Error")

@@ -15,3 +15,18 @@ export async function postController(payload, endpoint) {
         console.log(error)
     }
 }
+
+export async function getController(endpoint) {
+    const requestOptions = {
+        method: 'GET',
+        mode: "cors",
+        headers: { 'Content-Type': 'application/json'},
+    };
+
+    try {
+        let response = await fetch(`${ROOT_URL}/${endpoint}`, requestOptions);
+        return await response;
+    } catch (error) {
+        console.log(error)
+    }
+}
