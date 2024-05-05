@@ -21,7 +21,8 @@
 .principal-btn:hover,
 .principal-btn:focus,
 .principal-btn:active{
-    background-color: #BAD08D
+    background-color: #BAD08D;
+    border-color: rgba(153, 186, 87, 0.25);
 }
 
 .danger-btn{
@@ -32,6 +33,19 @@
 .danger-btn:focus,
 .danger-btn:active{
     background-color: #CD1901;
+}
+
+.btn-primary{
+    color: #fff;
+    background-color: #99BA57;
+    border-color: #99BA57;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active{
+    background-color: #BAD08D;
+    border-color: rgba(153, 186, 87, 0.25);
 }
 
 .secondary-btn{
@@ -58,4 +72,56 @@
 .image-button:focus,
 .image-button:active{
     filter: brightness(110%);
+}
+
+.slider{
+    height: 2px;
+    background-color: #485550;
+}
+
+.slider .thumb{
+    height: 23px;
+    width: 23px;
+    cursor: grab;
+    background: #FFFFFF;
+    border-radius: 50%;
+    border: 2px solid #99BA57;
+    top: -12px;
+}
+
+.vw-mw-100{
+    width: calc(100vw - 4rem);
+}
+
+.form-check-input:checked{
+    background-color: #99BA57;
+    border-color: #99BA57;
+}
+
+.form-check-input:focus{
+    box-shadow: 0 0 4px 4px rgba(153, 186, 87, 0.25);
+    border-color: rgba(153, 186, 87, 0.25);
+}
+
+.form-control:focus{
+    box-shadow: 0 0 4px 4px rgba(153, 186, 87, 0.25);
+    border-color: rgba(153, 186, 87, 0.25);
+}
+
+.div-scroll{
+    max-height: calc(100vh - 30px - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #99BA57 #F4F6F0;
+}
+
+.table-scroll{
+    max-height: calc(100vh - 148px - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #99BA57 #F4F6F0;
+}
+
+.custom-icon-color{
+    color: #99BA57;
 }
