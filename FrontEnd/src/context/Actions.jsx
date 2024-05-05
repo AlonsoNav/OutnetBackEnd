@@ -16,6 +16,21 @@ export async function postController(payload, endpoint) {
     }
 }
 
+export async function postNoJSONController(payload, endpoint) {
+    const requestOptions = {
+        method: 'POST',
+        mode: "cors",
+        body: payload
+    };
+
+    try {
+        let response = await fetch(`${ROOT_URL}/${endpoint}`, requestOptions);
+        return await response;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export async function getController(endpoint) {
     const requestOptions = {
         method: 'GET',
