@@ -1,5 +1,6 @@
 import './ProductView.css'
 import React from 'react'
+import {useNavigate} from "react-router-dom";
 import { Card, Badge, Row, Col, Button } from 'react-bootstrap';
 import Carousel from "react-bootstrap/Carousel";
 import {useEffect, useState} from "react";
@@ -25,11 +26,14 @@ const ProductView = () => {
     const [producto, setProducto] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
+    const navigate = useNavigate();
 
     const addToCart = (product) => {
         const updatedCart = [...cart, product];
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+        console.log(cart)
+        navigate("/products")
       };
 
     useEffect(() => {
@@ -38,6 +42,7 @@ const ProductView = () => {
             setProducto(JSON.parse(storedProduct));
             }
     }, []);
+    
 
     useEffect(() => {
 
@@ -151,7 +156,7 @@ const ProductView = () => {
                         <Row style={{marginTop:"25px",width:"640px"}}>
                             <Col> 
                             <div className="d-flex align-items-center">
-                             <button className="btn btn-outline-secondary" style={{borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={handleDecrement}>
+                                <button className="btn btn-outline-secondary" style={{borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={handleDecrement}>
                                     -
                                 </button>
                                 <div style={{borderWidth:'5px',borderColor:"#000000"}}>
@@ -160,11 +165,11 @@ const ProductView = () => {
                                 <button className="btn btn-outline-secondary" style={{ borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={() => handleIncrement(producto)}>
                                     +
                                 </button>
-                                </div>
+                            </div>
                                 </Col>
                             <Col>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <button className="add-to-cart-btn" style={{ height: "60px", fontSize: "28px", width: "412px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
+                                <button onClick={() => addToCart(producto)} className="add-to-cart-btn" style={{ height: "60px", fontSize: "28px", width: "412px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
                             </div>
                             </Col>
                         </Row>
