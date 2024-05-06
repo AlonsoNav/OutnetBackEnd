@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {getController, postNoJSONController} from "../context/Actions.jsx";
 import Toast from "react-bootstrap/Toast";
+import Profile from "../assets/profile.svg";
 
 
 
@@ -88,11 +89,11 @@ const ProductView = () => {
       };
 
   return (
-    <div className='MainPV'>
+    <div style={{minWidth:"1500px"}}>
         <Row style={{backgroundColor:"#F4F6F0", minHeight:"729px", borderRadius:"10px"}}>
             <Col>
                 <div>
-                    <div className="col-md-5 py-1 px-2">
+                    <div className="col-md-8 py-1 px-2">
                             <div className="row bg-F4F6F0 py-3 px-2" tabIndex="0" onKeyDown={handleKeyDown}>
                                 <div className="col-auto carousel-image-button-scroll">
                                     {imageList.map((image, index) => (
@@ -178,6 +179,49 @@ const ProductView = () => {
                 </Row>
             </Col>
         </Row>
+        <Row>
+            <Col className='text-start' style={{marginTop:"20px"}}>
+                <h1 style={{color:"#485550"}}>Comentarios</h1>
+                <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
+                    <Row>
+                    <Col className="text-start">
+                        <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
+                            <Col className="text-center">
+                                <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
+                                </div>
+                            </Col>
+                        </Row>
+                            <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>Tú</Col></Row>
+                    </Col>
+                        <Col>
+                            <Row>
+                                <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px" }}>
+                                    <div>estrellas</div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
+                                    <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
+                                        <textarea
+                                            className="form-control"
+                                            rows={3}
+                                            placeholder="Comenta aquí"
+                                            value={imageDescription}
+                                            onChange={(e) => {setImageDescription(e.target.value)}}
+                                            maxLength={140}
+                                            />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            
+                        </Col>
+                    </Row>
+                    
+                </div>
+            </Col>
+        </Row>
+        
     </div>
   )
 }

@@ -102,7 +102,7 @@ const Payment = () => {
                             <Col>
                                 <div className="text-start" style={{fontSize:"32px"}}>
                                     <div style={{marginLeft:"20px"}}>
-                                    SubTotal:
+                                    SubTotal:₡{0}
                                     </div>
                                 </div>
                             </Col>
@@ -118,7 +118,7 @@ const Payment = () => {
                             </Row>
                             <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
                                 <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                    Total:
+                                    Total:₡{0}
                                 </div>
                             </div>
                          </div>   

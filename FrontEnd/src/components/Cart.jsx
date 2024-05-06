@@ -32,7 +32,6 @@ const Cart = () => {
         const storedCart = JSON.parse(localStorage.getItem('cart'));
         if (storedCart) {
             setCart(storedCart);
-           
         }
     }, []);
 
@@ -112,7 +111,7 @@ const Cart = () => {
                                                 <div style={{ marginLeft: "20px" }}>
                                                     <Row style={{ width: "881px", height: "195px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                         <Col>
-                                                            Imagen
+                                                            
                                                         </Col>
                                                         <Col>
                                                             {product.name}
@@ -158,7 +157,7 @@ const Cart = () => {
                             <Col>
                                 <div className="text-start" style={{fontSize:"32px"}}>
                                     <div style={{marginLeft:"20px"}}>
-                                    SubTotal:
+                                    SubTotal:₡{10000.0000}
                                     </div>
                                 </div>
                             </Col>
@@ -174,7 +173,7 @@ const Cart = () => {
                             </Row>
                             <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
                                 <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                    Total:
+                                    Total:₡{10000.0000}
                                 </div>
                             </div>
                          </div>   
