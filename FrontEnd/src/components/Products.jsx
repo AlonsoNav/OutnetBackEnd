@@ -1,6 +1,7 @@
 import React from 'react'
 import './Products.css'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import {getController, postNoJSONController} from "../context/Actions.jsx";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,6 +11,7 @@ import { FaSearch } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Heart from "../assets/heart-svgrepo-com.svg"
+import {useNavigate} from "react-router-dom";
 
 const Products = () => {
     const [price, setPrice] = useState([0, 100000]);
@@ -24,18 +26,163 @@ const Products = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [imageFile, setImageFile] = useState(null);
+    const [imageDescription, setImageDescription] = useState("");
+    const [imageValidated, setImageValidated] = useState(false);
+    const [imageList, setImageList] = useState([]);
+    const navigate = useNavigate();
+    
 
-    const apiResponse = {
-        categories: ['Categoría 1', 'Categoría 2', 'Categoría 3', 'Categoría 2', 'Categoría 3', 'Categoría 2', 'Categoría 3', 'Categoría 2', 'Categoría 3'],
-        brands: ['Marca 1', 'Marca 2', 'Marca 3']
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getController("/get_categories");
+
+                if (!response) {
+                    setToastMessage("Fallo inesperado en la conexión");
+                    setShowToast(true);
+                }else {
+                    const body = await response.json();
+                    if (!response.ok) {
+                        setToastMessage(body.message)
+                        setShowToast(true);
+                    } else {
+                        setCategories(body.list);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        const fetchBrands = async () => {
+            try {
+                const response = await getController("/get_brands");
+
+                if (!response) {
+                    setToastMessage("Fallo inesperado en la conexión");
+                    setShowToast(true);
+                }else {
+                    const body = await response.json();
+                    if (!response.ok) {
+                        setToastMessage(body.message)
+                        setShowToast(true);
+                    } else {
+                        setBrands(body.list);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        const fetchProducts = async () => {
+            try {
+                const response = await getController("/get_products");
+
+                if (!response) {
+                    setToastMessage("Fallo inesperado en la conexión");
+                    setShowToast(true);
+                }else {
+                    const body = await response.json();
+                    if (!response.ok) {
+                        setToastMessage(body.message)
+                        setShowToast(true);
+                    } else
+                        setProducts(body.products);
+                        setFilteredProducts(body.products);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCategories()
+        fetchBrands()
+        fetchProducts()
+    }, []);
+
+    // Get the min and max for the price range
+    useEffect(() => {
+        const { maxOutletPrice, minOutletPrice } = products.reduce((acc, product) => {
+            return {
+                maxOutletPrice: Math.max(product.outlet_price, acc.maxOutletPrice),
+                minOutletPrice: Math.min(product.outlet_price, acc.minOutletPrice)
+            };
+        }, { maxOutletPrice: -Infinity, minOutletPrice: Infinity });
+        setMinPrice(parseInt(minOutletPrice))
+        setMaxPrice(parseInt(maxOutletPrice))
+        setPrice([minPrice, maxPrice])
+    }, [products]);
+
+    // Set filters
+    useEffect(() => {
+        const filteredProducts = products.filter(product => {
+            return product.outlet_price >= price[0]
+                && product.outlet_price <= price[1]
+                && filterProductsByCategory(product)
+                && filterProductsByBrand(product)
+                && filterProductsBySearchTerm(product);
+        });
+        setFilteredProducts(filteredProducts);
+    }, [price, products, selectedCategories, selectedBrands, searchTerm]);
+    
+    const handleClick = (product) => {
+        console.log("Producto seleccionado:", product);
+        localStorage.setItem('producto', JSON.stringify(product));
+        // Redireccionar a la vista del producto
+        navigate("/view")
+      };
+
+    const filterProductsByCategory = (product) => {
+        if (selectedCategories.length === 0)
+            return true;
+        else
+            return selectedCategories.includes(product.category);
     };
 
-    const categoriesCheckboxes = apiResponse.categories.map((category, index) => (
-        <Form.Check key={`categoria_${index}`} label={category} />
+    const filterProductsByBrand = (product) => {
+        if (selectedBrands.length === 0)
+            return true;
+        else
+            return selectedBrands.includes(product.brand);
+    };
+
+    const filterProductsBySearchTerm = (product) => {
+        if (searchTerm === "")
+            return true;
+        else {
+            const searchTermLowerCase = searchTerm.toLowerCase();
+            const productNameLowerCase = product.name.toLowerCase();
+
+            return productNameLowerCase.includes(searchTermLowerCase);
+        }
+    };
+
+    const handleCategoryChange = (category) => {
+        if (selectedCategories.includes(category))
+            setSelectedCategories(selectedCategories.filter(cat => cat !== category)); // If the category is already selected, delete it
+        else
+            setSelectedCategories([...selectedCategories, category]);
+    };
+
+    const handleBrandChange = (brand) => {
+        if (selectedBrands.includes(brand))
+            setSelectedBrands(selectedBrands.filter(cat => cat !== brand)); // If the category is already selected, delete it
+        else
+            setSelectedBrands([...selectedBrands, brand]);
+    };
+
+    const categoriesCheckboxes = categories.map((category, index) => (
+        <Form.Check key={`categoria_${index}`}
+                    label={category.name}
+                    checked={selectedCategories.includes(category.name)}
+                    onChange={() => handleCategoryChange(category.name)}
+        />
     ));
 
-    const brandsCheckboxes = apiResponse.brands.map((brand, index) => (
-        <Form.Check key={`marca_${index}`} label={brand} />
+    const brandsCheckboxes = brands.map((brand, index) => (
+        <Form.Check key={`marca_${index}`}
+                    label={brand.name}
+                    checked={selectedBrands.includes(brand.name)}
+                    onChange={() => handleBrandChange(brand.name)}/>
     ));
 
     return (
@@ -108,57 +255,59 @@ const Products = () => {
                 {/*Productos */}
                 <Row>
                 <Col>
-                    <div style={{ 
-                        borderRadius:"10px",
-                        backgroundColor:"#F4F6F0",
-                        marginTop:"15px",
-                        width:"100%",
-                        height:"173px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                        }}>
-                        <Row style={{width:"720px"}}>
-                            <Col>
-                                Imagen
-                            </Col>
-                            <Col>
-                                <Row>
-                                    <Col>
-                                        <div>
-                                            Producto titulo
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <div style={{marginTop:"40px"}}>
-                                            Precio producto
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row>
-                                    <Col>
-                                        <div className="text-end" >
-                                        <Button variant="light" style={{ backgroundColor: 'transparent', border: 'none' }}>
-                                            <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
-                                            {' '}
-                                        </Button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <div style={{marginTop:"40px"}}>
-                                            <button className="add-to-cart-btn" style={{backgroundColor:"#99BA57"}}>Agregar al carrito</button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </div>
+                {filteredProducts.map((product, index) => (
+                            <div key={index} style={{ 
+                            borderRadius:"10px",
+                            backgroundColor:"#F4F6F0",
+                            marginTop:"15px",
+                            width:"100%",
+                            height:"173px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                            }}>
+                            <Row style={{width:"720px"}}>
+                                <Col>
+                                    Imagen
+                                </Col>
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <div>
+                                                {product.name}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <div style={{marginTop:"40px"}}>
+                                                ₡{product.outlet_price}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <div className="text-end" >
+                                            <Button variant="light" style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                                <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
+                                                {' '}
+                                            </Button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col onClick={() => handleClick(product,index)}>
+                                            <div style={{marginTop:"40px"}}>
+                                                <button  className="add-to-cart-btn" style={{backgroundColor:"#99BA57"}}>Agregar al carrito</button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </div>
+                                        ))}
                 </Col>
                 </Row>
             </Col>

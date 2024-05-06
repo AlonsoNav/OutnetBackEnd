@@ -1,5 +1,7 @@
 import React from 'react'
 import Container from 'react-bootstrap/Container';
+import { useState,useEffect } from 'react';
+import {getController, postNoJSONController} from "../context/Actions.jsx";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -7,6 +9,78 @@ import Button from 'react-bootstrap/Button';
 
 
 const Cart = () => {
+
+
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [categories, setCategories] = useState([]);
+    const [brands, setBrands] = useState([]);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastBg, setToastBg] = useState('danger');
+    const [toastTitle, setToastTitle] = useState('Error');
+    const [price, setPrice] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+    const [imageDescription, setImageDescription] = useState("");
+    const [imageValidated, setImageValidated] = useState(false);
+    const [imageList, setImageList] = useState([]);
+    const [producto, setProducto] = useState({});
+    const [quantity, setQuantity] = useState(1);
+    const [cart, setCart] = useState([]);
+
+    const addToCart = (product) => {
+        const updatedCart = [...cart, product];
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      };
+
+    const clearCart = () => {
+        localStorage.removeItem('cart');
+        setItems([]);
+    };
+      
+    useEffect(() => {
+
+        const fetchImages = async () => {
+            try {
+                const response = await getController("/get_images");
+                const body = await response.json();
+                setImageList(body.images);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchImages()
+
+    }, []);
+
+    const handleThumbnailClick = (index) => {
+        setSelectedIndex(index);
+    };
+
+    const handleSelect = (selectedIndex, e) => {
+        setSelectedIndex(selectedIndex);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.keyCode === 38 && selectedIndex > 0) { // Flecha arriba
+            setSelectedIndex(selectedIndex - 1);
+        } else if (e.keyCode === 40 && selectedIndex < imageList.length - 1) { // Flecha abajo
+            setSelectedIndex(selectedIndex + 1);
+        }
+    };
+    const handleIncrement = (producto) => {
+        if (quantity < producto.amount) {
+            setQuantity(prevQuantity => prevQuantity + 1);
+        }
+    };
+    
+      const handleDecrement = () => {
+        if (quantity > 1) {
+          setQuantity(quantity - 1);
+        }
+      };
+
       return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
@@ -29,7 +103,19 @@ const Cart = () => {
                                             Info
                                         </Col>
                                         <Col>
-                                            Botones
+                                            <Col> 
+                                                <div className="d-flex align-items-center">
+                                                <button className="btn btn-outline-secondary" style={{borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={handleDecrement}>
+                                                        -
+                                                    </button>
+                                                    <div style={{borderWidth:'5px',borderColor:"#000000"}}>
+                                                    <span className="mx-2" ></span>
+                                                    </div>
+                                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={() => handleIncrement(producto)}>
+                                                        +
+                                                    </button>
+                                                    </div>
+                                            </Col>
                                         </Col>
                                     </Row>
                                 </div>
