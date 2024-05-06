@@ -23,7 +23,7 @@ const AdminHeader =() =>{
                     <Nav className="me-auto text-start">
                         <Nav.Link className="custom-nav-link" href="/admin/statistics"><FontAwesomeIcon icon={faChartLine} className="me-1" />Estadísticas</Nav.Link>
                         <Nav.Link className="custom-nav-link" href="/admin/products"><FontAwesomeIcon icon={faBox} className="me-1" />Productos</Nav.Link>
-                        <Nav.Link className="custom-nav-link"><FontAwesomeIcon icon={faHandHoldingUsd} className="me-1" />Subastas</Nav.Link>
+                        <Nav.Link className="custom-nav-link" href="/admin/auctions"><FontAwesomeIcon icon={faHandHoldingUsd} className="me-1" />Subastas</Nav.Link>
                     </Nav>
                     <Nav className="me-0 text-start border-sm-top">
                         <Nav.Link className="custom-nav-link" onClick={handleLogOut}><FontAwesomeIcon icon={faSignOut} className="me-1" />Cerrar sesión</Nav.Link>

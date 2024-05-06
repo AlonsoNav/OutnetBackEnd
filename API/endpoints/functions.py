@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from sqlalchemy import text
 import base64
+import json
 
 
 def login(engine):
@@ -100,11 +101,13 @@ def upload_image(engine):
     description = request.form.get('description')
     try:
         conn = engine.connect()
-        result = conn.execute(text("EXEC sp_upload_image @description = :description, @image = :image"),
-                              {'description': description, 'image': image})
+        result = conn.execute(text("EXEC SP_upload_image @description = :description, @image = :image"),
+                              {'description': description, 'image': image}).fetchone()
         conn.commit()
         conn.close()
-        return jsonify({'message': 'Imagen subida exitosamente'}), 200
+
+        return jsonify({'message': 'Imagen subida exitosamente', 'id': result.pic_id,
+                       'image': base64.b64encode(image).decode('utf-8')}), 200
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
@@ -120,6 +123,44 @@ def get_images(engine):
         images_list = [{'id': row.pic_id, 'description': row.description,
                         'image': base64.b64encode(row.image).decode('utf-8')} for row in result]
         return jsonify({'images': images_list}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def delete_image(engine):
+    id = request.json["id"]
+    try:
+        conn = engine.connect()
+        result = conn.execute(text("EXEC SP_delete_image @id = :id"), {'id': id})
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Imagen eliminada exitosamente'}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
+def create_product(engine):
+    name = request.json["name"]
+    description = request.json["description"]
+    price = request.json["price"]
+    outlet_price = request.json["outlet_price"]
+    category = request.json["category"]
+    brand = request.json["brand"]
+    images = json.dumps(request.json["images"])
+    try:
+        conn = engine.connect()
+        result = conn.execute(text("EXEC SP_create_product @name = :name, @description = :description, @price = :price,"
+                                   " @outlet_price = :outlet_price, @category = :category, @brand = :brand,"
+                                   " @images = :images"),
+                              {'name': name, 'description': description, 'price': price, 'outlet_price': outlet_price,
+                               'category': category, 'brand': brand, 'images': images})
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Producto agregado correctamente.'}), 200
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401

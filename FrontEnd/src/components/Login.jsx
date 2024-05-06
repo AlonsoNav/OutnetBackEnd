@@ -37,7 +37,10 @@ const Login = () => {
                     setShowToast(true);
                 }else{
                     localStorage.setItem('userData', JSON.stringify(body));
-                    navigate("/profile")
+                    if(body.is_admin)
+                        navigate("/admin/products")
+                    else
+                        navigate("/");
                 }
             }
         } catch (error) {

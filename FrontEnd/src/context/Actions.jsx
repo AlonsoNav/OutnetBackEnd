@@ -16,6 +16,22 @@ export async function postController(payload, endpoint) {
     }
 }
 
+export async function deleteController(payload, endpoint) {
+    const requestOptions = {
+        method: 'DELETE',
+        mode: "cors",
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    };
+
+    try {
+        let response = await fetch(`${ROOT_URL}/${endpoint}`, requestOptions);
+        return await response;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export async function postNoJSONController(payload, endpoint) {
     const requestOptions = {
         method: 'POST',
