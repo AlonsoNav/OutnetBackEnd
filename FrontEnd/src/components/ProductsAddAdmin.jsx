@@ -73,7 +73,7 @@ const ProductsAddAdmin = () => {
                         setToastTitle("Error")
                         setShowToast(true);
                     } else {
-                        setBrands([...brands, body.list]);
+                        setBrands(prevBrands => [...prevBrands, ...body.list]);
                     }
                 }
             } catch (error) {
