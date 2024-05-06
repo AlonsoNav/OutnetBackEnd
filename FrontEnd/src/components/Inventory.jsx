@@ -5,12 +5,12 @@ import Slider from "react-slider";
 import './Style.css'
 import {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAdd, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import {getController} from "../context/Actions.jsx";
 import Toast from "react-bootstrap/Toast";
 import {useNavigate} from "react-router-dom";
 
-const ProductsAdmin = () => {
+const Inventory = () => {
     const [price, setPrice] = useState([0, 100000]);
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
@@ -67,29 +67,9 @@ const ProductsAdmin = () => {
                 console.log(error);
             }
         };
-        const fetchProducts = async () => {
-            try {
-                const response = await getController("/get_products");
-
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
-                    if (!response.ok) {
-                        setToastMessage(body.message)
-                        setShowToast(true);
-                    } else
-                        setProducts(body.products);
-                        setFilteredProducts(body.products);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
+        setProducts([{name: "Computadora portátil", category: "Tecnología", amount: 10, price: 1000000, date: new Date().toLocaleDateString()}])
         fetchCategories()
         fetchBrands()
-        fetchProducts()
     }, []);
 
     // Get the min and max for the price range
@@ -197,7 +177,7 @@ const ProductsAdmin = () => {
                                     onChange={setPrice}
                                     min={minPrice}
                                     max={maxPrice}
-                                    />
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label className="h5 text-muted">Categoría</Form.Label>
@@ -228,17 +208,11 @@ const ProductsAdmin = () => {
                                 </InputGroup>
                             </Form>
                         </div>
-                        <div className="col-auto">
-                            <button type="button" className="btn btn-primary" onClick={() => navigate("/admin/products/add")}>
-                                <FontAwesomeIcon icon={faAdd} className="me-2"/>
-                                Nuevo producto
-                            </button>
-                        </div>
                     </div>
                     <div className="row">
                         <div className="col">
                             <div className="bg-F4F6F0 py-3 px-4 text-start">
-                                <h1 className="display-6 mb-2 text-lg-start">Productos</h1>
+                                <h1 className="display-6 mb-2 text-lg-start">Inventario</h1>
                                 <div className="table-responsive table-scroll mb-2">
                                     <Table striped bordered hover>
                                         <thead>
@@ -247,30 +221,22 @@ const ProductsAdmin = () => {
                                             <th>Categoría</th>
                                             <th>Cantidad</th>
                                             <th>Precio</th>
-                                            <th>Acción</th>
+                                            <th>Fecha</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {filteredProducts.map((product, index) => (
+                                        {products.map((product, index) => (
                                             <tr key={index}>
                                                 <td>{product.name}</td>
                                                 <td>{product.category}</td>
                                                 <td>{product.amount}</td>
-                                                <td>₡{product.outlet_price}</td>
-                                                <td>
-                                                    <button className="btn btn-sm btn-primary me-1">
-                                                        <FontAwesomeIcon icon={faEdit}/>
-                                                    </button>
-                                                    <button className="btn btn-sm btn-danger">
-                                                        <FontAwesomeIcon icon={faTrash}/>
-                                                    </button>
-                                                </td>
+                                                <td>₡{product.price}</td>
+                                                <td>{product.date}</td>
                                             </tr>
                                         ))}
                                         </tbody>
                                     </Table>
                                 </div>
-                                <button className="btn btn-primary" onClick={() => navigate("/admin/inventory")}>Historial de movimientos</button>
                             </div>
                         </div>
                     </div>
@@ -280,4 +246,4 @@ const ProductsAdmin = () => {
     );
 };
 
-export default ProductsAdmin;
+export default Inventory;

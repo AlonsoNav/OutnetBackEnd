@@ -13,6 +13,9 @@ import MainPage from "./components/MainPage.jsx";
 import Products from "./components/Products.jsx";
 import Cart from "./components/Cart.jsx";
 import ProductView from "./components/ProductView.jsx";
+import ProductsEditAdmin from "./components/ProductsEditAdmin.jsx";
+import Inventory from "./components/Inventory.jsx";
+import InventoryRequest from "./components/InventoryRequest.jsx";
 
 function App() {
     const renderWithAdminHeader = (Component) => (
@@ -42,6 +45,9 @@ function App() {
             <Route path="/profile" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "false") ? renderWithHeader(Profile): <Navigate to="/login" />} />
             <Route path="/admin/products" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAdmin): <Navigate to="/login" />} />
             <Route path="/admin/products/add" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAddAdmin): <Navigate to="/login" />} />
+            <Route path="/admin/products/edit" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsEditAdmin): <Navigate to="/login" />} />
+            <Route path="/admin/inventory" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(Inventory): <Navigate to="/login" />} />
+            <Route path="/admin/inventory/request" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(InventoryRequest): <Navigate to="/login" />} />
         </Routes>
     </BrowserRouter>
     )
