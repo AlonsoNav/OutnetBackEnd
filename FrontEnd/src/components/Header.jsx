@@ -1,13 +1,31 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+
 import Container from 'react-bootstrap/Container';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCartShopping, faHandHoldingUsd, faUser} from '@fortawesome/free-solid-svg-icons';
+import { useState,useEffect } from 'react';
+import {getController, postNoJSONController} from "../context/Actions.jsx";
 import "./Header.css"
 import './Style.css'
 import './AdminHeader.css'
 
 const Header = () => {
+
+  const [userData, setUserData] = useState({});
+  const [name,setName]= useState('')
+
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    if (storedUserData) {
+        setUserData(storedUserData);
+        setName(storedUserData.name)
+        
+    }else{
+      setName('Invitado')
+    }
+}, []);
+
   return (
     <Navbar expand="lg" className="bg-99BA57 position-fixed top-0 start-0 w-100 fixed-top" id="Nav">
         <Container fluid>
