@@ -39,9 +39,9 @@ function App() {
             <Route path="/view" element={renderWithHeader(ProductView)}/>
             <Route path="/" element={renderWithHeader(MainPage)}/>
             <Route path="/Cart" element={renderWithHeader(Cart)}/>
-            <Route path="/profile" element={localStorage.getItem('userData') ? <Profile/>: <Navigate to="/login" />} />
-            <Route path="/admin/products" element={renderWithAdminHeader(ProductsAdmin)} />
-            <Route path="/admin/products/add" element={renderWithAdminHeader(ProductsAddAdmin)} />
+            <Route path="/profile" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "false") ? renderWithHeader(Profile): <Navigate to="/login" />} />
+            <Route path="/admin/products" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAdmin): <Navigate to="/login" />} />
+            <Route path="/admin/products/add" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAddAdmin): <Navigate to="/login" />} />
         </Routes>
     </BrowserRouter>
     )

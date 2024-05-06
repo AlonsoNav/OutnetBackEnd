@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faAdd, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {getController} from "../context/Actions.jsx";
 import Toast from "react-bootstrap/Toast";
+import {useNavigate} from "react-router-dom";
 
 const ProductsAdmin = () => {
     const [price, setPrice] = useState([0, 100000]);
@@ -22,6 +23,7 @@ const ProductsAdmin = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
 
     // Get products, categories and brands
     useEffect(() => {
@@ -227,7 +229,7 @@ const ProductsAdmin = () => {
                             </Form>
                         </div>
                         <div className="col-auto">
-                            <button type="button" className="btn btn-primary">
+                            <button type="button" className="btn btn-primary" onClick={() => navigate("/admin/products/add")}>
                                 <FontAwesomeIcon icon={faAdd} className="me-2"/>
                                 Nuevo producto
                             </button>
@@ -235,9 +237,9 @@ const ProductsAdmin = () => {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <div className="bg-F4F6F0 py-1 px-4 text-start">
-                                <h1 className="display-6 my-2 text-lg-start">Productos</h1>
-                                <div className="table-responsive table-scroll">
+                            <div className="bg-F4F6F0 py-3 px-4 text-start">
+                                <h1 className="display-6 mb-2 text-lg-start">Productos</h1>
+                                <div className="table-responsive table-scroll mb-2">
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
@@ -268,6 +270,7 @@ const ProductsAdmin = () => {
                                         </tbody>
                                     </Table>
                                 </div>
+                                <button className="btn btn-primary">Historial de movimientos</button>
                             </div>
                         </div>
                     </div>

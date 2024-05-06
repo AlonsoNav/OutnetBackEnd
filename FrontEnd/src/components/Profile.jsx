@@ -84,7 +84,7 @@ const Profile = () => {
     }
 
     return(
-        <div className="container">
+        <div className="container" style={{marginTop: "30px"}}>
             <div className="position-fixed top-0 start-50 translate-middle-x mt-1">
                 <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg={toastBg}>
                     <Toast.Header>

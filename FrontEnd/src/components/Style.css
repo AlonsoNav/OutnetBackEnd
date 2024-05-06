@@ -121,7 +121,7 @@
 }
 
 .table-scroll{
-    max-height: calc(100vh - 148px - 4rem);
+    max-height: calc(100vh - 209px - 4rem);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #99BA57 #F4F6F0;
