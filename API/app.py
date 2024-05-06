@@ -56,5 +56,15 @@ def get_images():
     return functions.get_images(engine)
 
 
+@app.route('/delete_image', methods=['DELETE'])
+def delete_image():
+    return functions.delete_image(engine)
+
+
+@app.route('/create_product', methods=['POST'])
+def create_product():
+    return functions.create_product(engine)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

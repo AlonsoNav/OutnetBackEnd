@@ -171,8 +171,8 @@ const ProductsAdmin = () => {
     ));
 
     return (
-        <div className="container-fluid vw-mw-100" style={{marginTop: "30px"}}>
-            <div className="position-fixed top-0 start-50 translate-middle-x mt-1">
+        <div className="container-fluid vw-mw-100 position-relative" style={{marginTop: "30px"}}>
+            <div className="position-absolute top-0 start-50 translate-middle-x mt-1 z-1000">
                 <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg="danger">
                     <Toast.Header>
                         <strong className="me-auto">Error</strong>

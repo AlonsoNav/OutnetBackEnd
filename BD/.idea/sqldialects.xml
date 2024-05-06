@@ -2,7 +2,9 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/Database.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_create_product.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_create_user.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_delete_image.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_brands.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_categories.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_images.sql" dialect="TSQL" />
