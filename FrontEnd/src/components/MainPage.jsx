@@ -13,7 +13,7 @@ import { FaSearch } from 'react-icons/fa';
 
 const MainPage = () => {
   return (
-    <Container className="align-items-center justify-content-start" style={{ paddingLeft: '0', marginTop: "90px" }}>
+    <Container className="align-items-center justify-content-start" style={{ paddingLeft: '0', marginTop: "100px" }}>
     <Row className="align-items-center" style={{ margin: '0' }}>
       <Col style={{ width: '1300px', height: "630px" }}>
         <div className="main-container" style={{ backgroundColor: '#99BA57', borderRadius: '50px', width: '100%', height: "630px" }}>
@@ -24,9 +24,10 @@ const MainPage = () => {
               </div>
             </div>
             <div className="col-md-6">
-              <div className='Texto ms-auto' style={{ marginTop: '200px' }}>
-                <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }}>¿Qué necesitas hoy?</p></h1>
-                <InputGroup style={{maxWidth:"550px"}}>
+            <div className='Texto ms-auto' style={{ marginTop: '200px', textAlign: 'center' }}>
+              <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }}>¿Qué necesitas hoy?</p></h1>
+              <div className="d-flex justify-content-center align-items-center">
+                <InputGroup style={{ maxWidth: "550px" }}>
                   <Button style={{ backgroundColor: "#ffff", borderColor: "#FFFF" }}>
                     <FaSearch style={{ color: "#99BA57" }} />
                   </Button>
@@ -34,6 +35,7 @@ const MainPage = () => {
                 </InputGroup>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </Col>

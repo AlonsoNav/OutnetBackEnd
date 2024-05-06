@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Eliminar from '../assets/x-symbol-svgrepo-com.svg'
 
 
 const Cart = () => {
@@ -26,9 +27,24 @@ const Cart = () => {
     const [producto, setProducto] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
+    
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem('cart'));
+        if (storedCart) {
+            setCart(storedCart);
+           
+        }
+    }, []);
 
     const addToCart = (product) => {
         const updatedCart = [...cart, product];
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      };
+
+    const removeFromCart = (index) => {
+        const updatedCart = [...cart];
+        updatedCart.splice(index, 1);
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
       };
@@ -86,44 +102,46 @@ const Cart = () => {
         <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
         <Container style={{  marginTop:"50px",marginRight: "550px", marginLeft: "0", maxWidth: "100%"  }}>
         <Row style={{ width: "1516px" }}>
-            <Col style={{ overflowY: "auto",overflowX: 'hidden',marginRight: "150px",backgroundColor: "#F4F6F0", height: "491px", borderRadius: "10px", width: "976px" }}>
-                
+                <Col style={{ overflowY: "auto", overflowX: 'hidden', backgroundColor: "#F4F6F0", height: "491px", borderRadius: "10px", width: "976px" }}>
                 {/* Producto */}
-
-                <div style={{ marginTop: "40px", margin: "40px", backgroundColor: "#FFFF", borderRadius: "10px", alignItems: "center" }}>
-                    <div className='text-start' style={{ width: "100px", height: "100px" }}>
-                        <Row style={{ width: "881px" }}>
-                            <Col>
-                                <div style={{ margin: "20px" }}>
-                                    <Row>
-                                        <Col>
-                                            Imagen
-                                        </Col>
-                                        <Col>
-                                            Info
-                                        </Col>
-                                        <Col>
-                                            <Col> 
-                                                <div className="d-flex align-items-center">
-                                                <button className="btn btn-outline-secondary" style={{borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={handleDecrement}>
-                                                        -
-                                                    </button>
-                                                    <div style={{borderWidth:'5px',borderColor:"#000000"}}>
-                                                    <span className="mx-2" ></span>
-                                                    </div>
-                                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={() => handleIncrement(producto)}>
-                                                        +
-                                                    </button>
-                                                    </div>
+                 {cart.map((product, index) => (
+                                <div key={index} style={{ marginTop: "40px", margin: "40px", backgroundColor: "#FFFF", borderRadius: "10px", alignItems: "center", width: "881px", height: "195px" }}>
+                                    <div className='text-start' style={{ width: "100px", height: "100px" }}>
+                                        <Row style={{ width: "881px", height: "195px" }}>
+                                            <Col>
+                                                <div style={{ marginLeft: "20px" }}>
+                                                    <Row style={{ width: "881px", height: "195px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                        <Col>
+                                                            Imagen
+                                                        </Col>
+                                                        <Col>
+                                                            {product.name}
+                                                        </Col>
+                                                        <Col>
+                                                            <div className="d-flex align-items-center">
+                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={handleDecrement}>
+                                                                    -
+                                                                </button>
+                                                                <div style={{ borderWidth: '5px', borderColor: "#000000" }}>
+                                                                    <span className="mx-2">{quantity}</span>
+                                                                </div>
+                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={() => handleIncrement(product)}>
+                                                                    +
+                                                                </button>
+                                                            </div>
+                                                        </Col>
+                                                        <Col className="text-end" style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'flex-end' }}>
+                                                            <button className="btn btn-outline-secondary" style={{ backgroundColor: "#485550", borderColor: "#000000", borderWidth: '1px', height: "195px", width: "70px" }} onClick={() => removeFromCart(index)}>
+                                                                <img src={Eliminar} alt="Eliminar de carrito" style={{ width: '35px', height: '35px', marginRight: '5px' }} />
+                                                            </button>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
                                             </Col>
-                                        </Col>
-                                    </Row>
+                                        </Row>
+                                    </div>
                                 </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-                
+                            ))}
             </Col>
 
             <Col md={4} style={{ marginLeft: "50px", backgroundColor: "#99BA57", height: "562px", borderRadius: "10px", maxWidth: "487px" }}>
