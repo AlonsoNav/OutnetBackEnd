@@ -30,6 +30,7 @@ const ProductsAddAdmin = () => {
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const navigate = useNavigate();
+   
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -125,7 +126,7 @@ const ProductsAddAdmin = () => {
         formData.append('description', imageDescription);
 
         try {
-            const response = await postNoJSONController(formData, 'upload_image');
+            const response = await postNoJSONController(formData, '/upload_image');
             const body = await response.json();
             if (response.ok){
                 setToastBg("success")

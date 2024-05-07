@@ -56,6 +56,16 @@ def get_images():
     return functions.get_images(engine)
 
 
+@app.route('/get_comments_product', methods=['GET'])
+def get_comments_product():
+    return functions.get_comments_product(engine)
+
+
+@app.route('/get_products_images', methods=['GET'])
+def get_product_image():
+    return functions.get_products_images(engine)
+
+
 @app.route('/delete_image', methods=['DELETE'])
 def delete_image():
     return functions.delete_image(engine)
@@ -64,6 +74,17 @@ def delete_image():
 @app.route('/create_product', methods=['POST'])
 def create_product():
     return functions.create_product(engine)
+
+
+@app.route('/create_sale', methods=['POST'])
+def create_sale():
+    return functions.create_sale(engine)
+
+
+@app.route('/create_comment', methods=['POST'])
+def create_comment():
+    return functions.create_comment(engine)
+
 
 
 if __name__ == '__main__':

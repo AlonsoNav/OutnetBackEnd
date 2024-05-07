@@ -41,7 +41,7 @@ const Login = () => {
                     if(body.is_admin)
                         navigate("/admin/products")
                     else
-                        navigate("/profile");
+                        navigate("/");
                 }
             }
         } catch (error) {
