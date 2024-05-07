@@ -1,6 +1,7 @@
-DROP PROCEDURE IF EXISTS SP_create_product;
+DROP PROCEDURE IF EXISTS SP_update_product;
 GO
-CREATE PROCEDURE SP_create_product
+CREATE PROCEDURE SP_update_product
+    @id BIGINT,
     @name VARCHAR(30),
     @description VARCHAR(300),
     @price VARCHAR(12),
@@ -11,7 +12,6 @@ CREATE PROCEDURE SP_create_product
 AS
 BEGIN
     DECLARE @imagesTable TABLE (id BIGINT);
-    DECLARE @productId BIGINT;
     DECLARE @price_cast MONEY;
     DECLARE @outlet_price_cast MONEY;
     DECLARE @brand_id SMALLINT;
@@ -19,7 +19,6 @@ BEGIN
     DECLARE @message VARCHAR(MAX);
     DECLARE @code INT;
     SET @code = 400;
-
 
     SET @price_cast = CAST(@price AS MONEY);
     SET @outlet_price_cast = CAST(@outlet_price AS MONEY);
@@ -39,15 +38,20 @@ BEGIN
     SELECT id FROM OPENJSON(@images)
     WITH (id INT '$');
 
-    INSERT INTO Product (name, description, outlet_price, price, discount, amount, category_id, brand_id)
-    VALUES (@name, @description, @outlet_price_cast, @price_cast, @outlet_price_cast * 100 / @price_cast / 100, 0, @category_id, @brand_id)
-
-    SET @productId = SCOPE_IDENTITY();
+    UPDATE [Product]
+    SET name = @name,
+        description = @description,
+        outlet_price = @outlet_price_cast,
+        price = @price_cast,
+        discount = @outlet_price_cast * 100 / @price_cast / 100,
+        category_id = @category_id,
+        brand_id = @brand_id
+    WHERE product_id = @id;
 
     INSERT INTO PicXProduct (product_id, pic_id)
-    SELECT @productId, id FROM @imagesTable;
+    SELECT @id, id FROM @imagesTable;
 
-    SET @message = N'Producto creado exitosamente.'
+    SET @message = N'Producto modificado exitosamente.'
     SET @code = 200;
     SELECT @code AS code, @message AS message;
 END;

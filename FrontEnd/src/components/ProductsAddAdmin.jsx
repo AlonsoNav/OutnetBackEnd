@@ -1,194 +1,179 @@
 import './Style.css'
-import Carousel from "react-bootstrap/Carousel";
-import Form from "react-bootstrap/Form";
-import {useEffect, useState} from "react";
-import {useNavigate} from 'react-router-dom';
-import {deleteController, getController, postController, postNoJSONController} from "../context/Actions.jsx";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Toast from "react-bootstrap/Toast";
-import Modal from "react-bootstrap/Modal";
+import Carousel from "react-bootstrap/Carousel"
+import Form from "react-bootstrap/Form"
+import Modal from "react-bootstrap/Modal"
+import {useEffect, useState} from "react"
+import {deleteController, getController, postController, postNoJSONController} from "../context/Actions.jsx"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const ProductsAddAdmin = () => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [categories, setCategories] = useState([]);
-    const [brands, setBrands] = useState([{name: "Sin asignar"}]);
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastBg, setToastBg] = useState('danger');
-    const [toastTitle, setToastTitle] = useState('Error');
-    const [price, setPrice] = useState('');
-    const [outletPrice, setOutletPrice] = useState('');
-    const [imageFile, setImageFile] = useState(null);
-    const [imageDescription, setImageDescription] = useState("");
-    const [imageValidated, setImageValidated] = useState(false);
-    const [validated, setValidated] = useState(false);
-    const [imageList, setImageList] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [id, setId] = useState(null);
-    const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
-    const navigate = useNavigate();
-   
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    // Variables for data sets
+    const [categories, setCategories] = useState([])
+    const [brands, setBrands] = useState([{name: "Sin asignar"}])
+    // Variables for image form
+    const [imageFile, setImageFile] = useState(null)
+    const [imageDescription, setImageDescription] = useState("")
+    const [imageValidated, setImageValidated] = useState(false)
+    const [imageList, setImageList] = useState([])
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [id, setId] = useState(0)
+    // Variables for info form
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState('')
+    const [outletPrice, setOutletPrice] = useState('')
+    const [validated, setValidated] = useState(false)
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await getController("/get_categories");
+                const response = await getController("/get_categories")
 
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
-                    if (!response.ok) {
-                        setToastMessage(body.message)
-                        setToastBg("danger")
-                        setToastTitle("Error")
-                        setShowToast(true);
-                    } else {
-                        setCategories(body.list);
-                    }
+                if (!response)
+                    noResponse()
+                else {
+                    const body = await response.json()
+                    if (!response.ok)
+                        messageFromAPI("Error", body.message)
+                    else
+                        setCategories(body.list)
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
+        }
         const fetchBrands = async () => {
             try {
-                const response = await getController("/get_brands");
+                const response = await getController("/get_brands")
 
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
+                if (!response)
+                    noResponse()
+                else {
+                    const body = await response.json()
                     if (!response.ok) {
-                        setToastMessage(body.message)
-                        setToastBg("danger")
-                        setToastTitle("Error")
-                        setShowToast(true);
-                    } else {
-                        setBrands(prevBrands => [...prevBrands, ...body.list]);
-                    }
+                        messageFromAPI("Error", body.message)
+                    } else
+                        setBrands(prevBrands => [...prevBrands, ...body.list])
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
+        }
 
         fetchCategories()
         fetchBrands()
-    }, []);
+    }, [])
 
     const handleThumbnailClick = (index) => {
-        setSelectedIndex(index);
-    };
+        setSelectedIndex(index)
+    }
 
     const handleSelect = (selectedIndex) => {
-        setSelectedIndex(selectedIndex);
-    };
+        setSelectedIndex(selectedIndex)
+    }
 
     const handleKeyDown = (e) => {
         if (e.keyCode === 38 && selectedIndex > 0) { // Flecha arriba
-            setSelectedIndex(selectedIndex - 1);
+            setSelectedIndex(selectedIndex - 1)
         } else if (e.keyCode === 40 && selectedIndex < imageList.length - 1) { // Flecha abajo
-            setSelectedIndex(selectedIndex + 1);
+            setSelectedIndex(selectedIndex + 1)
         }
-    };
+    }
 
     const handleChangePrice = (newValue) => {
-        if (!isNaN(newValue) && newValue.length <= 8)
-            setPrice(newValue);
-    };
+        if (!isNaN(newValue) && newValue.length <= 12)
+            setPrice(newValue)
+    }
 
     const handleChangeOutletPrice = (newValue) => {
-        if (!isNaN(newValue) && newValue.length <= 8)
-            setOutletPrice(newValue);
-    };
+        if (!isNaN(newValue) && newValue.length <= 12)
+            setOutletPrice(newValue)
+    }
 
     const handleUploadImage = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setImageValidated(true);
+        e.preventDefault()
+        const form = e.currentTarget
+        setImageValidated(true)
         if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
+            e.stopPropagation()
+            return
         }
 
-        const formData = new FormData();
-        formData.append('image', imageFile);
-        formData.append('description', imageDescription);
+        const formData = new FormData()
+        formData.append('image', imageFile)
+        formData.append('description', imageDescription)
 
         try {
-            const response = await postNoJSONController(formData, '/upload_image');
+            const response = await postNoJSONController(formData, 'upload_image');
             const body = await response.json();
             if (response.ok){
-                setToastBg("success")
-                setToastTitle("Subida exitoso")
-                setImageList([...imageList, { id: body.id, image: body.image, description: imageDescription }]);
-            }else{
-                setToastBg("danger")
-                setToastTitle("Error")
-            }
-            setToastMessage(body.message)
-            setShowToast(true);
+                messageFromAPI("Subida de imagen exitosa", body.message)
+                setImageList([...imageList, { id: body.id, image: body.image, description: imageDescription }])
+            }else
+                messageFromAPI("Error", body.message)
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
     const handleDeleteImage = (imageId) => {
-        setId(imageId);
-        setShowModal(true);
-    };
+        setId(imageId)
+        setModalTitle("Confirmar eliminación de imagen")
+        setModalBody("¿Realmente quieres borrar esta imagen?")
+        setModalBtn1Text("Cancelar")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Text("Borrar imagen")
+        setModalBtn2Style("btn btn-danger")
+        setModalBtn2Show(true)
+        setShowModal(true)
+    }
 
     const handleConfirmDeleteImage = async () =>{
-        let payload = {id};
+        setShowModal(false)
+        let payload = {id}
 
         try {
             let response = await deleteController(payload, "delete_image")
 
-            if (!response) {
-                setToastMessage("Fallo inesperado en la conexión");
-                setToastBg("danger")
-                setToastTitle("Error")
-                setShowToast(true);
-            }else{
+            if (!response)
+                noResponse()
+            else{
                 if (response.ok){
-                    const updatedImageList = imageList.filter((image) => image.id !== id);
-                    setImageList(updatedImageList);
-                    setShowModal(false);
+                    const updatedImageList = imageList.filter((image) => image.id !== id)
+                    setImageList(updatedImageList)
+                    messageFromAPI("Eliminación de imagen exitosa", "La imagen ha sido borrada correctamente.")
                 }else{
-                    const body = await response.json();
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                    setToastMessage(body.message)
-                    setShowToast(true)
+                    const body = await response.json()
+                    messageFromAPI("Error", body.message)
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
     const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setValidated(true);
+        e.preventDefault()
+        const form = e.currentTarget
+        setValidated(true)
         if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
+            e.stopPropagation()
+            return
         }
 
-        const categoryElement = document.getElementById('category_select');
-        const brandElement = document.getElementById('brand_select');
-        const imageIds = imageList.map(image => image.id);
+        const categoryElement = document.getElementById('category_select')
+        const brandElement = document.getElementById('brand_select')
+        const imageIds = imageList.map(image => image.id)
 
         let payload = {
             name: name,
@@ -203,71 +188,58 @@ const ProductsAddAdmin = () => {
         try {
             let response = await postController(payload, "create_product")
 
-            if (!response) {
-                setToastMessage("Fallo inesperado en la conexión");
-                setToastBg("danger")
-                setToastTitle("Error")
-                setShowToast(true);
-            }else{
-                const body = await response.json();
+            if (!response)
+                noResponse()
+            else{
+                const body = await response.json()
                 if (response.ok)
-                    setShowCreateModal(true)
-                else{
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                    setToastMessage(body.message)
-                    setShowToast(true);
-                }
+                    messageFromAPI("Producto creado exitosamente", body.message)
+                else
+                    messageFromAPI("Error", body.message)
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
-    const handleCloseCreateModal = () => {
-        setShowModal(false);
-        navigate("/admin/products")
-    };
-
     const categoriesOptions = categories.map((category, index) => (
         <option key={index} label={category.name} value={category.name}></option>
-    ));
+    ))
 
     const brandsOptions = brands.map((brand, index) => (
         <option key={index} label={brand.name} value={brand.name}></option>
-    ));
+    ))
+
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
 
     return (
         <div className="container-fluid vw-mw-100 position-relative" style={{marginTop: "30px"}}>
-            <div className="position-absolute top-0 start-50 translate-middle-x mt-1 z-1000">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg={toastBg}>
-                    <Toast.Header>
-                        <strong className="me-auto">{toastTitle}</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
-            <Modal show={showModal} onHide={()=>setShowModal(false)}>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirmar eliminación</Modal.Title>
+                    <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    ¿Estás seguro de que quieres eliminar esta imagen?
-                </Modal.Body>
+                <Modal.Body>{modalBody}</Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={()=>setShowModal(false)}>Cancelar</button>
-                    <button className="btn btn-danger" onClick={() =>handleConfirmDeleteImage()}>Eliminar</button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show={showCreateModal} onHide={()=>handleCloseCreateModal()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Creación de producto exitosa</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    El producto ha sido creado satisfactoriamente.
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={()=>handleCloseCreateModal()}>Ok</button>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style} onClick={handleConfirmDeleteImage()}>{modalBtn2Text}</button>
+                    )}
                 </Modal.Footer>
             </Modal>
             <div className="row">
@@ -416,7 +388,7 @@ const ProductsAddAdmin = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default ProductsAddAdmin;
+export default ProductsAddAdmin

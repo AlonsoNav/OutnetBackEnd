@@ -5,11 +5,16 @@
     <file url="file://$PROJECT_DIR$/SP_create_product.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_create_user.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_delete_image.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_delete_product.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_brands.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_categories.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_images.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_get_inventory.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_get_product_images.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_get_products.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_inventory_request.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_login.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/SP_update_product.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_update_user.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/SP_upload_image.sql" dialect="TSQL" />
   </component>

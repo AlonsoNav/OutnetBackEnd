@@ -1,43 +1,50 @@
 import './Style.css'
 import logo from '../assets/logo_white.svg'
-import {useState} from "react";
-import {useNavigate, Link} from 'react-router-dom';
-import {postController} from "../context/Actions.jsx";
-import Toast from 'react-bootstrap/Toast';
-import Form from 'react-bootstrap/Form';
+import Form from 'react-bootstrap/Form'
+import Modal from "react-bootstrap/Modal"
+import {useState} from "react"
+import {useNavigate, Link} from 'react-router-dom'
+import {postController} from "../context/Actions.jsx"
 
 const Login = () => {
-    const [email, setEmail]= useState('');
-    const [password, setPassword] = useState('');
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [validated, setValidated] = useState(false);
-    const navigate = useNavigate();
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    const [modalBtn2OnClick, setModalBtn2OnClick] = useState(() => () => {})
+    // Variables for data sets
+    const [email, setEmail]= useState('')
+    const [password, setPassword] = useState('')
+    const [validated, setValidated] = useState(false)
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setValidated(true);
+        e.preventDefault()
+        const form = e.currentTarget
+        setValidated(true)
         if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
+            e.stopPropagation()
+            return
         }
         let payload = {email, password}
 
         try {
             let response = await postController(payload, "login")
 
-            if (!response) {
-                setToastMessage("Fallo inesperado en la conexión");
-                setShowToast(true);
-            }else{
-                const body = await response.json();
-                if (!response.ok){
-                    setToastMessage(body.message)
-                    setShowToast(true);
-                }else{
-                    localStorage.setItem('userData', JSON.stringify(body));
-                    localStorage.setItem('isAdmin', body.is_admin);
+            if (!response) 
+                noResponse()
+            else{
+                const body = await response.json()
+                if (!response.ok)
+                    messageFromAPI("Error", body.message)
+                else{
+                    localStorage.setItem('userData', JSON.stringify(body))
+                    localStorage.setItem('isAdmin', body.is_admin)
                     if(body.is_admin)
                         navigate("/admin/products")
                     else
@@ -45,20 +52,42 @@ const Login = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
+    }
+
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
     }
 
     return (
         <div className="container">
-            <div className="position-fixed top-0 start-50 translate-middle-x mt-1">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg="danger">
-                    <Toast.Header>
-                        <strong className="me-auto">Error</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style} onClick={modalBtn2OnClick}>{modalBtn2Text}</button>
+                    )}
+                </Modal.Footer>
+            </Modal>
             <div className="row">
                 <div className="col-md-7 p-5 rounded-start-3 bg-F4F6F0">
                     <h1 className="display-6 my-4 text-lg-start">Inicia sesión</h1>
@@ -99,7 +128,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

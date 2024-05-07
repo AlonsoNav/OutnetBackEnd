@@ -1,76 +1,95 @@
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Table from "react-bootstrap/Table";
-import Slider from "react-slider";
+import Form from "react-bootstrap/Form"
+import InputGroup from "react-bootstrap/InputGroup"
+import Table from "react-bootstrap/Table"
+import Slider from "react-slider"
 import './Style.css'
-import {useState, useEffect} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
-import {getController} from "../context/Actions.jsx";
-import Toast from "react-bootstrap/Toast";
-import {useNavigate} from "react-router-dom";
+import {useState, useEffect} from "react"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch} from '@fortawesome/free-solid-svg-icons'
+import {getController} from "../context/Actions.jsx"
+import Toast from "react-bootstrap/Toast"
+import {useNavigate} from "react-router-dom"
 
 const Inventory = () => {
-    const [price, setPrice] = useState([0, 100000]);
-    const [categories, setCategories] = useState([]);
-    const [brands, setBrands] = useState([]);
+    const [price, setPrice] = useState([0, 100000])
+    const [categories, setCategories] = useState([])
+    const [brands, setBrands] = useState([])
     const [products, setProducts] = useState([])
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(1000);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate();
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(1000)
+    const [filteredProducts, setFilteredProducts] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedBrands, setSelectedBrands] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
+    const navigate = useNavigate()
 
     // Get products, categories and brands
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await getController("/get_categories");
+                const response = await getController("/get_categories")
 
                 if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
+                    setToastMessage("Fallo inesperado en la conexión")
+                    setShowToast(true)
                 }else {
-                    const body = await response.json();
+                    const body = await response.json()
                     if (!response.ok) {
                         setToastMessage(body.message)
-                        setShowToast(true);
+                        setShowToast(true)
                     } else {
-                        setCategories(body.list);
+                        setCategories(body.list)
                     }
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
+        }
         const fetchBrands = async () => {
             try {
-                const response = await getController("/get_brands");
+                const response = await getController("/get_brands")
 
                 if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
+                    setToastMessage("Fallo inesperado en la conexión")
+                    setShowToast(true)
                 }else {
-                    const body = await response.json();
+                    const body = await response.json()
                     if (!response.ok) {
                         setToastMessage(body.message)
-                        setShowToast(true);
+                        setShowToast(true)
                     } else {
-                        setBrands(body.list);
+                        setBrands(body.list)
                     }
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
-        setProducts([{name: "Computadora portátil", category: "Tecnología", amount: 10, price: 1000000, date: new Date().toLocaleDateString()}])
+        }
+        const fetchProducts = async () => {
+            try {
+                const response = await getController("/get_inventory")
+
+                if (!response) {
+                    setToastMessage("Fallo inesperado en la conexión")
+                    setShowToast(true)
+                }else {
+                    const body = await response.json()
+                    if (!response.ok){
+                        setToastMessage(body.message)
+                        setShowToast(true)
+                    } else
+                        setProducts(body.products)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
         fetchCategories()
         fetchBrands()
-    }, []);
+        fetchProducts()
+    }, [])
 
     // Get the min and max for the price range
     useEffect(() => {
@@ -78,12 +97,12 @@ const Inventory = () => {
             return {
                 maxOutletPrice: Math.max(product.outlet_price, acc.maxOutletPrice),
                 minOutletPrice: Math.min(product.outlet_price, acc.minOutletPrice)
-            };
-        }, { maxOutletPrice: -Infinity, minOutletPrice: Infinity });
+            }
+        }, { maxOutletPrice: -Infinity, minOutletPrice: Infinity })
         setMinPrice(parseInt(minOutletPrice))
         setMaxPrice(parseInt(maxOutletPrice))
         setPrice([minPrice, maxPrice])
-    }, [products]);
+    }, [products])
 
     // Set filters
     useEffect(() => {
@@ -92,50 +111,50 @@ const Inventory = () => {
                 && product.outlet_price <= price[1]
                 && filterProductsByCategory(product)
                 && filterProductsByBrand(product)
-                && filterProductsBySearchTerm(product);
-        });
+                && filterProductsBySearchTerm(product)
+        })
 
-        setFilteredProducts(filteredProducts);
-    }, [price, products, selectedCategories, selectedBrands, searchTerm]);
+        setFilteredProducts(filteredProducts)
+    }, [price, products, selectedCategories, selectedBrands, searchTerm])
 
     const filterProductsByCategory = (product) => {
         if (selectedCategories.length === 0)
-            return true;
+            return true
         else
-            return selectedCategories.includes(product.category);
-    };
+            return selectedCategories.includes(product.category)
+    }
 
     const filterProductsByBrand = (product) => {
         if (selectedBrands.length === 0)
-            return true;
+            return true
         else
-            return selectedBrands.includes(product.brand);
-    };
+            return selectedBrands.includes(product.brand)
+    }
 
     const filterProductsBySearchTerm = (product) => {
         if (searchTerm === "")
-            return true;
+            return true
         else {
-            const searchTermLowerCase = searchTerm.toLowerCase();
-            const productNameLowerCase = product.name.toLowerCase();
+            const searchTermLowerCase = searchTerm.toLowerCase()
+            const productNameLowerCase = product.name.toLowerCase()
 
-            return productNameLowerCase.includes(searchTermLowerCase);
+            return productNameLowerCase.includes(searchTermLowerCase)
         }
-    };
+    }
 
     const handleCategoryChange = (category) => {
         if (selectedCategories.includes(category))
-            setSelectedCategories(selectedCategories.filter(cat => cat !== category)); // If the category is already selected, delete it
+            setSelectedCategories(selectedCategories.filter(cat => cat !== category)) // If the category is already selected, delete it
         else
-            setSelectedCategories([...selectedCategories, category]);
-    };
+            setSelectedCategories([...selectedCategories, category])
+    }
 
     const handleBrandChange = (brand) => {
         if (selectedBrands.includes(brand))
-            setSelectedBrands(selectedBrands.filter(cat => cat !== brand)); // If the category is already selected, delete it
+            setSelectedBrands(selectedBrands.filter(cat => cat !== brand)) // If the category is already selected, delete it
         else
-            setSelectedBrands([...selectedBrands, brand]);
-    };
+            setSelectedBrands([...selectedBrands, brand])
+    }
 
     const categoriesCheckboxes = categories.map((category, index) => (
         <Form.Check key={`categoria_${index}`}
@@ -143,14 +162,14 @@ const Inventory = () => {
                     checked={selectedCategories.includes(category.name)}
                     onChange={() => handleCategoryChange(category.name)}
         />
-    ));
+    ))
 
     const brandsCheckboxes = brands.map((brand, index) => (
         <Form.Check key={`marca_${index}`}
                     label={brand.name}
                     checked={selectedBrands.includes(brand.name)}
                     onChange={() => handleBrandChange(brand.name)}/>
-    ));
+    ))
 
     return (
         <div className="container-fluid vw-mw-100 position-relative" style={{marginTop: "30px"}}>
@@ -230,7 +249,7 @@ const Inventory = () => {
                                                 <td>{product.name}</td>
                                                 <td>{product.category}</td>
                                                 <td>{product.amount}</td>
-                                                <td>₡{product.price}</td>
+                                                <td>₡{product.outlet_price}</td>
                                                 <td>{product.date}</td>
                                             </tr>
                                         ))}
@@ -243,7 +262,7 @@ const Inventory = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Inventory;
+export default Inventory

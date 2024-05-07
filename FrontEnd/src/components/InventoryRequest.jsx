@@ -1,70 +1,102 @@
 import './Style.css'
-import Form from "react-bootstrap/Form";
-import {useState} from "react";
-import Toast from "react-bootstrap/Toast";
-import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form"
+import {useEffect, useState} from "react"
+import Modal from "react-bootstrap/Modal"
+import {postController} from "../context/Actions.jsx"
 
 const InventoryRequest = () => {
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastBg, setToastBg] = useState('danger');
-    const [toastTitle, setToastTitle] = useState('Error');
-    const [price, setPrice] = useState('');
-    const [validated, setValidated] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [description, setDescription] = useState('');
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    const [price, setPrice] = useState('')
+    const [validated, setValidated] = useState(false)
+    const [description, setDescription] = useState('')
+    const [product, setProduct] = useState({})
+
+    useEffect(() => {
+        setProduct(JSON.parse(localStorage.getItem('product')))
+    }, [])
 
     const handleChangePrice = (newValue) => {
         if (!isNaN(newValue) && newValue.length <= 8)
-            setPrice(newValue);
-    };
+            setPrice(newValue)
+    }
 
     const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setValidated(true);
+        e.preventDefault()
+        const form = e.currentTarget
+        setValidated(true)
         if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
+            e.stopPropagation()
+            return
+        }
+
+        let amountInt = parseInt(price)
+
+        const selectElement = document.getElementById("request_select")
+        if (selectElement.value === "Solicitud de salida")
+            amountInt *= -1
+
+        if (parseInt(product.amount) + amountInt < 0)
+            messageFromAPI("Error", "La nueva cantidad del producto no puede ser negativa")
+        else{
+            let payload = {id: parseInt(product.id), amount: amountInt}
+
+            try {
+                let response = await postController(payload, "inventory_request")
+
+                if (!response)
+                    noResponse()
+                else{
+                    if (response.ok){
+                        messageFromAPI("Modificación de inventario exitosa", "El inventario ha sido actualizado correctamente")
+                    }else{
+                        const body = await response.json()
+                        messageFromAPI("Error", body.message)
+                    }
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
-    const handleCloseCreateModal = () => {
-        setShowModal(false);
-    };
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
 
     return (
         <div className="container-fluid vw-mw-100 position-relative" style={{marginTop: "30px"}}>
-            <div className="position-absolute top-0 start-50 translate-middle-x mt-1 z-1000">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg={toastBg}>
-                    <Toast.Header>
-                        <strong className="me-auto">{toastTitle}</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
-            <Modal show={showModal} onHide={()=>setShowModal(false)}>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirmar eliminación</Modal.Title>
+                    <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    ¿Estás seguro de que quieres eliminar esta imagen?
-                </Modal.Body>
+                <Modal.Body>{modalBody}</Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={()=>setShowModal(false)}>Cancelar</button>
-                    <button className="btn btn-danger" onClick={() =>handleConfirmDeleteImage()}>Eliminar</button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show={showCreateModal} onHide={()=>handleCloseCreateModal()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Creación de producto exitosa</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    El producto ha sido creado satisfactoriamente.
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={()=>handleCloseCreateModal()}>Ok</button>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style}>{modalBtn2Text}</button>
+                    )}
                 </Modal.Footer>
             </Modal>
             <div className="row">
@@ -74,10 +106,10 @@ const InventoryRequest = () => {
                         <Form.Group className="mb-3">
                             <Form.Label className="ms-1">Tipo de solicitud</Form.Label>
                             <Form.Select aria-label="Selecciona el tipo de solicitud de inventario"
-                                         id="brand_select">
+                                         id="request_select">
                                 <option key={1} label={"Solicitud de ingreso"}
                                         value={"Solicitud de ingreso"}></option>
-                                <option key={1} label={"Solicitud de salida"}
+                                <option key={2} label={"Solicitud de salida"}
                                         value={"Solicitud de salida"}></option>
                             </Form.Select>
                         </Form.Group>
@@ -85,9 +117,11 @@ const InventoryRequest = () => {
                             <Form.Control
                                 required
                                 type="text"
+                                value={price}
+                                onChange={(e) => handleChangePrice(e.target.value)}
                                 placeholder="Cantidad"
                             />
-                            <Form.Control.Feedback type={"invalid"}>Por favor escriba el nombre del producto.</Form.Control.Feedback>
+                            <Form.Control.Feedback type={"invalid"}>Por favor escriba la cantidad del producto.</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
                                 <textarea
@@ -106,7 +140,7 @@ const InventoryRequest = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default InventoryRequest;
+export default InventoryRequest

@@ -46,6 +46,11 @@ def get_products():
     return functions.get_products(engine)
 
 
+@app.route('/get_inventory', methods=['GET'])
+def get_inventory():
+    return functions.get_inventory(engine)
+
+
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     return functions.upload_image(engine)
@@ -56,6 +61,12 @@ def get_images():
     return functions.get_images(engine)
 
 
+
+@app.route('/get_product_images', methods=['POST'])
+def get_product_images():
+    return functions.get_product_images(engine)
+  
+  
 @app.route('/get_comments_product', methods=['GET'])
 def get_comments_product():
     return functions.get_comments_product(engine)
@@ -70,12 +81,26 @@ def get_product_image():
 def delete_image():
     return functions.delete_image(engine)
 
+@app.route('/delete_product', methods=['DELETE'])
+def delete_product():
+    return functions.delete_product(engine)
+
 
 @app.route('/create_product', methods=['POST'])
 def create_product():
     return functions.create_product(engine)
 
 
+@app.route('/update_product', methods=['POST'])
+def update_product():
+    return functions.update_product(engine)
+
+
+@app.route('/inventory_request', methods=['POST'])
+def inventory_request():
+    return functions.inventory_request(engine)
+
+  
 @app.route('/create_sale', methods=['POST'])
 def create_sale():
     return functions.create_sale(engine)
