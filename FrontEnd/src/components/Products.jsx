@@ -30,7 +30,15 @@ const Products = () => {
     const [imageDescription, setImageDescription] = useState("");
     const [imageValidated, setImageValidated] = useState(false);
     const [imageList, setImageList] = useState([]);
+    const [searchMP,setSearchMP] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedSearch = JSON.parse(localStorage.getItem('search'));
+        if (storedSearch) {
+            setSearchTerm(storedSearch)
+        }
+    }, []);
     
 
     useEffect(() => {
@@ -76,7 +84,7 @@ const Products = () => {
         };
         const fetchProducts = async () => {
             try {
-                const response = await getController("/get_products");
+                const response = await getController("/get_products_images");
 
                 if (!response) {
                     setToastMessage("Fallo inesperado en la conexión");
@@ -187,20 +195,6 @@ const Products = () => {
                     onChange={() => handleBrandChange(brand.name)}/>
     ));
 
-    const getProductImage = async (productName) => {
-        try {
-            const response = await getController(`/sp_get_image_product/${productName}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch product image');
-            }
-            const imageData = await response.blob(); // Obtener los datos binarios de la imagen
-            return URL.createObjectURL(imageData); // Crear una URL de objeto para mostrar la imagen
-        } catch (error) {
-            console.error(`Error fetching image for product ${productName}:`, error);
-            return null;
-        }
-    };
-
     return (
       <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"100px",marginRight:"300px" }}>
             <Row>
@@ -284,7 +278,10 @@ const Products = () => {
                             }}>
                             <Row style={{width:"720px"}}>
                                 <Col>
-                                    {product.image}
+                                <img
+                                    className="d-block w-50"
+                                    src={`data:image/png;base64,${product.image}`}          
+                                />
                                 </Col>
                                 <Col style={{width: "300px" }}>
                                     <Row>

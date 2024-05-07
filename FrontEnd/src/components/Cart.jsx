@@ -5,6 +5,7 @@ import {getController, postNoJSONController} from "../context/Actions.jsx";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import {useNavigate} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Eliminar from '../assets/x-symbol-svgrepo-com.svg'
 
@@ -27,13 +28,17 @@ const Cart = () => {
     const [producto, setProducto] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
-    
+    let subtotal = 0;
+    const navigate = useNavigate();
+
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart'));
         if (storedCart) {
             setCart(storedCart);
         }
     }, []);
+
+   
 
     const addToCart = (product) => {
         const updatedCart = [...cart, product];
@@ -85,16 +90,20 @@ const Cart = () => {
         }
     };
     const handleIncrement = (producto) => {
-        if (quantity < producto.amount) {
+        if (producto.quantity < producto.amount) {
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
     
-      const handleDecrement = () => {
-        if (quantity > 1) {
-          setQuantity(quantity - 1);
+      const handleDecrement = (producto) => {
+        if (producto.quantity > 1) {
+          setQuantity(producto.quantity - 1);
         }
       };
+
+      const handlePay = () => {
+        navigate("/payment")
+    };
 
       return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
@@ -103,6 +112,10 @@ const Cart = () => {
         <Row style={{ width: "1516px" }}>
                 <Col style={{ overflowY: "auto", overflowX: 'hidden', backgroundColor: "#F4F6F0", height: "491px", borderRadius: "10px", width: "976px" }}>
                 {/* Producto */}
+                {cart.forEach(product => {
+                        const productSubtotal = product.outlet_price * product.quantity;
+                        subtotal += productSubtotal;
+                })}
                  {cart.map((product, index) => (
                                 <div key={index} style={{ marginTop: "40px", margin: "40px", backgroundColor: "#FFFF", borderRadius: "10px", alignItems: "center", width: "881px", height: "195px" }}>
                                     <div className='text-start' style={{ width: "100px", height: "100px" }}>
@@ -110,11 +123,19 @@ const Cart = () => {
                                             <Col>
                                                 <div style={{ marginLeft: "20px" }}>
                                                     <Row style={{ width: "881px", height: "195px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                                        <Col>
-                                                            
+                                                                            <Col>
+                                                                            <img
+                                                                    className="d-block w-50"
+                                                                    src={`data:image/png;base64,${product.image}`}
+                                                                />
                                                         </Col>
-                                                        <Col>
-                                                            {product.name}
+                                                        <Col className="d-block w-50" style={{fontSize:"24px"}}>
+                                                            <div>
+                                                                {product.name}
+                                                            </div>
+                                                            <div>
+                                                                ₡{product.outlet_price}
+                                                            </div>
                                                         </Col>
                                                         <Col>
                                                             <div className="d-flex align-items-center">
@@ -122,7 +143,7 @@ const Cart = () => {
                                                                     -
                                                                 </button>
                                                                 <div style={{ borderWidth: '5px', borderColor: "#000000" }}>
-                                                                    <span className="mx-2">{quantity}</span>
+                                                                    <span className="mx-2">{product.quantity}</span>
                                                                 </div>
                                                                 <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={() => handleIncrement(product)}>
                                                                     +
@@ -157,7 +178,7 @@ const Cart = () => {
                             <Col>
                                 <div className="text-start" style={{fontSize:"32px"}}>
                                     <div style={{marginLeft:"20px"}}>
-                                    SubTotal:₡{10000.0000}
+                                    SubTotal:₡{subtotal}
                                     </div>
                                 </div>
                             </Col>
@@ -173,12 +194,12 @@ const Cart = () => {
                             </Row>
                             <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
                                 <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                    Total:₡{10000.0000}
+                                    Total:₡{subtotal}
                                 </div>
                             </div>
                          </div>   
                     </Col>
-                <Button className='poppins-regular' style={{ borderColor: "#F4F6F0", borderRadius: "14px", marginTop: "20px", marginLeft: "20px", width: "282px", height: "71px", backgroundColor: "#F4F6F0", color: "#485550", fontSize: "32px" }}>
+                <Button  onClick={handlePay} className='poppins-regular' style={{ borderColor: "#F4F6F0", borderRadius: "14px", marginTop: "20px", marginLeft: "20px", width: "282px", height: "71px", backgroundColor: "#F4F6F0", color: "#485550", fontSize: "32px" }}>
                     Pagar
                 </Button>
             </Col>
