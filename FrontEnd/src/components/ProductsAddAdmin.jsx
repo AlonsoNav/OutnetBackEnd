@@ -114,8 +114,8 @@ const ProductsAddAdmin = () => {
         formData.append('description', imageDescription)
 
         try {
-            const response = await postNoJSONController(formData, 'upload_image')
-            const body = await response.json()
+            const response = await postNoJSONController(formData, 'upload_image');
+            const body = await response.json();
             if (response.ok){
                 messageFromAPI("Subida de imagen exitosa", body.message)
                 setImageList([...imageList, { id: body.id, image: body.image, description: imageDescription }])

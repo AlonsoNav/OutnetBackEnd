@@ -5,7 +5,9 @@ import {getController, postNoJSONController} from "../context/Actions.jsx";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import {useNavigate} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import Eliminar from '../assets/x-symbol-svgrepo-com.svg'
 
 
 const Cart = () => {
@@ -26,9 +28,27 @@ const Cart = () => {
     const [producto, setProducto] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
+    let subtotal = 0;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem('cart'));
+        if (storedCart) {
+            setCart(storedCart);
+        }
+    }, []);
+
+   
 
     const addToCart = (product) => {
         const updatedCart = [...cart, product];
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      };
+
+    const removeFromCart = (index) => {
+        const updatedCart = [...cart];
+        updatedCart.splice(index, 1);
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
       };
@@ -70,60 +90,78 @@ const Cart = () => {
         }
     };
     const handleIncrement = (producto) => {
-        if (quantity < producto.amount) {
+        if (producto.quantity < producto.amount) {
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
     
-      const handleDecrement = () => {
-        if (quantity > 1) {
-          setQuantity(quantity - 1);
+      const handleDecrement = (producto) => {
+        if (producto.quantity > 1) {
+          setQuantity(producto.quantity - 1);
         }
       };
+
+      const handlePay = () => {
+        navigate("/payment")
+    };
 
       return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
         <Container style={{  marginTop:"50px",marginRight: "550px", marginLeft: "0", maxWidth: "100%"  }}>
         <Row style={{ width: "1516px" }}>
-            <Col style={{ overflowY: "auto",overflowX: 'hidden',marginRight: "150px",backgroundColor: "#F4F6F0", height: "491px", borderRadius: "10px", width: "976px" }}>
-                
+                <Col style={{ overflowY: "auto", overflowX: 'hidden', backgroundColor: "#F4F6F0", height: "491px", borderRadius: "10px", width: "976px" }}>
                 {/* Producto */}
-
-                <div style={{ marginTop: "40px", margin: "40px", backgroundColor: "#FFFF", borderRadius: "10px", alignItems: "center" }}>
-                    <div className='text-start' style={{ width: "100px", height: "100px" }}>
-                        <Row style={{ width: "881px" }}>
-                            <Col>
-                                <div style={{ margin: "20px" }}>
-                                    <Row>
-                                        <Col>
-                                            Imagen
-                                        </Col>
-                                        <Col>
-                                            Info
-                                        </Col>
-                                        <Col>
-                                            <Col> 
-                                                <div className="d-flex align-items-center">
-                                                <button className="btn btn-outline-secondary" style={{borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={handleDecrement}>
-                                                        -
-                                                    </button>
-                                                    <div style={{borderWidth:'5px',borderColor:"#000000"}}>
-                                                    <span className="mx-2" ></span>
-                                                    </div>
-                                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#000000",borderWidth:'1px',fontSize:"20px"}} onClick={() => handleIncrement(producto)}>
-                                                        +
-                                                    </button>
-                                                    </div>
+                {cart.forEach(product => {
+                        const productSubtotal = product.outlet_price * product.quantity;
+                        subtotal += productSubtotal;
+                })}
+                 {cart.map((product, index) => (
+                                <div key={index} style={{ marginTop: "40px", margin: "40px", backgroundColor: "#FFFF", borderRadius: "10px", alignItems: "center", width: "881px", height: "195px" }}>
+                                    <div className='text-start' style={{ width: "100px", height: "100px" }}>
+                                        <Row style={{ width: "881px", height: "195px" }}>
+                                            <Col>
+                                                <div style={{ marginLeft: "20px" }}>
+                                                    <Row style={{ width: "881px", height: "195px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                                            <Col>
+                                                                            <img
+                                                                    className="d-block w-50"
+                                                                    src={`data:image/png;base64,${product.image}`}
+                                                                />
+                                                        </Col>
+                                                        <Col className="d-block w-50" style={{fontSize:"24px"}}>
+                                                            <div>
+                                                                {product.name}
+                                                            </div>
+                                                            <div>
+                                                                ₡{product.outlet_price}
+                                                            </div>
+                                                        </Col>
+                                                        <Col>
+                                                            <div className="d-flex align-items-center">
+                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={handleDecrement}>
+                                                                    -
+                                                                </button>
+                                                                <div style={{ borderWidth: '5px', borderColor: "#000000" }}>
+                                                                    <span className="mx-2">{product.quantity}</span>
+                                                                </div>
+                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={() => handleIncrement(product)}>
+                                                                    +
+                                                                </button>
+                                                            </div>
+                                                        </Col>
+                                                        <Col className="text-end" style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'flex-end' }}>
+                                                            <button className="btn btn-outline-secondary" style={{ backgroundColor: "#485550", borderColor: "#000000", borderWidth: '1px', height: "195px", width: "70px" }} onClick={() => removeFromCart(index)}>
+                                                                <img src={Eliminar} alt="Eliminar de carrito" style={{ width: '35px', height: '35px', marginRight: '5px' }} />
+                                                            </button>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
                                             </Col>
-                                        </Col>
-                                    </Row>
+                                        </Row>
+                                    </div>
                                 </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-                
+                            ))}
             </Col>
 
             <Col md={4} style={{ marginLeft: "50px", backgroundColor: "#99BA57", height: "562px", borderRadius: "10px", maxWidth: "487px" }}>
@@ -140,7 +178,7 @@ const Cart = () => {
                             <Col>
                                 <div className="text-start" style={{fontSize:"32px"}}>
                                     <div style={{marginLeft:"20px"}}>
-                                    SubTotal:
+                                    SubTotal:₡{subtotal}
                                     </div>
                                 </div>
                             </Col>
@@ -156,12 +194,12 @@ const Cart = () => {
                             </Row>
                             <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
                                 <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                    Total:
+                                    Total:₡{subtotal}
                                 </div>
                             </div>
                          </div>   
                     </Col>
-                <Button className='poppins-regular' style={{ borderColor: "#F4F6F0", borderRadius: "14px", marginTop: "20px", marginLeft: "20px", width: "282px", height: "71px", backgroundColor: "#F4F6F0", color: "#485550", fontSize: "32px" }}>
+                <Button  onClick={handlePay} className='poppins-regular' style={{ borderColor: "#F4F6F0", borderRadius: "14px", marginTop: "20px", marginLeft: "20px", width: "282px", height: "71px", backgroundColor: "#F4F6F0", color: "#485550", fontSize: "32px" }}>
                     Pagar
                 </Button>
             </Col>

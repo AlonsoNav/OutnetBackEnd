@@ -30,7 +30,15 @@ const Products = () => {
     const [imageDescription, setImageDescription] = useState("");
     const [imageValidated, setImageValidated] = useState(false);
     const [imageList, setImageList] = useState([]);
+    const [searchMP,setSearchMP] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedSearch = JSON.parse(localStorage.getItem('search'));
+        if (storedSearch) {
+            setSearchTerm(storedSearch)
+        }
+    }, []);
     
 
     useEffect(() => {
@@ -76,7 +84,7 @@ const Products = () => {
         };
         const fetchProducts = async () => {
             try {
-                const response = await getController("/get_products");
+                const response = await getController("/get_products_images");
 
                 if (!response) {
                     setToastMessage("Fallo inesperado en la conexión");
@@ -98,6 +106,8 @@ const Products = () => {
         fetchBrands()
         fetchProducts()
     }, []);
+
+    
 
     // Get the min and max for the price range
     useEffect(() => {
@@ -186,7 +196,7 @@ const Products = () => {
     ));
 
     return (
-      <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"100px" }}>
+      <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"100px",marginRight:"300px" }}>
             <Row>
                 <Col md={4} className='text-start' style={{ backgroundColor: "#F4F6F0", width: "497px", minHeight: "auto", paddingLeft: "0",marginRight:"50px" }}>
                 <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
@@ -215,15 +225,15 @@ const Products = () => {
                         </Form>
                     </div>
                 </Col>
-            <Col style={{width: "calc(100% - 497px)" }}>
+            <Col style={{width: "1095px" }}>
                 <Row>
                 <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}>Productos</Col>
                 </Row>
                 <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{'x'} resultados</Col>
+                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{filteredProducts.length} resultados</Col>
                 </Row>
                 <Row>
-                <Col>
+                <Col style={{width: "730px" }}>
                     <InputGroup style={{ backgroundColor: "#F4F6F0", width: "100%", borderRadius: "20px" }}>
                     <Button style={{ backgroundColor: "#F4F6F0", borderColor: "#F4F6F0" }}>
                         <FaSearch style={{ color: "#99BA57" }} />
@@ -268,19 +278,22 @@ const Products = () => {
                             }}>
                             <Row style={{width:"720px"}}>
                                 <Col>
-                                    Imagen
+                                <img
+                                    className="d-block w-50"
+                                    src={`data:image/png;base64,${product.image}`}          
+                                />
                                 </Col>
-                                <Col>
+                                <Col style={{width: "300px" }}>
                                     <Row>
                                         <Col>
-                                            <div>
+                                            <div className='text-start' style={{fontSize:"26px"}}>
                                                 {product.name}
                                             </div>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <div style={{marginTop:"40px"}}>
+                                            <div className='text-start' style={{marginTop:"30px",fontSize:"32px"}}>
                                                 ₡{product.outlet_price}
                                             </div>
                                         </Col>
@@ -307,6 +320,7 @@ const Products = () => {
                                 </Col>
                             </Row>
                         </div>
+                        
                                         ))}
                 </Col>
                 </Row>

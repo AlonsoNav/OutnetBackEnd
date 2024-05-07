@@ -87,7 +87,7 @@ def get_products(engine):
         conn.commit()
         conn.close()
 
-        products_list = [{'id': row.product_id, 'name': row.name, 'description': row.description, 'outlet_price': row.outlet_price,
+        products_list = [{'id': row.product_id,'name': row.name, 'description': row.description, 'outlet_price': row.outlet_price,
                           'price': row.price, 'discount': row.discount, 'amount': row.amount, 'brand': row.brand,
                           'category': row.category} for row in result]
         return jsonify({'products': products_list}), 200
@@ -110,6 +110,21 @@ def get_inventory(engine):
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
+def get_comments_product(engine):
+   
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC SP_get_comments_product")).fetchall()
+        conn.commit()
+        conn.close()
+
+        products_list = [{'description': row.description,'star_rating': row.star_rate,
+                          'userName': row.name, 'email': row.email,'id':row.product_id} for row in result]
+        return jsonify({'comments': products_list}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+    
 
 def upload_image(engine):
     image = request.files['image'].read()
@@ -157,6 +172,21 @@ def get_product_images(engine):
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+      
+def get_products_images(engine):
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC SP_get_products_images")).fetchall()
+        conn.commit()
+        conn.close()
+        products_list = [{'image': base64.b64encode(row.image).decode('utf-8'), 'id': row.product_id, 'name': row.name,
+                        'description': row.description, 'outlet_price': row.outlet_price,
+                        'price': row.price, 'discount': row.discount, 'amount': row.amount, 'brand': row.brand,
+                        'category': row.category} for row in result]
+        return jsonify({'products': products_list}), 200
+    except Exception as e:
+            print(str(e))
+            return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
 
 def delete_image(engine):
@@ -231,6 +261,28 @@ def update_product(engine):
         conn.close()
 
         return jsonify({'message': 'Producto modificado correctamente.'}), 200
+
+def create_sale(engine):
+    email = request.json["email"]
+    subtotal = request.json["subtotal"]
+    total = request.json["subtotal"]
+    shipping_cost = request.json["shipping_cost"]
+    carts = json.dumps(request.json["carts"])
+
+    print(email,subtotal,subtotal,shipping_cost,carts)
+    try:
+        conn = engine.connect()
+        result = conn.execute(text("EXEC SP_create_sale @subtotal = :subtotal, @email = :email,"
+                                   "@shipping_cost = :shipping_cost, @total = :total,"
+                                   " @carts = :carts"),
+                              {'subtotal': subtotal,'email': email, 'shipping_cost': shipping_cost, 'total': total,
+                                'carts': carts})
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Venta agregada correctamente.'}), 200
+
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
@@ -247,6 +299,25 @@ def inventory_request(engine):
         conn.close()
 
         return jsonify({'message': 'Producto modificado correctamente.'}), 200
+
+      
+def create_comment(engine):
+    email = request.json["email"]
+    comment = request.json["comment"]
+    rating = request.json["rating"]
+    Pid  = request.json["id"]
+
+    print(email,rating,comment)
+    try:
+        conn = engine.connect()
+        result = conn.execute(text("EXEC SP_create_comment @comment = :comment, @email = :email,"
+                                   "@rating = :rating, @Pid = :Pid"),
+                              {'comment': comment,'email': email, 'rating': rating, 'Pid': Pid})
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Comentario agregado correctamente.'}), 200
     except Exception as e:
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
