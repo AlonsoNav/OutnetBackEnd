@@ -1,96 +1,99 @@
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Table from "react-bootstrap/Table";
-import Slider from "react-slider";
 import './Style.css'
-import {useState, useEffect} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAdd, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {getController} from "../context/Actions.jsx";
-import Toast from "react-bootstrap/Toast";
-import {useNavigate} from "react-router-dom";
+import Form from "react-bootstrap/Form"
+import InputGroup from "react-bootstrap/InputGroup"
+import Table from "react-bootstrap/Table"
+import Modal from "react-bootstrap/Modal"
+import Slider from "react-slider"
+import {useState, useEffect} from "react"
+import {useNavigate} from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch, faAdd, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
+import {deleteController, getController} from "../context/Actions.jsx"
 
 const ProductsAdmin = () => {
-    const [price, setPrice] = useState([0, 100000]);
-    const [categories, setCategories] = useState([]);
-    const [brands, setBrands] = useState([]);
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    // Variables for filters
+    const [filteredProducts, setFilteredProducts] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedBrands, setSelectedBrands] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
+    const [price, setPrice] = useState([0, 100000])
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(1000)
+    const [id, setId] = useState(null)
+    // Variables for data sets
+    const [categories, setCategories] = useState([])
+    const [brands, setBrands] = useState([])
     const [products, setProducts] = useState([])
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(1000);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     // Get products, categories and brands
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await getController("/get_categories");
+                const response = await getController("/get_categories")
 
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
-                    if (!response.ok) {
-                        setToastMessage(body.message)
-                        setShowToast(true);
-                    } else {
-                        setCategories(body.list);
-                    }
+                if (!response)
+                    noResponse()
+                else {
+                    const body = await response.json()
+                    if (!response.ok)
+                        messageFromAPI("Error", body.message)
+                    else
+                        setCategories(body.list)
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
+        }
         const fetchBrands = async () => {
             try {
-                const response = await getController("/get_brands");
+                const response = await getController("/get_brands")
 
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
-                    if (!response.ok) {
-                        setToastMessage(body.message)
-                        setShowToast(true);
-                    } else {
-                        setBrands(body.list);
+                if (!response) 
+                    noResponse()
+                else {
+                    const body = await response.json()
+                    if (!response.ok)
+                        messageFromAPI("Error", body.message)
+                    else
+                        setBrands(body.list)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        const fetchProducts = async () => {
+            try {
+                const response = await getController("/get_products")
+
+                if (!response) 
+                    noResponse()
+                else {
+                    const body = await response.json()
+                    if (!response.ok) 
+                        messageFromAPI("Error", body.message)
+                    else{
+                        setProducts(body.products)
+                        setFilteredProducts(body.products)
                     }
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
-        };
-        const fetchProducts = async () => {
-            try {
-                const response = await getController("/get_products");
-
-                if (!response) {
-                    setToastMessage("Fallo inesperado en la conexión");
-                    setShowToast(true);
-                }else {
-                    const body = await response.json();
-                    if (!response.ok) {
-                        setToastMessage(body.message)
-                        setShowToast(true);
-                    } else
-                        setProducts(body.products);
-                        setFilteredProducts(body.products);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
+        }
         fetchCategories()
         fetchBrands()
         fetchProducts()
-    }, []);
+    }, [])
 
     // Get the min and max for the price range
     useEffect(() => {
@@ -98,12 +101,12 @@ const ProductsAdmin = () => {
             return {
                 maxOutletPrice: Math.max(product.outlet_price, acc.maxOutletPrice),
                 minOutletPrice: Math.min(product.outlet_price, acc.minOutletPrice)
-            };
-        }, { maxOutletPrice: -Infinity, minOutletPrice: Infinity });
+            }
+        }, { maxOutletPrice: -Infinity, minOutletPrice: Infinity })
         setMinPrice(parseInt(minOutletPrice))
         setMaxPrice(parseInt(maxOutletPrice))
         setPrice([minPrice, maxPrice])
-    }, [products]);
+    }, [products])
 
     // Set filters
     useEffect(() => {
@@ -112,50 +115,111 @@ const ProductsAdmin = () => {
                 && product.outlet_price <= price[1]
                 && filterProductsByCategory(product)
                 && filterProductsByBrand(product)
-                && filterProductsBySearchTerm(product);
-        });
+                && filterProductsBySearchTerm(product)
+        })
 
-        setFilteredProducts(filteredProducts);
-    }, [price, products, selectedCategories, selectedBrands, searchTerm]);
+        setFilteredProducts(filteredProducts)
+    }, [price, products, selectedCategories, selectedBrands, searchTerm])
+
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
 
     const filterProductsByCategory = (product) => {
         if (selectedCategories.length === 0)
-            return true;
+            return true
         else
-            return selectedCategories.includes(product.category);
-    };
+            return selectedCategories.includes(product.category)
+    }
 
     const filterProductsByBrand = (product) => {
         if (selectedBrands.length === 0)
-            return true;
+            return true
         else
-            return selectedBrands.includes(product.brand);
-    };
+            return selectedBrands.includes(product.brand)
+    }
 
     const filterProductsBySearchTerm = (product) => {
         if (searchTerm === "")
-            return true;
+            return true
         else {
-            const searchTermLowerCase = searchTerm.toLowerCase();
-            const productNameLowerCase = product.name.toLowerCase();
+            const searchTermLowerCase = searchTerm.toLowerCase()
+            const productNameLowerCase = product.name.toLowerCase()
 
-            return productNameLowerCase.includes(searchTermLowerCase);
+            return productNameLowerCase.includes(searchTermLowerCase)
         }
-    };
+    }
 
     const handleCategoryChange = (category) => {
         if (selectedCategories.includes(category))
-            setSelectedCategories(selectedCategories.filter(cat => cat !== category)); // If the category is already selected, delete it
+            setSelectedCategories(selectedCategories.filter(cat => cat !== category)) // If the category is already selected, delete it
         else
-            setSelectedCategories([...selectedCategories, category]);
-    };
+            setSelectedCategories([...selectedCategories, category])
+    }
 
     const handleBrandChange = (brand) => {
         if (selectedBrands.includes(brand))
-            setSelectedBrands(selectedBrands.filter(cat => cat !== brand)); // If the category is already selected, delete it
+            setSelectedBrands(selectedBrands.filter(cat => cat !== brand)) // If the category is already selected, delete it
         else
-            setSelectedBrands([...selectedBrands, brand]);
-    };
+            setSelectedBrands([...selectedBrands, brand])
+    }
+
+    const handleDelete = (id) => {
+        setId(id)
+        setModalTitle("Confirmar eliminación de producto")
+        setModalBody("¿Realmente quieres borrar este producto?")
+        setModalBtn1Text("Cancelar")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Text("Borrar producto")
+        setModalBtn2Style("btn btn-danger")
+        setModalBtn2Show(true)
+        setShowModal(true)
+    }
+
+    const handleEdit = (product) => {
+        localStorage.setItem("product", JSON.stringify(product))
+        navigate("/admin/products/edit")
+    }
+
+    const handleConfirmDelete = async () =>{
+        let payload = {id}
+
+        try {
+            let response = await deleteController(payload, "delete_product")
+
+            if (!response)
+                noResponse()
+            else{
+                const body = await response.json()
+                if (response.ok){
+                    const updatedProducts = products.filter((product) => product.id !== id)
+                    setProducts(updatedProducts)
+                    const updatedFilteredProducts = filteredProducts.filter(
+                        (product) => updatedProducts.some((updatedProduct) => updatedProduct.id === product.id)
+                    )
+                    setFilteredProducts(updatedFilteredProducts)
+                    messageFromAPI("Eliminación de producto exitosa", body.message)
+                }else
+                    messageFromAPI("Error", body.message)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const categoriesCheckboxes = categories.map((category, index) => (
         <Form.Check key={`categoria_${index}`}
@@ -163,25 +227,29 @@ const ProductsAdmin = () => {
                     checked={selectedCategories.includes(category.name)}
                     onChange={() => handleCategoryChange(category.name)}
         />
-    ));
+    ))
 
     const brandsCheckboxes = brands.map((brand, index) => (
         <Form.Check key={`marca_${index}`}
                     label={brand.name}
                     checked={selectedBrands.includes(brand.name)}
                     onChange={() => handleBrandChange(brand.name)}/>
-    ));
+    ))
 
     return (
         <div className="container-fluid vw-mw-100 position-relative" style={{marginTop: "30px"}}>
-            <div className="position-absolute top-0 start-50 translate-middle-x mt-1 z-1000">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg="danger">
-                    <Toast.Header>
-                        <strong className="me-auto">Error</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style} onClick={() =>handleConfirmDelete()}>{modalBtn2Text}</button>
+                    )}
+                </Modal.Footer>
+            </Modal>
             <div className="row">
                 <div className="col-md-3 p-1">
                     <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
@@ -258,10 +326,10 @@ const ProductsAdmin = () => {
                                                 <td>{product.amount}</td>
                                                 <td>₡{product.outlet_price}</td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-primary me-1">
+                                                    <button className="btn btn-sm btn-primary me-1" onClick={() => handleEdit(product)}>
                                                         <FontAwesomeIcon icon={faEdit}/>
                                                     </button>
-                                                    <button className="btn btn-sm btn-danger">
+                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(product.id)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </button>
                                                 </td>
@@ -277,7 +345,7 @@ const ProductsAdmin = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ProductsAdmin;
+export default ProductsAdmin

@@ -1,78 +1,101 @@
 import './Style.css'
-import logo from "../assets/logo_white.svg";
-import {useState} from "react";
-import {Link} from 'react-router-dom';
-import {postController} from "../context/Actions.jsx";
-import Toast from "react-bootstrap/Toast";
-import Form from 'react-bootstrap/Form';
+import logo from "../assets/logo_white.svg"
+import Form from 'react-bootstrap/Form'
+import Modal from "react-bootstrap/Modal"
+import {useState} from "react"
+import {Link} from 'react-router-dom'
+import {postController} from "../context/Actions.jsx"
 
 const Register = () => {
-    const [email, setEmail]= useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName]= useState('');
-    const [phone, setPhone] = useState('');
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastBg, setToastBg] = useState('danger');
-    const [toastTitle, setToastTitle] = useState('Error');
-    const [validated, setValidated] = useState(false);
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    const [modalBtn2OnClick, setModalBtn2OnClick] = useState(() => () => {})
+    // Variables for data sets
+    const [email, setEmail]= useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName]= useState('')
+    const [phone, setPhone] = useState('')
+    const [validated, setValidated] = useState(false)
 
     const handleChangePhone = (newValue) => {
         if (!isNaN(newValue) && newValue.length <= 8)
-            setPhone(newValue);
-    };
+            setPhone(newValue)
+    }
 
     const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setValidated(true);
+        e.preventDefault()
+        const form = e.currentTarget
+        setValidated(true)
         if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
+            e.stopPropagation()
+            return
         }
         let payload = {name, email, password, phone}
 
         try {
             let response = await postController(payload, "register")
 
-            if (!response) {
-                setToastMessage("Fallo inesperado en la conexión");
-                setShowToast(true);
-            }else{
-                if (response.ok){
-                    setToastBg("success")
-                    setToastTitle("Registro exitoso")
-                }else{
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                }
-                const body = await response.json();
-                setToastMessage(body.message)
-                setShowToast(true);
+            if (!response) 
+                noResponse()
+            else{
+                const body = await response.json()
+                if (response.ok)
+                    messageFromAPI("Registro exitoso", body.message)
+                else
+                    messageFromAPI("Error", body.message)
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
     function isPhoneValid(phone) {
-        return phone.length >= 8;
+        return phone.length >= 8
     }
 
     function isPasswordValid(password) {
-        return password.length >= 8;
+        return password.length >= 8
     }
 
     return (
         <div className="container">
-            <div className="position-fixed top-0 start-50 translate-middle-x mt-1">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg={toastBg}>
-                    <Toast.Header>
-                        <strong className="me-auto">{toastTitle}</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style} onClick={modalBtn2OnClick}>{modalBtn2Text}</button>
+                    )}
+                </Modal.Footer>
+            </Modal>
             <div className="row">
                 <div className="col-md-5 py-5 rounded-start-3 bg-99BA57">
                     <h1 className="display-5 fg-white my-4">¡Hola de nuevo!</h1>
@@ -138,7 +161,7 @@ const Register = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Register;
+export default Register

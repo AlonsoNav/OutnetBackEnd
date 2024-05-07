@@ -1,98 +1,132 @@
-import profile from "../assets/profile.svg";
+import profile from "../assets/profile.svg"
 import pencil from "../assets/pencil.svg"
-import {useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
-import {useNavigate} from "react-router-dom";
-import {postController} from "../context/Actions.jsx";
-import Toast from "react-bootstrap/Toast";
+import Form from "react-bootstrap/Form"
+import Modal from "react-bootstrap/Modal"
+import {useEffect, useState} from "react"
+import {useNavigate} from "react-router-dom"
+import {postController} from "../context/Actions.jsx"
+
 
 const Profile = () => {
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    // Variables for data sets
     const [userEditData, setUserEditData] = useState({})
-    const [userData, setUserData] = useState({});
-    const [validated, setValidated] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastBg, setToastBg] = useState('danger');
-    const [toastTitle, setToastTitle] = useState('Error');
-    const navigate = useNavigate();
+    const [userData, setUserData] = useState({})
+    const [validated, setValidated] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const storedUserData = JSON.parse(localStorage.getItem('userData'));
+        const storedUserData = JSON.parse(localStorage.getItem('userData'))
         if (storedUserData) {
-            setUserData(storedUserData);
-            setUserEditData(storedUserData);
+            setUserData(storedUserData)
+            setUserEditData(storedUserData)
         }
-    }, []);
+    }, [])
 
 
     const handleChangePhone = (newValue) => {
         if (!isNaN(newValue) && newValue.length <= 8)
-            setUserEditData({...userEditData, phone: newValue});
-    };
+            setUserEditData({...userEditData, phone: newValue})
+    }
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        setValidated(true);
-        if (form.checkValidity() === false) {
-            e.stopPropagation();
-            return;
-        }
-
+    const handleConfirmSubmit = async () => {
         let payload = {email: userData.email, name: userEditData.name, new_email: userEditData.email,
-            phone: userEditData.phone, address: userEditData.address, postal_code: userEditData.postal_code};
+            phone: userEditData.phone, address: userEditData.address, postal_code: userEditData.postal_code}
 
         try {
             let response = await postController(payload, "update_user")
 
-            if (!response) {
-                setToastMessage("Fallo inesperado en la conexión");
-                setShowToast(true);
-            }else{
+            if (!response)
+                noResponse()
+            else{
+                const body = await response.json()
                 if (response.ok){
-                    setToastBg("success")
-                    setToastTitle("Modificación exitoso")
+                    messageFromAPI("Información guardada correctamente", body.message)
                     setUserData(userEditData)
-                    localStorage.setItem('userData', JSON.stringify(userEditData));
-                }else{
-                    setToastBg("danger")
-                    setToastTitle("Error")
-                }
-                const body = await response.json();
-                setToastMessage(body.message)
-                setShowToast(true);
+                    localStorage.setItem('userData', JSON.stringify(userEditData))
+                }else
+                    messageFromAPI("Error", body.message)
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault()
+        const form = e.currentTarget
+        setValidated(true)
+        if (form.checkValidity() === false) {
+            e.stopPropagation()
+            return
+        }
+
+        setModalTitle("Confirmar modificación de información")
+        setModalBody("¿Quieres guardar estos cambios?")
+        setModalBtn1Text("Cancelar")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Text("Guardar cambios")
+        setModalBtn2Style("btn btn-primary")
+        setModalBtn2Show(true)
+        setShowModal(true)
+    }
+
     const handleEditClick = () => {
-        setIsEditing(!isEditing);
-    };
+        setIsEditing(!isEditing)
+    }
 
     const handleLogOut = () => {
-        localStorage.removeItem('userData');
+        localStorage.removeItem('userData')
         navigate("/login")
-    };
+    }
 
     function isPhoneValid(phone) {
         if(phone != null)
-            return phone.length >= 8;
+            return phone.length >= 8
         return true
     }
 
     return(
         <div className="container" style={{marginTop: "30px"}}>
-            <div className="position-fixed top-0 start-50 translate-middle-x mt-1">
-                <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide bg={toastBg}>
-                    <Toast.Header>
-                        <strong className="me-auto">{toastTitle}</strong>
-                    </Toast.Header>
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
-            </div>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                    {modalBtn2Show && (
+                        <button className={modalBtn2Style} onClick={() => handleConfirmSubmit}>{modalBtn2Text}</button>
+                    )}
+                </Modal.Footer>
+            </Modal>
             <div className="row">
                 <div className="col-md-5 px-2 py-1">
                     <div className="bg-F4F6F0 py-5">
@@ -189,7 +223,7 @@ const Profile = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Profile;
+export default Profile
