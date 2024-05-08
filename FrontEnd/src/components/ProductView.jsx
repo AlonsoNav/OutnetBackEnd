@@ -31,18 +31,48 @@ const ProductView = () => {
     const [quantity, setQuantity] = useState(1);
     const [rating, setRating] = useState(0);
     const [pId, setPid] = useState(0);
-    const [comments, setComments] = useState('');
+     // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
+
+    
     const [userData, setUserData] = useState({});
     const [address,setAddress] = useState('')
     const [email,setEmail] = useState('')
     const [commentsP,setCommentsP] = useState([])
+    const [comments, setComments] = useState('');
+    
 
     const [cart, setCart] = useState(() => {
         const storedCart = localStorage.getItem('cart');
         return storedCart ? JSON.parse(storedCart) : [];
+        
     });
     const navigate = useNavigate();
 
+    const noResponse = () =>{
+        setModalTitle("Error")
+        setModalBody("Fallo inesperado en el servidor.")
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+    
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
     
     useEffect(() => {
         const fetchComments = async () => {
@@ -59,6 +89,7 @@ const ProductView = () => {
                         setShowToast(true);
                     } else
                         setCommentsP(body.comments);
+                        console.log(commentsP)
                         
                 }
             } catch (error) {
@@ -96,7 +127,7 @@ const ProductView = () => {
         const storedProduct = localStorage.getItem('producto');
         if (storedProduct) {
             setProducto(JSON.parse(storedProduct));
-            setPid(producto.id)
+            setPid(producto.Pid)
             }
     }, []);
 
@@ -124,18 +155,20 @@ const ProductView = () => {
 
         if (comments.trim() === '') {
             // Mostrar un mensaje de error o realizar alguna acción
-            console.log('El campo de comentarios está vacío');
+            messageFromAPI("Comentario vacío", "El comentario no puede estar vacío.")
+            setShowModal(true);
+            
             return; // Salir de la función si el campo está vacío
         }
     
         // Recopilar los valores de los campos
 
         let payload = {
+            id: producto.id,
             email: email,
             comment: comments,
-            rating: rating,
-            id: pId
-        }
+            rating: rating
+        };
 
         try {
             let response = await postController(payload, "create_comment")
@@ -146,9 +179,12 @@ const ProductView = () => {
                 setToastTitle("Error")
                 setShowToast(true);
             }else{
+                messageFromAPI("Creación de comentario exitosa", "El comentario ha sido creado correctamente.")
+                setShowModal(true);
                 const body = await response.json();
-                if (response.ok)
+                if (response.ok){
                     setShowCreateModal(true)
+                }
                 else{
                     setToastBg("danger")
                     setToastTitle("Error")
@@ -194,6 +230,15 @@ const ProductView = () => {
 
   return (
     <div style={{minWidth:"1500px", marginTop:"100px"}}>
+        <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
+                </Modal.Footer>
+        </Modal>
         <Row style={{backgroundColor:"#F4F6F0", minHeight:"729px", borderRadius:"10px"}}>
             <Col>
                 <div>
@@ -201,9 +246,9 @@ const ProductView = () => {
                             <div className="row bg-F4F6F0 py-3 px-2" tabIndex="0" onKeyDown={handleKeyDown}>
                                 <div className="col-auto carousel-image-button-scroll">
                                 <img
-                                                className="d-block w-100"
-                                                src={`data:image/png;base64,${producto.image}`} 
-                                            />
+                                    className="d-block w-100"
+                                    src={`data:image/png;base64,${producto.image}`} 
+                                />
                                 </div>
                                 <div className="col flex-grow-1">
                                     <Carousel activeIndex={selectedIndex} onSelect={handleSelect}>
@@ -320,12 +365,15 @@ const ProductView = () => {
                                         <textarea
                                             className="form-control"
                                             rows={3}
+                                            required
                                             placeholder="Comenta aquí"
                                             value={comments}
+                                            style={{height:"150px"}}
                                             onChange={(e) => {setComments(e.target.value)}}
                                             maxLength={140}
                                             />
                                     </Form.Group>
+                                    
                                 </Col>
                             </Row>
                             
@@ -336,9 +384,8 @@ const ProductView = () => {
             </Col>
         </Row>
         
-        {/*Mapeo  */}
-        {commentsP.filter(comment => comment.id === 5).map((comment, index) => (
-    
+        {commentsP.filter(comment => comment.id === producto.id).map((comment, index) => (
+            
             <Row key={index}>
                 <Col className='text-start' style={{marginTop:"20px"}}>
                     <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>

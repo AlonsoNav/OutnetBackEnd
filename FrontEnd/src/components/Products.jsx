@@ -9,7 +9,7 @@ import Slider from "react-slider";
 import { Form, InputGroup, FormControl, Button,DropdownButton, Dropdown } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart,faSearch } from '@fortawesome/free-solid-svg-icons';
 import Heart from "../assets/heart-svgrepo-com.svg"
 import {useNavigate} from "react-router-dom";
 
@@ -196,7 +196,7 @@ const Products = () => {
     ));
 
     return (
-      <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"100px",marginRight:"300px" }}>
+      <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"50px",marginRight:"400px" }}>
             <Row>
                 <Col md={4} className='text-start' style={{ backgroundColor: "#F4F6F0", width: "497px", minHeight: "auto", paddingLeft: "0",marginRight:"50px" }}>
                 <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
@@ -230,42 +230,31 @@ const Products = () => {
                 <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}>Productos</Col>
                 </Row>
                 <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{filteredProducts.length} resultados</Col>
+                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{filteredProducts.filter(product => product.amount > 0).length} resultados</Col>
                 </Row>
                 <Row>
                 <Col style={{width: "730px" }}>
-                    <InputGroup style={{ backgroundColor: "#F4F6F0", width: "100%", borderRadius: "20px" }}>
-                    <Button style={{ backgroundColor: "#F4F6F0", borderColor: "#F4F6F0" }}>
-                        <FaSearch style={{ color: "#99BA57" }} />
-                    </Button>
-                    <FormControl
-                        style={{ backgroundColor: "#F4F6F0", borderColor: "#F4F6F0" }}
-                        placeholder="Busca un producto..."
-                        aria-label="Busca un producto..."
-                        aria-describedby="basic-addon2"
-                    />
-                    </InputGroup>
+                <Form>
+                                <InputGroup>
+                                    <InputGroup.Text className="bg-F4F6F0">
+                                        <FontAwesomeIcon icon={faSearch} className="custom-icon-color"/>
+                                    </InputGroup.Text>
+                                    <Form.Control
+                                        className="bg-F4F6F0"
+                                        placeholder="Buscar por nombre..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        maxLength="30"
+                                    />
+                                </InputGroup>
+                            </Form>
                 </Col>
                 </Row>
-                <Row>
-                <Col className='poppins-regular text-start' style={{ color: "FFFFF", marginTop: "20px" }}>
-                    <DropdownButton
-                    className='poppins-regular text-start'
-                    id="sort-dropdown"
-                    title="Ordenar alfabéticamente"
-                    variant='#99BA57'
-                    style={{ backgroundColor: "#99BA57", width: "239px", borderRadius: "10px" }}
-                    >
-                    <Dropdown.Item style={{ backgroundColor: "#99BA57" }} eventKey="1">Opción 1</Dropdown.Item>
-                    <Dropdown.Item style={{ backgroundColor: "#99BA57" }} eventKey="2">Opción 2</Dropdown.Item>
-                    <Dropdown.Item style={{ backgroundColor: "#99BA57" }} eventKey="3">Opción 3</Dropdown.Item>
-                    </DropdownButton>
-                </Col>
-                </Row>
+                
                 {/*Productos */}
                 <Row>
                 <Col>
-                {filteredProducts.map((product, index) => (
+                {filteredProducts.filter(product => product.amount > 0).map((product, index) => (
                             <div key={index} style={{ 
                             borderRadius:"10px",
                             backgroundColor:"#F4F6F0",

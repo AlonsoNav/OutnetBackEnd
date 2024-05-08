@@ -16,6 +16,7 @@ import ProductView from "./components/ProductView.jsx";
 import ProductsEditAdmin from "./components/ProductsEditAdmin.jsx";
 import Inventory from "./components/Inventory.jsx";
 import InventoryRequest from "./components/InventoryRequest.jsx";
+import commentHistory from './components/commentHistory.jsx';
 
 function App() {
     const renderWithAdminHeader = (Component) => (
@@ -42,6 +43,7 @@ function App() {
             <Route path="/view" element={renderWithHeader(ProductView)}/>
             <Route path="/" element={renderWithHeader(MainPage)}/>
             <Route path="/Cart" element={renderWithHeader(Cart)}/>
+            <Route path="/Rating-history" element={renderWithHeader(commentHistory)}/>
             <Route path="/profile" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "false") ? renderWithHeader(Profile): <Navigate to="/login" />} />
             <Route path="/admin/products" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAdmin): <Navigate to="/login" />} />
             <Route path="/admin/products/add" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAddAdmin): <Navigate to="/login" />} />

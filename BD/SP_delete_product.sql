@@ -6,6 +6,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     DELETE FROM PicXProduct WHERE product_id = @id;
+    DELETE FROM Comment WHERE product_id = @id;
     DELETE FROM Pic WHERE pic_id NOT IN (SELECT pic_id FROM PicXProduct);
     DELETE FROM Product WHERE product_id = @id;
 END;

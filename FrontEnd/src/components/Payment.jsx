@@ -37,6 +37,15 @@ const Payment = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [cvc, setCVC] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+     // Variables for the modal
+     const [showModal, setShowModal] = useState(false)
+     const [modalBody, setModalBody] = useState('')
+     const [modalTitle, setModalTitle] = useState('')
+     const [modalBtn1Style, setModalBtn1Style] = useState('')
+     const [modalBtn2Style, setModalBtn2Style] = useState('')
+     const [modalBtn1Text, setModalBtn1Text] = useState('')
+     const [modalBtn2Text, setModalBtn2Text] = useState('')
+     const [modalBtn2Show, setModalBtn2Show] = useState(false)
 
     // Función de validación
     const handleChangeName= (newValue) => {
@@ -86,6 +95,21 @@ const Payment = () => {
         }
     }, []);
 
+    const messageFromAPI = (title, message) =>{
+        setModalTitle(title)
+        setModalBody(message)
+        setModalBtn1Text("OK")
+        setModalBtn1Style("btn btn-secondary")
+        setModalBtn2Show(false)
+        setShowModal(true)
+    }
+
+    const clearCart = () => {
+        localStorage.removeItem('cart');
+        setCart([]);
+    };
+
+
     const handleSubmit = async (e) =>{
         e.preventDefault();
         const form = e.currentTarget;
@@ -115,8 +139,11 @@ const Payment = () => {
                 setShowToast(true);
             }else{
                 const body = await response.json();
-                if (response.ok)
-                    setShowCreateModal(true)
+                if (response.ok){
+                    messageFromAPI('Compra exitosa', 'Compra realizada con exito')
+                    
+                    
+                }
                 else{
                     setToastBg("danger")
                     setToastTitle("Error")
@@ -129,10 +156,19 @@ const Payment = () => {
         }
     }
 
-  
-
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalBody}</Modal.Body>
+                <Modal.Footer>
+                    <button className={modalBtn1Style} onClick={()=>{setShowModal(false),clearCart(),
+                    navigate('/products')}}>{modalBtn1Text}</button>
+                    
+                </Modal.Footer>
+            </Modal>
     <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
         <Container style={{ marginTop:"50px",marginRight: "550px", marginLeft: "0", maxWidth: "100%" }}>
             <Row style={{ width:"1516px"}} >
@@ -154,16 +190,29 @@ const Payment = () => {
                         padding: "20px",
                     }}
                     >
-                    <div className="text-start" style={{ marginBottom: "20px" }}>
-                        <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de envío</h4>
-                        <div
-                        style={{
-                            width:"881px",height:"1px",backgroundColor:"#485550"
-                        }}
-                        />
-                        <input type="text" style={{backgroundColor:"#FFFFFF",border: "none",fontSize:"24px",marginTop:"5px",width:"881px", height:"97px", borderRadius:"10px"}} disabled value={address} />
-                    </div>
+                    
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <div className="text-start" style={{ marginBottom: "20px" }}>
+                            <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de envío</h4>
+                            <div
+                            style={{
+                                width:"881px",height:"1px",backgroundColor:"#485550"
+                            }}
+                            />
+                           <Form.Group className="mb-3">
+                                
+                                <Form.Control
+                                    required
+                                    disabled
+                                    readOnly
+                                    value={address}
+                                    placeholder="Dirección"
+                                    type="text"
+                                    
+                                />
+                                <Form.Control.Feedback type={"invalid"}>Por favor, dirijase a perfil e ingrese una dirección.</Form.Control.Feedback>
+                            </Form.Group>
+                        </div>
                         <div className="text-start" style={{ marginBottom: "20px",marginTop:"20px"}}>
                             <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de pago</h4>
                             <div
@@ -194,7 +243,6 @@ const Payment = () => {
                                     <Form.Control
                                         required
                                         type="text"
-                                        
                                         onChange={(e) => handleChangeCard(e.target.value)}
                                         placeholder="1234567890123456"
                                         maxLength={16}

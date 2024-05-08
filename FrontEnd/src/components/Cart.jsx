@@ -89,15 +89,15 @@ const Cart = () => {
             setSelectedIndex(selectedIndex + 1);
         }
     };
-    const handleIncrement = (producto) => {
-        if (producto.quantity < producto.amount) {
+    const handleIncrement = (product) => {
+        if (product.quantity < product.amount) {
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
     
-      const handleDecrement = (producto) => {
-        if (producto.quantity > 1) {
-          setQuantity(producto.quantity - 1);
+      const handleDecrement = (product) => {
+        if (product.quantity > 1) {
+          setQuantity(product.quantity - 1);
         }
       };
 

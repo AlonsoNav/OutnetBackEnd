@@ -52,6 +52,8 @@ def update_user(engine):
     phone = request.json["phone"]
     postal_code = request.json["postal_code"]
 
+    print(postal_code)
+
     try:
         conn = engine.connect()
         result = conn.execute(text(f"EXEC SP_update_user @email = '{email}', @name = '{name}',"
@@ -110,6 +112,7 @@ def get_inventory(engine):
         print(str(e))
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
+
 def get_comments_product(engine):
    
     try:
@@ -119,7 +122,11 @@ def get_comments_product(engine):
         conn.close()
 
         products_list = [{'description': row.description,'star_rating': row.star_rate,
-                          'userName': row.name, 'email': row.email,'id':row.product_id} for row in result]
+                          'userName': row.name, 'email': row.email,'id':row.product_id,'cId':row.comment_id,
+                          'pName':row.pName,'image':base64.b64encode(row.image).decode('utf-8')} for row in result]
+
+        print(result)
+
         return jsonify({'comments': products_list}), 200
     except Exception as e:
         print(str(e))
@@ -203,6 +210,21 @@ def delete_image(engine):
         return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
 
+def delete_comment(engine):
+    id = request.json["id"]
+    try:
+        conn = engine.connect()
+        print(id)
+        result = conn.execute(text("EXEC SP_delete_comment @id = :id"), {'id': id})
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Comentario eliminado exitosamente'}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
+
+
 def delete_product(engine):
     id = request.json["id"]
     try:
@@ -261,6 +283,9 @@ def update_product(engine):
         conn.close()
 
         return jsonify({'message': 'Producto modificado correctamente.'}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
 def create_sale(engine):
     email = request.json["email"]
@@ -269,7 +294,6 @@ def create_sale(engine):
     shipping_cost = request.json["shipping_cost"]
     carts = json.dumps(request.json["carts"])
 
-    print(email,subtotal,subtotal,shipping_cost,carts)
     try:
         conn = engine.connect()
         result = conn.execute(text("EXEC SP_create_sale @subtotal = :subtotal, @email = :email,"
@@ -277,7 +301,6 @@ def create_sale(engine):
                                    " @carts = :carts"),
                               {'subtotal': subtotal,'email': email, 'shipping_cost': shipping_cost, 'total': total,
                                 'carts': carts})
-
         conn.commit()
         conn.close()
 
@@ -299,20 +322,22 @@ def inventory_request(engine):
         conn.close()
 
         return jsonify({'message': 'Producto modificado correctamente.'}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
       
 def create_comment(engine):
     email = request.json["email"]
     comment = request.json["comment"]
     rating = request.json["rating"]
-    Pid  = request.json["id"]
+    id = request.json["id"]
 
-    print(email,rating,comment)
     try:
         conn = engine.connect()
         result = conn.execute(text("EXEC SP_create_comment @comment = :comment, @email = :email,"
                                    "@rating = :rating, @Pid = :Pid"),
-                              {'comment': comment,'email': email, 'rating': rating, 'Pid': Pid})
+                              {'comment': comment, 'email': email, 'rating': rating, 'Pid': id})
 
         conn.commit()
         conn.close()
