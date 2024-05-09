@@ -44,12 +44,12 @@ function App() {
             <Route path="/" element={renderWithHeader(MainPage)}/>
             <Route path="/Cart" element={renderWithHeader(Cart)}/>
             <Route path="/Rating-history" element={renderWithHeader(commentHistory)}/>
-            <Route path="/profile" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "false") ? renderWithHeader(Profile): <Navigate to="/login" />} />
-            <Route path="/admin/products" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAdmin): <Navigate to="/login" />} />
-            <Route path="/admin/products/add" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsAddAdmin): <Navigate to="/login" />} />
-            <Route path="/admin/products/edit" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(ProductsEditAdmin): <Navigate to="/login" />} />
-            <Route path="/admin/inventory" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(Inventory): <Navigate to="/login" />} />
-            <Route path="/admin/inventory/request" element={(localStorage.getItem('userData') && localStorage.getItem('isAdmin') === "true") ? renderWithAdminHeader(InventoryRequest): <Navigate to="/login" />} />
+            <Route path="/profile" element={renderWithHeader(Profile)} />
+            <Route path="/admin/products" element={renderWithAdminHeader(ProductsAdmin)} />
+            <Route path="/admin/products/add" element={renderWithAdminHeader(ProductsAddAdmin)}/>
+            <Route path="/admin/products/edit" element={renderWithAdminHeader(ProductsEditAdmin)} />
+            <Route path="/admin/inventory" element={renderWithAdminHeader(Inventory)} />
+            <Route path="/admin/inventory/request" element={renderWithAdminHeader(InventoryRequest)} />
         </Routes>
     </BrowserRouter>
     )
