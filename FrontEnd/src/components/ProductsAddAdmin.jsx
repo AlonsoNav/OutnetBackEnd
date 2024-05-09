@@ -238,7 +238,7 @@ const ProductsAddAdmin = () => {
                 <Modal.Footer>
                     <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
                     {modalBtn2Show && (
-                        <button className={modalBtn2Style} onClick={handleConfirmDeleteImage()}>{modalBtn2Text}</button>
+                        <button className={modalBtn2Style} onClick={()=>handleConfirmDeleteImage()}>{modalBtn2Text}</button>
                     )}
                 </Modal.Footer>
             </Modal>
