@@ -32,22 +32,24 @@ BEGIN
     WITH (id BIGINT '$',
         quantity BIGINT '$');
 
-    INSERT INTO Cart (user_id, subtotal, shipping_cost, total, billed, billing_date, state, branch_id)
-    VALUES (@userId, @subtotal_cast, @shipping_cast, @total_cast, 1, GETDATE(), 1, NULL)
+    select * from @productTable
 
-    SET @cartId = SCOPE_IDENTITY();
+    --INSERT INTO Cart (user_id, subtotal, shipping_cost, total, billed, billing_date, state, branch_id)
+    --VALUES (@userId, @subtotal_cast, @shipping_cast, @total_cast, 1, GETDATE(), 1, NULL)
 
-    INSERT INTO ProductXCart(cart_id, product_id,quantity,subtotal)
-    SELECT @cartId, id,quantity,@subtotal FROM @productTable;
+    --SET @cartId = SCOPE_IDENTITY();
 
-	UPDATE Product
-    SET amount = amount - P.quantity
-   FROM Product
-    INNER JOIN @productTable AS P ON Product.product_id = P.id;
+    --INSERT INTO ProductXCart(cart_id, product_id,quantity,subtotal)
+    --SELECT @cartId, id,quantity,@subtotal FROM @productTable;
 
-    SET @message = N'Venta creada exitosamente.'
-    SET @code = 200;
-    SELECT @code AS code, @message AS message;
+	--UPDATE Product
+    --SET amount = amount - P.quantity
+    --FROM Product
+    --INNER JOIN @productTable AS P ON Product.product_id = P.id;
+
+    --SET @message = N'Venta creada exitosamente.'
+    --SET @code = 200;
+    --SELECT @code AS code, @message AS message;
 END;
 
 select * from Outnet.dbo.Cart
