@@ -182,6 +182,81 @@ const Payment = () => {
                             }}
                         >
                             <div
+<<<<<<< HEAD
+=======
+                            style={{
+                                width:"881px",height:"1px",backgroundColor:"#485550"
+                            }}
+                            />
+                            <div>
+                            <label style={{color:"#485550",fontSize:"24px"}}>Nombre en la tarjeta</label><br></br>
+                                <Form.Group className="mb-3">
+                                
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                        placeholder="Nombre y apellidos"
+                                        aria-label="nombre en la tarjeta"
+                                        onChange={(e) => handleChangeName(e.target.value)}
+                                        maxLength={30}
+                                        
+                                    />
+                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un nombre válido].</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            <div>
+                            <label style={{color:"#485550",fontSize:"24px"}}>Número de tarjeta</label><br></br>
+                            <Form.Group className="mb-3">
+                                    
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                        onChange={(e) => handleChangeCard(e.target.value)}
+                                        
+                                        aria-label="numero de tarjeta"
+                                        maxLength={16}
+                                        
+                                    />
+                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un número de tarjeta válido.</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            <div style={{ display: "flex" }}>
+                            <div style={{ marginRight: "10px" }}>
+                                <label style={{color:"#485550",fontSize:"24px"}}>Fecha de vencimiento</label><br></br>
+                                <Form.Group className="mb-3">
+                                
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                        
+                                        aria-label="fecha de vencimiento"
+                                        onChange={(e) => handleChangeExpDate(e.target.value)}
+                                        maxLength={5}
+                                        
+                                    />
+                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba una fecha de vencimiento válida.</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            <div  style={{ marginLeft: "270px" }}>
+                                <label style={{ color: "#485550", fontSize: "24px" }}>CVC</label><br />
+                                <Form.Group className="mb-4">
+                                    <Form.Control
+                                        required
+                                        type="text"
+                                       
+                                        aria-label="cvc"
+                                        maxLength={3}
+                                        onChange={(e) => handleChangeCVC(e.target.value)}
+                                    />
+                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un CVC válido.</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            </div>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                            <button
+                                type='submit'
+>>>>>>> 9ca5c36 (textos alternativos)
                                 style={{
                                     marginTop: "40px",
                                     margin: "40px",
@@ -189,6 +264,11 @@ const Payment = () => {
                                     alignItems: "center",
                                     padding: "20px",
                                 }}
+<<<<<<< HEAD
+=======
+                                aria-label="PAGAR"
+                                
+>>>>>>> 9ca5c36 (textos alternativos)
                             >
 
                                 <Form noValidate validated={validated} onSubmit={handleSubmit}>

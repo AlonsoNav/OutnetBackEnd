@@ -225,6 +225,7 @@ const Products = () => {
                         </Form>
                     </div>
                 </Col>
+<<<<<<< HEAD
                 <Col style={{width: "1095px" }}>
                     <Row>
                         <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}><h2>Productos</h2></Col>
@@ -235,6 +236,18 @@ const Products = () => {
                     <Row>
                         <Col style={{width: "730px" }}>
                             <Form>
+=======
+            <Col style={{width: "1095px" }}>
+                <Row>
+                <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}><h2>Productos</h2></Col>
+                </Row>
+                <Row>
+                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}><label>{filteredProducts.filter(product => product.amount > 0).length} resultados</label></Col>
+                </Row>
+                <Row>
+                <Col style={{width: "730px" }}>
+                <Form>
+>>>>>>> 9ca5c36 (textos alternativos)
                                 <InputGroup>
                                     <InputGroup.Text className="bg-F4F6F0">
                                         <FontAwesomeIcon icon={faSearch} className="custom-icon-color"/>
@@ -314,8 +327,78 @@ const Products = () => {
                         </Col>
                     </Row>
                 </Col>
+<<<<<<< HEAD
             </Row>
         </Container>
+=======
+                </Row>
+                
+                {/*Productos */}
+                <Row>
+                <Col>
+                {filteredProducts.filter(product => product.amount > 0).map((product, index) => (
+                            <div key={index} style={{ 
+                            borderRadius:"10px",
+                            backgroundColor:"#F4F6F0",
+                            marginTop:"15px",
+                            width:"100%",
+                            height:"173px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                            }}>
+                            <Row style={{width:"720px"}}>
+                                <Col>
+                                <img
+                                    className="d-block w-50"
+                                    src={`data:image/png;base64,${product.image}`}          
+                                />
+                                </Col>
+                                <Col style={{width: "300px" }}>
+                                    <Row>
+                                        <Col>
+                                            <div className='text-start' style={{fontSize:"26px"}}>
+                                            <label aria-label={product.name}>{product.name}</label>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <div className='text-start' style={{marginTop:"30px",fontSize:"32px"}}>
+                                                <label aria-label={product.outlet_price}>₡{product.outlet_price}</label>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <div className="text-end" >
+                                            <Button variant="light" aria-label="agregar a favoritos" style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                                <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
+                                                {' '}
+                                            </Button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col onClick={() => handleClick(product,index)}>
+                                            <div style={{marginTop:"40px"}}>
+                                                <button  className="add-to-cart-btn" style={{backgroundColor:"#99BA57"}}>Agregar al carrito</button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </div>
+                        
+                                        ))}
+                </Col>
+                </Row>
+            </Col>
+        </Row>
+      </Container>
+>>>>>>> 9ca5c36 (textos alternativos)
     )
 }
 

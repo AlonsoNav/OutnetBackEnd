@@ -60,6 +60,7 @@ const MainPage = () => {
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </Col>
         </Row>
         <Row style={{ marginTop: "35px" }}>
@@ -69,6 +70,24 @@ const MainPage = () => {
                 <img src={Correo} alt="Descripción de la imagen" style={{ marginRight: '50px' }} />gethelp@outnet.cr<br />
                 <img src={Numero} alt="Descripción de la imagen" style={{ marginRight: '50px' }} />(506) 2574-6217
               </h2>
+=======
+            <div className="col-md-6">
+            <div className='Texto ms-auto' style={{ marginTop: '200px', textAlign: 'center' }}>
+              <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }} htmlFor="nombre">¿Qué necesitas hoy?</p></h1>
+              <div className="d-flex justify-content-center align-items-center">
+              <InputGroup style={{ maxWidth: "550px" }}>
+                  <Button style={{ backgroundColor: "#ffffff", borderColor: "#ffffff" }} aria-label="Buscar productos" onClick={handleClick}>
+                      <FaSearch style={{ color: "#99BA57" }} />
+                  </Button>
+                  <FormControl 
+                      placeholder="Busca un producto..." aria-label="Busca un producto..." 
+                      aria-describedby="basic-addon2" 
+                      value={search}
+                      onChange={handleChange}
+                  />
+              </InputGroup>
+              </div>
+>>>>>>> 9ca5c36 (textos alternativos)
             </div>
           </Col>
           <Col>
