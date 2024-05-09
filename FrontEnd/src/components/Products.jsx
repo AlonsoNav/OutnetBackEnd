@@ -227,10 +227,10 @@ const Products = () => {
                 </Col>
             <Col style={{width: "1095px" }}>
                 <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}>Productos</Col>
+                <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}><h2>Productos</h2></Col>
                 </Row>
                 <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{filteredProducts.filter(product => product.amount > 0).length} resultados</Col>
+                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}><label>{filteredProducts.filter(product => product.amount > 0).length} resultados</label></Col>
                 </Row>
                 <Row>
                 <Col style={{width: "730px" }}>
@@ -276,14 +276,14 @@ const Products = () => {
                                     <Row>
                                         <Col>
                                             <div className='text-start' style={{fontSize:"26px"}}>
-                                                {product.name}
+                                            <label aria-label={product.name}>{product.name}</label>
                                             </div>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
                                             <div className='text-start' style={{marginTop:"30px",fontSize:"32px"}}>
-                                                ₡{product.outlet_price}
+                                                <label aria-label={product.outlet_price}>₡{product.outlet_price}</label>
                                             </div>
                                         </Col>
                                     </Row>
@@ -292,7 +292,7 @@ const Products = () => {
                                     <Row>
                                         <Col>
                                             <div className="text-end" >
-                                            <Button variant="light" style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                            <Button variant="light" aria-label="agregar a favoritos" style={{ backgroundColor: 'transparent', border: 'none' }}>
                                                 <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
                                                 {' '}
                                             </Button>

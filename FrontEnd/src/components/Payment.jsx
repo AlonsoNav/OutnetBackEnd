@@ -228,7 +228,7 @@ const Payment = () => {
                                         required
                                         type="text"
                                         placeholder="Nombre y apellidos"
-                                     
+                                        aria-label="nombre en la tarjeta"
                                         onChange={(e) => handleChangeName(e.target.value)}
                                         maxLength={30}
                                         
@@ -244,7 +244,8 @@ const Payment = () => {
                                         required
                                         type="text"
                                         onChange={(e) => handleChangeCard(e.target.value)}
-                                        placeholder="1234567890123456"
+                                        
+                                        aria-label="numero de tarjeta"
                                         maxLength={16}
                                         
                                     />
@@ -259,8 +260,8 @@ const Payment = () => {
                                     <Form.Control
                                         required
                                         type="text"
-                                        placeholder="MM/AA"
-                                      
+                                        
+                                        aria-label="fecha de vencimiento"
                                         onChange={(e) => handleChangeExpDate(e.target.value)}
                                         maxLength={5}
                                         
@@ -274,7 +275,8 @@ const Payment = () => {
                                     <Form.Control
                                         required
                                         type="text"
-                                        placeholder="123"
+                                       
+                                        aria-label="cvc"
                                         maxLength={3}
                                         onChange={(e) => handleChangeCVC(e.target.value)}
                                     />
@@ -300,6 +302,7 @@ const Payment = () => {
                                     alignItems: "center",
                                     justifyContent: "center"
                                 }}
+                                aria-label="PAGAR"
                                 
                             >
                                 Pagar

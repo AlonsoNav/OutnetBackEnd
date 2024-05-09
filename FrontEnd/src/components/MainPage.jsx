@@ -42,10 +42,10 @@ const MainPage = () => {
             </div>
             <div className="col-md-6">
             <div className='Texto ms-auto' style={{ marginTop: '200px', textAlign: 'center' }}>
-              <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }}>¿Qué necesitas hoy?</p></h1>
+              <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }} htmlFor="nombre">¿Qué necesitas hoy?</p></h1>
               <div className="d-flex justify-content-center align-items-center">
               <InputGroup style={{ maxWidth: "550px" }}>
-                  <Button style={{ backgroundColor: "#ffffff", borderColor: "#ffffff" }} onClick={handleClick}>
+                  <Button style={{ backgroundColor: "#ffffff", borderColor: "#ffffff" }} aria-label="Buscar productos" onClick={handleClick}>
                       <FaSearch style={{ color: "#99BA57" }} />
                   </Button>
                   <FormControl 

@@ -139,13 +139,13 @@ const Cart = () => {
                                                         </Col>
                                                         <Col>
                                                             <div className="d-flex align-items-center">
-                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={handleDecrement}>
+                                                                <button aria-label="decrementar del carrito" className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={handleDecrement}>
                                                                     -
                                                                 </button>
                                                                 <div style={{ borderWidth: '5px', borderColor: "#000000" }}>
                                                                     <span className="mx-2">{product.quantity}</span>
                                                                 </div>
-                                                                <button className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={() => handleIncrement(product)}>
+                                                                <button aria-label="incrementar al carrito" className="btn btn-outline-secondary" style={{ borderColor: "#000000", borderWidth: '1px', fontSize: "20px" }} onClick={() => handleIncrement(product)}>
                                                                     +
                                                                 </button>
                                                             </div>

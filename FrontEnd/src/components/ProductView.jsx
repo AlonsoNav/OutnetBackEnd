@@ -270,26 +270,26 @@ const ProductView = () => {
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{color:"#485550",fontSize:"40px"}}>
-                    {producto.name}
+                    <label>{producto.name}</label>
                     </div>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{color:"#485550",fontSize:"32px"}}>
-                    Descripción</div>
+                    <label> Descripción</label></div>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{color:"#485550",fontSize:"24px"}}>
-                    {producto.description}</div>
+                    <label>{producto.description}</label></div>
                     </Col>
                 </Row >
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{fontSize:"40px"}}>
-                    ₡{producto.outlet_price}</div>
+                    <label>₡{producto.outlet_price}</label></div>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"40px"}}>
@@ -298,14 +298,14 @@ const ProductView = () => {
                         <Row style={{marginTop:"25px",width:"640px"}}>
                             <Col> 
                             <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px",width:"150px"}}>
-                                    <button className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrement}>
+                                    <button aria-label="decrementar del carrito" className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrement}>
                                         -
                                     </button>
                                     <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
                                     <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{quantity}</span>
                                     </div>
                                     <FontAwesomeIcon icon={faShoppingCart}  style={{ color:"white" }}/>
-                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrement(producto)}>
+                                    <button aria-label="incrementar al carrito"  className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrement(producto)}>
                                         +
                                     </button>
                                   
@@ -341,14 +341,14 @@ const ProductView = () => {
                             <Row>
                                 <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
                                 <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px"}}>
-                                    <button className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrementRating}>
+                                    <button aria-label="decrementar calificación"  className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrementRating}>
                                         -
                                     </button>
                                     <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
                                     <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{rating}</span>
                                     </div>
                                     <FontAwesomeIcon icon={faStar}  style={{ color:"white" }}/>
-                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrementRating()}>
+                                    <button aria-label="incrementar calificación" className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrementRating()}>
                                         +
                                     </button>
                                 </div>
@@ -398,14 +398,14 @@ const ProductView = () => {
                                     </div>
                                 </Col>
                             </Row>
-                                <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>{comment.userName}</Col></Row>
+                                <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}} aria-label={comment.userName}><Col>{comment.userName}</Col></Row>
                         </Col>
                             <Col>
                                 <Row>
                                     <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
                                     <div className="d-flex align-items-center justify-content-center text-center" style={{backgroundColor:"#99BA57", borderRadius:"10px", width:"250px"}}>
                                         <div style={{borderWidth:'5px', borderColor:"#99BA57"}}>
-                                            <span className="mx-2 text-center" style={{fontSize:"30px", color:"white"}} >{comment.star_rating}</span>
+                                            <span className="mx-2 text-center" style={{fontSize:"30px", color:"white"}} aria-label={comment.star_rating}>{comment.star_rating}</span>
                                         </div>
                                         <FontAwesomeIcon icon={faStar}  style={{color:"white"}} />
                                     </div> 
@@ -419,6 +419,7 @@ const ProductView = () => {
                                                 rows={3}
                                                 placeholder="Comenta aquí"
                                                 disabled
+                                                aria-label={comment.star_rating}
                                                 value={comment.description}
                                                 maxLength={140}
                                                 />
