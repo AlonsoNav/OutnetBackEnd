@@ -27,19 +27,19 @@ const Header = () => {
 }, []);
 
   return (
-    <Navbar expand="lg" className="bg-custom-color text-white fixed-top" id="Nav">
-     
-        <Navbar.Brand className='text-white poppins-regular' style={{ fontSize: '64px',marginLeft:"20px" }} href="/">Outnet</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link href="/" style={{fontSize:'26px',color:'white'}} className='poppins-regular'>Pedidos <br></br> y Deseos</Nav.Link>
-            <Nav.Link href="/" style={{fontSize:'24px',color:'white'}}><img src={Subasta} alt="Subastas"/></Nav.Link>
-            <Nav.Link href="/Cart" style={{fontSize:'24px',color:'white'}}> <i className="fa badge fa-lg" value={5}> <img src={Carro} alt="Carro" /></i> </Nav.Link>
-            <Nav.Link href="/profile" style={{fontSize:'24px',color:'white'}}><i className="bi bi-person poppins-regular">  <img src={User} alt="Usuario" /> {name}</i></Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
- 
+    <Navbar expand="lg" className="bg-99BA57 position-fixed top-0 start-0 w-100 fixed-top" id="Nav">
+        <Container fluid>
+            <Navbar.Brand className='custom-nav-brand'>Outnet</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="ms-auto text-lg-end text-start">
+                    <Nav.Link href="#PYD" className='custom-nav-link'>Pedidos y Deseos</Nav.Link>
+                    <Nav.Link href="#Subasta" className='custom-nav-link'><FontAwesomeIcon icon={faHandHoldingUsd} className="me-1 fa-lg"/>Subastas</Nav.Link>
+                    <Nav.Link href="#Carro" className='custom-nav-link'> <span className="fa badge me-0 p-0" value={5}><FontAwesomeIcon icon={faCartShopping} className="fa-lg"/></span>Carrito</Nav.Link>
+                    <Nav.Link href="#Usuario" className='custom-nav-link'><FontAwesomeIcon icon={faUser} className="me-1 fa-lg" />Alonso</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Container>
     </Navbar>
   )
 }

@@ -123,7 +123,7 @@ const Profile = () => {
                 <Modal.Footer>
                     <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
                     {modalBtn2Show && (
-                        <button className={modalBtn2Style} onClick={() => handleConfirmSubmit}>{modalBtn2Text}</button>
+                        <button className={modalBtn2Style} onClick={() => handleConfirmSubmit()}>{modalBtn2Text}</button>
                     )}
                 </Modal.Footer>
             </Modal>
