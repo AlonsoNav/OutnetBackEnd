@@ -134,7 +134,8 @@ const handleConfirmDeleteComment = async () =>{
 
 
   return (
-    <Row style={{width:"1820px",minHeight:'680px'}}>
+    <Row className='min-vw-100 mt-5'>
+        <h1 className='text-start'>Pedidos y deseos</h1>
         <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{modalTitle}</Modal.Title>
@@ -147,7 +148,7 @@ const handleConfirmDeleteComment = async () =>{
                     )}
                 </Modal.Footer>
         </Modal>
-      <Col>
+      <Col className='mt-3'>
         <Tab.Container activeKey={activeTab} onSelect={handleTabChange} className="text-start">
         <Nav variant="pills" className="flex-column text-center">
             <Nav.Item>
@@ -181,33 +182,33 @@ const handleConfirmDeleteComment = async () =>{
         </Nav>
         <Tab.Content>
             <Tab.Pane eventKey="history">
-            <div style={{marginTop:"20px", backgroundColor: "#F4F6F0", height: "276px", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
+            <div className='min-vh-100' style={{marginTop:"20px", backgroundColor: "#F4F6F0", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
                         No hay historial.</div>
             </Tab.Pane>
             <Tab.Pane eventKey="wishlist">
-            <div style={{marginTop:"20px", backgroundColor: "#F4F6F0", height: "276px", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
+            <div className='min-vh-100' style={{marginTop:"20px", backgroundColor: "#F4F6F0", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
                         No hay lista de deseos.</div>
             </Tab.Pane>
             <Tab.Pane eventKey="rated">
           
-                <Row><Col><h1 className='text-start'>Valoraciones</h1></Col></Row>
+                <Row><Col><h2 className='text-start'>Valoraciones</h2></Col></Row>
                 <Row><Col></Col><div className='text-start'>{commentsP.filter(comment => comment.email === userData.email).length} valoraciones</div></Row>
                 <Row>
-                    <Col>
+                    <Col className='d-flex text-start align-items-center'>
                         <div>
                             {commentsP.filter(comment => comment.email === userData.email).length === 0 ? (
-                                <div style={{marginTop:"20px", backgroundColor: "#F4F6F0", height: "276px", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
+                                <div style={{marginTop:"20px", backgroundColor: "#F4F6F0",borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "24px" }}>
                                     No hay comentarios.</div>
                             ) : (
                                 commentsP.filter(comment => comment.email === userData.email).map((comment, index) => (
                                     <Row key={index}>
-                                        <Col className='text-start' style={{marginTop:"20px"}}>
-                                            <div style={{backgroundColor:"#F4F6F0",height:"276px", borderRadius:"10px"}}>
+                                        <Col className='text-start mt-3' >
+                                            <div style={{backgroundColor:"#F4F6F0", borderRadius:"10px"}}>
                                                 <Row>
-                                                    <Col className="text-start" style={{maxWidth:"400px"}}>
-                                                        <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
+                                                    <Col className="text-start">
+                                                        <Row className="align-items-center justify-content-center">
                                                         <Col className="text-center">
-                                                            <div className="d-flex justify-content-center align-items-center" style={{ width: "100%", height: "100%",marginTop:"30px" }}>
+                                                            <div className="d-flex justify-content-center align-items-center" style={{ marginTop:"30px" }}>
                                                                 <img
                                                                     style={{ maxHeight: "30%", maxWidth: "30%" }}
                                                                     className="img-fluid"
@@ -215,14 +216,17 @@ const handleConfirmDeleteComment = async () =>{
                                                                     alt="Imagen"
                                                                 />
                                                             </div>
+                                                            <Row className="align-items-center px-5" style={{fontSize:"28px"}}>
+                                                            <Col className="align-items-center p-2">{comment.userName}</Col>
+                                                            </Row>
                                                         </Col>
                                                         </Row>
-                                                        <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>{comment.userName}</Col></Row>
+                                                        
                                                     </Col>
                                                     <Col>
-                                                        <Row>
+                                                        <Row  className="d-flex align-items-center">
                                                             <Col>
-                                                                <div style={{ fontSize:"20px",display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                                                                <div style={{ fontSize:"20px",display: "flex", justifyContent: "center", alignItems: "center"}}>
                                                                     {comment.pName}
                                                                 </div>
                                                             </Col>
@@ -242,9 +246,9 @@ const handleConfirmDeleteComment = async () =>{
                                                             </div>
                                                             </Col>
                                                         </Row>
-                                                        <Row>
+                                                        <Row  className="d-flex align-items-center">
                                                             <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
-                                                                <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",Width:"1102px",height:"150px"}}>
+                                                                <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0"}}>
                                                                     <textarea
                                                                         className="form-control"
                                                                         rows={3}

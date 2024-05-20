@@ -32,29 +32,29 @@ const MainPage = () => {
   return (
     <Container className="align-items-center justify-content-start" style={{ paddingLeft: '0', marginTop: "100px" }}>
     <Row className="align-items-center" style={{ margin: '0' }}>
-      <Col style={{ width: '1300px', height: "630px" }}>
+      <Col className='md-3'>
         <div className="main-container" style={{ backgroundColor: '#99BA57', borderRadius: '50px', width: '100%', height: "630px" }}>
           <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className='Imagen me-auto'>
-                <img src={Shopping} alt="" className="img-fluid" />
-              </div>
+          <div className="col-md-6 d-flex justify-content-center align-items-center">
+            <div className="me-auto">
+              <img src={Shopping} alt="" className="img-fluid" />
             </div>
+          </div>
             <div className="col-md-6">
-            <div className='Texto ms-auto' style={{ marginTop: '200px', textAlign: 'center' }}>
-              <h1 className="display-4"><p className="poppins-regular" style={{ color: "#FFFF" }} htmlFor="nombre">¿Qué necesitas hoy?</p></h1>
-              <div className="d-flex justify-content-center align-items-center">
-              <InputGroup style={{ maxWidth: "550px" }}>
-                  <Button style={{ backgroundColor: "#ffffff", borderColor: "#ffffff" }} aria-label="Buscar productos" onClick={handleClick}>
-                      <FaSearch style={{ color: "#99BA57" }} />
-                  </Button>
-                  <FormControl 
-                      placeholder="Busca un producto..." aria-label="Busca un producto..." 
-                      aria-describedby="basic-addon2" 
-                      value={search}
-                      onChange={handleChange}
-                  />
-              </InputGroup>
+            <div className='Texto p-4 m-4' style={{textAlign: 'center' }}>
+              <h1 className="display-8"><p className="poppins-regular" style={{ color: "#FFFF" }} htmlFor="nombre">¿Qué necesitas hoy?</p></h1>
+              <div className="d-flex justify-content-center align-items-center mb-2">
+                <InputGroup >
+                    <Button style={{ backgroundColor: "#ffffff", borderColor: "#ffffff" }} aria-label="Buscar productos" onClick={handleClick}>
+                        <FaSearch style={{ color: "#99BA57" }} />
+                    </Button>
+                    <FormControl 
+                        placeholder="Busca un producto..." aria-label="Busca un producto..." 
+                        aria-describedby="basic-addon2" 
+                        value={search}
+                        onChange={handleChange}
+                    />
+                </InputGroup>
               </div>
             </div>
           </div>
@@ -63,8 +63,8 @@ const MainPage = () => {
       </Col>
     </Row>
     <Row style={{ marginTop: "35px" }}>
-      <Col md={4}>
-        <div className='InfoContacto me-auto poppins-regular' style={{ width: '500px' }}>
+      <Col >
+        <div className='InfoContacto me-auto poppins-regular md'>
           <h2>Información de contacto<br />
             <img src={Correo} alt="Descripción de la imagen" style={{ marginRight: '50px' }} />gethelp@outnet.cr<br />
             <img src={Numero} alt="Descripción de la imagen" style={{ marginRight: '50px' }} />(506) 2574-6217
@@ -72,8 +72,8 @@ const MainPage = () => {
         </div>
       </Col>
       <Col>
-        <div className='BotonAyuda ms-auto'>
-          <Button className='BotAyuda' size="lg" style={{ marginLeft:"200px",borderColor: '#99BA57', backgroundColor: '#99BA57', borderRadius: "20px" }}>
+        <div className='BotonAyuda lg'>
+          <Button className='BotAyuda' style={{borderColor: '#99BA57', backgroundColor: '#99BA57', borderRadius: "20px" }}>
             <div className="row">
               <div className="BtnImagen col">
                 <img src={QA} alt="Descripción de la imagen" style={{ marginRight: '50px' }} />
