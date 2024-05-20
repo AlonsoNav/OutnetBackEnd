@@ -175,6 +175,7 @@ def get_product_images(engine):
 
         images_list = [{'id': row.pic_id, 'description': row.description,
                         'image': base64.b64encode(row.image).decode('utf-8')} for row in result]
+        print(images_list)
         return jsonify({'images': images_list}), 200
     except Exception as e:
         print(str(e))

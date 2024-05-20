@@ -228,9 +228,15 @@ const ProductView = () => {
         }
     };
 
+<<<<<<< HEAD
     return (
         <div style={{minWidth:"1500px", marginTop:"100px"}}>
             <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+=======
+  return (
+    <div className='mt-5'>
+        <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+>>>>>>> 660ca34 (Ojala responsive)
                 <Modal.Header closeButton>
                     <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
@@ -238,6 +244,7 @@ const ProductView = () => {
                 <Modal.Footer>
                     <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
                 </Modal.Footer>
+<<<<<<< HEAD
             </Modal>
             <Row style={{backgroundColor:"#F4F6F0", minHeight:"729px", borderRadius:"10px"}}>
                 <Col>
@@ -365,20 +372,37 @@ const ProductView = () => {
                                         <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
 =======
                         </div>    </div>
+=======
+        </Modal>
+        <Row style={{backgroundColor:"#F4F6F0", borderRadius:"10px"}}>
+            <Col>
+                <div>
+                    <div className="col-md-8 py-1 px-2">
+                           
+                                
+                                <img
+                                    className="d-block w-100"
+                                    src={`data:image/png;base64,${producto.image}`} 
+                                />
+                              
+                         
+                    </div>
+>>>>>>> 660ca34 (Ojala responsive)
                 </div>
             </Col>
             <Col >
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{color:"#485550",fontSize:"40px"}}>
-                    <label>{producto.name}</label>
+                        <h1 className='h1'>{producto.name}</h1>
                     </div>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{color:"#485550",fontSize:"32px"}}>
-                    <label> Descripción</label></div>
+                    <h2> Descripción</h2>
+                    </div>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"40px"}}>
@@ -390,14 +414,16 @@ const ProductView = () => {
                 <Row style={{marginTop:"40px"}}>
                     <Col>
                     <div className="text-start" style={{fontSize:"40px"}}>
+                    <h2>Precio</h2>
                     <label>₡{producto.outlet_price}</label></div>
                     </Col>
                 </Row>
-                <Row style={{marginTop:"40px"}}>
+                <Row className='p-1 me-4 mb-4' >
                     <Col>
                     <div>
-                        <Row style={{marginTop:"25px",width:"640px"}}>
-                            <Col> 
+                        <Row className='mt-4'>
+                            <Col className='text-start'> 
+                            <h2>Cantidad</h2>
                             <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px",width:"150px"}}>
                                     <button aria-label="decrementar del carrito" className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrement}>
                                         -
@@ -412,9 +438,9 @@ const ProductView = () => {
                                   
                                 </div>
                                 </Col>
-                            <Col>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <button onClick={() => addToCart(producto,quantity)} className="add-to-cart-btn" style={{ height: "60px", fontSize: "28px", width: "412px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
+                            <Col >
+                            <div className='w-100' style={{ display: 'flex', alignItems: 'center' }}>
+                                <button onClick={() => addToCart(producto,quantity)} className="add-to-cart-btn btn-sm w-100" style={{ fontSize: "28px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
                             </div>
                             </Col>
                         </Row>
@@ -425,65 +451,72 @@ const ProductView = () => {
         </Row>
         <Row>
             <Col className='text-start' style={{marginTop:"20px"}}>
-                <h1 style={{color:"#485550"}}>Comentarios</h1>
-                <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
-                    <Row>
-                    <Col className="text-start">
-                        <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
-                            <Col className="text-center">
-                                <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
-                                </div>
-                            </Col>
-                        </Row>
-                            <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>Tú</Col></Row>
-                    </Col>
-                        <Col>
-                            <Row>
-                                <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px"}}>
-                                    <button aria-label="decrementar calificación"  className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrementRating}>
-                                        -
-                                    </button>
-                                    <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
-                                    <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{rating}</span>
-                                    </div>
-                                    <FontAwesomeIcon icon={faStar}  style={{ color:"white" }}/>
-                                    <button aria-label="incrementar calificación" className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrementRating()}>
-                                        +
-                                    </button>
-                                </div>
+                <h2 style={{color:"#485550"}}>Comentarios</h2>
+                <div className='w-100' style={{backgroundColor:"#F4F6F0"}}>
+                <Row className="w-100">
+                    <Col className="text-start col-3">
+                        <Row className="d-flex align-items-center justify-content-center">
+                                <Col className="d-flex justify-content-center align-items-center">
+                                    <img src={Profile} alt="Profile" className="img-fluid w-50" />
                                 </Col>
-                                <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                    <button onClick={handleSubmit} className="btn" type='submit' style={{backgroundColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white",width:"200px"}}>
+                            </Row>
+                            <Row className="text-center" style={{ fontSize: "28px" }}>
+                                <Col className="align-items-center m-3">Tú</Col>
+                        </Row>
+                    </Col>
+                    <Col className="col-9">
+                            <Row className="w-100">
+                                <Col className="m-3 d-flex justify-content-center align-items-center">
+                                    <div className="d-flex align-items-center" style={{ backgroundColor: "#99BA57", borderRadius: "10px" }}>
+                                        <button aria-label="decrementar calificación" className="btn btn-outline-secondary" style={{ borderColor: "#99BA57", borderWidth: '1px', fontSize: "28px", borderRadius: "10px", color: "white" }} onClick={handleDecrementRating}>
+                                            -
+                                        </button>
+                                        <div style={{ borderWidth: '5px', borderColor: "#99BA57" }}>
+                                            <span className="mx-2 text-center" style={{ fontSize: "30px", color: "white" }}>{rating}</span>
+                                        </div>
+                                        <FontAwesomeIcon icon={faStar} style={{ color: "white" }} />
+                                        <button aria-label="incrementar calificación" className="btn btn-outline-secondary" style={{ borderColor: "#99BA57", borderWidth: '1px', fontSize: "28px", borderRadius: "10px", color: "white" }} onClick={() => handleIncrementRating()}>
+                                            +
+                                        </button>
+                                    </div>
+                                </Col>
+                                <Col className="text-end d-flex justify-content-center align-items-center" style={{ height: "100px" }}>
+                                    <button onClick={handleSubmit} className="btn" type='submit' style={{ backgroundColor: "#99BA57", borderWidth: '1px', fontSize: "28px", borderRadius: "10px", color: "white", width: "200px" }}>
                                         Subir
                                     </button>
                                 </Col>
                             </Row>
+<<<<<<< HEAD
                             <Row>
                                 <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
                                     <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
 >>>>>>> 9ca5c36 (textos alternativos)
+=======
+                            <Row className="w-100">
+                                <Col className="text-start">
+                                    <Form.Group className="mb-1 w-100" style={{ paddingRight: "100px", backgroundColor: "#F4F6F0" }}>
+>>>>>>> 660ca34 (Ojala responsive)
                                         <textarea
-                                            className="form-control"
+                                            className="form-control w-100"
                                             rows={3}
                                             required
                                             placeholder="Comenta aquí"
                                             value={comments}
-                                            style={{height:"150px"}}
-                                            onChange={(e) => {setComments(e.target.value)}}
+                                            onChange={(e) => setComments(e.target.value)}
                                             maxLength={140}
+<<<<<<< HEAD
 <<<<<<< HEAD
                                         />
                                         </Form.Group>
 
 =======
                                             />
+=======
+                                        />
+>>>>>>> 660ca34 (Ojala responsive)
                                     </Form.Group>
-                                    
                                 </Col>
                             </Row>
-                            
                         </Col>
                     </Row>
                     
@@ -495,22 +528,22 @@ const ProductView = () => {
             
             <Row key={index}>
                 <Col className='text-start' style={{marginTop:"20px"}}>
-                    <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
-                        <Row>
-                        <Col className="text-start">
-                            <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
-                                <Col className="text-center">
-                                    <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                        <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
-                                    </div>
+                    <div style={{backgroundColor:"#F4F6F0"}}>
+                        <Row className='w-100'>
+                        <Col className="text-start col-3">
+                        <Row className="d-flex align-items-center justify-content-center">
+                                <Col className="d-flex justify-content-center align-items-center">
+                                    <img src={Profile} alt="Profile" className="img-fluid w-50" />
                                 </Col>
                             </Row>
-                                <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}} aria-label={comment.userName}><Col>{comment.userName}</Col></Row>
+                            <Row className="text-center" style={{ fontSize: "28px" }}>
+                                <Col className="align-items-center m-3">{comment.userName}</Col>
+                        </Row>
                         </Col>
-                            <Col>
-                                <Row>
-                                    <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                    <div className="d-flex align-items-center justify-content-center text-center" style={{backgroundColor:"#99BA57", borderRadius:"10px", width:"250px"}}>
+                        <Col className="text-start col-9">
+                                <Row className="text-start m-3">
+                                    <Col style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <div className="d-flex align-items-center justify-content-center text-center w-25" style={{backgroundColor:"#99BA57", borderRadius:"10px"}}>
                                         <div style={{borderWidth:'5px', borderColor:"#99BA57"}}>
                                             <span className="mx-2 text-center" style={{fontSize:"30px", color:"white"}} aria-label={comment.star_rating}>{comment.star_rating}</span>
                                         </div>
@@ -519,6 +552,7 @@ const ProductView = () => {
 >>>>>>> 9ca5c36 (textos alternativos)
                                     </Col>
                                 </Row>
+<<<<<<< HEAD
 
                             </Col>
                         </Row>
@@ -557,14 +591,20 @@ const ProductView = () => {
                                     <Row>
                                         <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
                                             <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
+=======
+                                <Row>
+                                    <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
+                                        <Form.Group className="mb-1 w-100"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0"}}>
+>>>>>>> 660ca34 (Ojala responsive)
                                             <textarea
-                                                className="form-control"
+                                                className="form-control w-100"
                                                 rows={3}
                                                 placeholder="Comenta aquí"
                                                 disabled
                                                 aria-label={comment.star_rating}
                                                 value={comment.description}
                                                 maxLength={140}
+<<<<<<< HEAD
                                             />
                                             </Form.Group>
                                         </Col>
@@ -579,6 +619,23 @@ const ProductView = () => {
             ))}
         </div>
     )
+=======
+                                                />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                
+                            </Col>
+                        </Row>
+
+                        
+                    </div>
+                </Col>
+            </Row>
+              ))}
+    </div>
+  )
+>>>>>>> 660ca34 (Ojala responsive)
 }
 
 export default ProductView
