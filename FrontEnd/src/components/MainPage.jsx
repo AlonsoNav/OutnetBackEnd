@@ -83,7 +83,6 @@ const MainPage = () => {
               <img src={Shopping} alt="" className="img-fluid" />
             </div>
           </div>
->>>>>>> 660ca34 (Ojala responsive)
             <div className="col-md-6">
             <div className='Texto p-4 m-4' style={{textAlign: 'center' }}>
               <h1 className="display-8"><p className="poppins-regular" style={{ color: "#FFFF" }} htmlFor="nombre">¿Qué necesitas hoy?</p></h1>

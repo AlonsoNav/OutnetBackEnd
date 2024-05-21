@@ -356,7 +356,6 @@ const commentHistory = () => {
                                                         <Row  className="d-flex align-items-center">
                                                             <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
                                                                 <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0"}}>
->>>>>>> 660ca34 (Ojala responsive)
                                                                     <textarea
                                                                         className="form-control"
                                                                         rows={3}

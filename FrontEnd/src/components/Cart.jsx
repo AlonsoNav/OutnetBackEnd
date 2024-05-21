@@ -149,7 +149,6 @@ const Cart = () => {
                                                         <Col className="d-flex align-items-center justify-content-center">
                                                             <img
                                                                 className="img-fluid d-block w-75"
->>>>>>> 660ca34 (Ojala responsive)
                                                                 src={`data:image/png;base64,${product.image}`}
                                                             />
                                                         </Col>
@@ -188,54 +187,6 @@ const Cart = () => {
                                     </div>
                                 </div>
                             ))}
-<<<<<<< HEAD
-                        </Col>
-
-                        <Col md={4} style={{ marginLeft: "50px", backgroundColor: "#99BA57", height: "562px", borderRadius: "10px", maxWidth: "487px" }}>
-                            <Col>
-                                <div style={{ marginLeft:"20px",marginTop: "40px", backgroundColor: "#FFFF", borderRadius: "10px", width: "431px",minHeight:"402px", justifyContent: "center", alignItems: "center" }}>
-                                    <Row>
-                                        <Col>
-                                            <div className='poppins-regular' style={{ fontSize:"48px", justifyContent: "center"}}>
-                                                Orden
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row style={{marginTop:"32px"}}>
-                                        <Col>
-                                            <div className="text-start" style={{fontSize:"32px"}}>
-                                                <div style={{marginLeft:"20px"}}>
-                                                    SubTotal:₡{subtotal}
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row style={{marginTop:"32px"}}>
-                                        <Col>
-                                            <div className="text-start" style={{fontSize:"32px"}}>
-                                                <div style={{marginLeft:"20px"}}>
-                                                    Envio: Gratis
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
-                                        <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                            Total:₡{subtotal}
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Button  onClick={handlePay} className='poppins-regular' style={{ borderColor: "#F4F6F0", borderRadius: "14px", marginTop: "20px", marginLeft: "20px", width: "282px", height: "71px", backgroundColor: "#F4F6F0", color: "#485550", fontSize: "32px" }}>
-                                Pagar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </div>
-    )
-=======
             </Col>
             <div sm={3} className='p-4 w-50 h-50'>
             <Col sm={3} className='p-3 w-75' style={{ backgroundColor: "#99BA57", borderRadius: "10px" }}>

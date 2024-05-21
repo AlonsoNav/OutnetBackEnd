@@ -196,22 +196,11 @@ const Products = () => {
     ));
 
     return (
-<<<<<<< HEAD
-        <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"50px",marginRight:"400px" }}>
-            <Row>
-                <Col md={4} className='text-start' style={{ backgroundColor: "#F4F6F0", width: "497px", minHeight: "auto", paddingLeft: "0",marginRight:"50px" }}>
-                    <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
-=======
         <Container fluid className="mt-5 min-vh-100 d-flex flex-column justify-content-center">
             <Row classsName='d-flex flex-column justify-content-center'>
                 <Col md={4} className='text-start bg-F4F6F0 p-3'>
                 <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
-<<<<<<< HEAD
->>>>>>> 660ca34 (Ojala responsive)
-                        <h1 className="display-6">Filtros</h1>
-=======
                         <h2 className="display-6">Filtros</h2>
->>>>>>> 3a09d38 (Cambios)
                         <Form>
                             <Form.Group className="mb-3">
                                 <Form.Label className="h5 text-muted">Precio<br/>
@@ -236,23 +225,7 @@ const Products = () => {
                         </Form>
                     </div>
                 </Col>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                <Col style={{width: "1095px" }}>
-                    <Row>
-                        <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}><h2>Productos</h2></Col>
-                    </Row>
-                    <Row>
-                        <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}><label>{filteredProducts.filter(product => product.amount > 0).length} resultados</label></Col>
-                    </Row>
-                    <Row>
-                        <Col style={{width: "730px" }}>
-                            <Form>
-=======
-            <Col style={{width: "1095px" }}>
-=======
             <Col className='sm p-4'>
->>>>>>> 660ca34 (Ojala responsive)
                 <Row>
                 <Col className='h1 poppins-regular text-start' style={{ fontSize: "40px" }}><h1>Productos</h1></Col>
                 </Row>
