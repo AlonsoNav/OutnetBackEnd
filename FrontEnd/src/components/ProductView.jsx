@@ -31,7 +31,7 @@ const ProductView = () => {
     const [quantity, setQuantity] = useState(1);
     const [rating, setRating] = useState(0);
     const [pId, setPid] = useState(0);
-     // Variables for the modal
+    // Variables for the modal
     const [showModal, setShowModal] = useState(false)
     const [modalBody, setModalBody] = useState('')
     const [modalTitle, setModalTitle] = useState('')
@@ -41,18 +41,18 @@ const ProductView = () => {
     const [modalBtn2Text, setModalBtn2Text] = useState('')
     const [modalBtn2Show, setModalBtn2Show] = useState(false)
 
-    
+
     const [userData, setUserData] = useState({});
     const [address,setAddress] = useState('')
     const [email,setEmail] = useState('')
     const [commentsP,setCommentsP] = useState([])
     const [comments, setComments] = useState('');
-    
+
 
     const [cart, setCart] = useState(() => {
         const storedCart = localStorage.getItem('cart');
         return storedCart ? JSON.parse(storedCart) : [];
-        
+
     });
     const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const ProductView = () => {
         setModalBtn2Show(false)
         setShowModal(true)
     }
-    
+
     const messageFromAPI = (title, message) =>{
         setModalTitle(title)
         setModalBody(message)
@@ -73,12 +73,12 @@ const ProductView = () => {
         setModalBtn2Show(false)
         setShowModal(true)
     }
-    
+
     useEffect(() => {
         const fetchComments = async () => {
             try {
                 const response = await getController("/get_comments_product");
-    
+
                 if (!response) {
                     setToastMessage("Fallo inesperado en la conexión");
                     setShowToast(true);
@@ -89,8 +89,8 @@ const ProductView = () => {
                         setShowToast(true);
                     } else
                         setCommentsP(body.comments);
-                        console.log(commentsP)
-                        
+                    console.log(commentsP)
+
                 }
             } catch (error) {
                 console.log(error);
@@ -128,7 +128,7 @@ const ProductView = () => {
         if (storedProduct) {
             setProducto(JSON.parse(storedProduct));
             setPid(producto.Pid)
-            }
+        }
     }, []);
 
     useEffect(() => {
@@ -149,7 +149,7 @@ const ProductView = () => {
         setSelectedIndex(selectedIndex);
     };
 
-   
+
     const handleSubmit = async (e) =>{
         e.preventDefault();
 
@@ -157,10 +157,10 @@ const ProductView = () => {
             // Mostrar un mensaje de error o realizar alguna acción
             messageFromAPI("Comentario vacío", "El comentario no puede estar vacío.")
             setShowModal(true);
-            
+
             return; // Salir de la función si el campo está vacío
         }
-    
+
         // Recopilar los valores de los campos
 
         let payload = {
@@ -209,28 +209,28 @@ const ProductView = () => {
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
-    
-      const handleDecrement = () => {
-        if (quantity > 1) {
-          setQuantity(quantity - 1);
-        }
-      };
 
-      const handleIncrementRating = () => {
+    const handleDecrement = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+    };
+
+    const handleIncrementRating = () => {
         if (rating < 5) {
             setRating(prevQuantity => prevQuantity + 1);
         }
     };
-    
-      const handleDecrementRating = () => {
+
+    const handleDecrementRating = () => {
         if (rating > 0) {
             setRating(rating - 1);
         }
-      };
+    };
 
-  return (
-    <div style={{minWidth:"1500px", marginTop:"100px"}}>
-        <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+    return (
+        <div style={{minWidth:"1500px", marginTop:"100px"}}>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
@@ -238,17 +238,17 @@ const ProductView = () => {
                 <Modal.Footer>
                     <button className={modalBtn1Style} onClick={()=>setShowModal(false)}>{modalBtn1Text}</button>
                 </Modal.Footer>
-        </Modal>
-        <Row style={{backgroundColor:"#F4F6F0", minHeight:"729px", borderRadius:"10px"}}>
-            <Col>
-                <div>
-                    <div className="col-md-8 py-1 px-2">
+            </Modal>
+            <Row style={{backgroundColor:"#F4F6F0", minHeight:"729px", borderRadius:"10px"}}>
+                <Col>
+                    <div>
+                        <div className="col-md-8 py-1 px-2">
                             <div className="row bg-F4F6F0 py-3 px-2" tabIndex="0" onKeyDown={handleKeyDown}>
                                 <div className="col-auto carousel-image-button-scroll">
-                                <img
-                                    className="d-block w-100"
-                                    src={`data:image/png;base64,${producto.image}`} 
-                                />
+                                    <img
+                                        className="d-block w-100"
+                                        src={`data:image/png;base64,${producto.image}`}
+                                    />
                                 </div>
                                 <div className="col flex-grow-1">
                                     <Carousel activeIndex={selectedIndex} onSelect={handleSelect}>
@@ -263,105 +263,105 @@ const ProductView = () => {
                                         ))}
                                     </Carousel>
                                 </div>
-                        </div>    </div>
-                </div>
-            </Col>
-            <Col >
-                <Row style={{marginTop:"40px"}}>
-                    <Col>
-                    <div className="text-start" style={{color:"#485550",fontSize:"40px"}}>
-                    {producto.name}
+                            </div>    </div>
                     </div>
-                    </Col>
-                </Row>
-                <Row style={{marginTop:"40px"}}>
-                    <Col>
-                    <div className="text-start" style={{color:"#485550",fontSize:"32px"}}>
-                    Descripción</div>
-                    </Col>
-                </Row>
-                <Row style={{marginTop:"40px"}}>
-                    <Col>
-                    <div className="text-start" style={{color:"#485550",fontSize:"24px"}}>
-                    {producto.description}</div>
-                    </Col>
-                </Row >
-                <Row style={{marginTop:"40px"}}>
-                    <Col>
-                    <div className="text-start" style={{fontSize:"40px"}}>
-                    ₡{producto.outlet_price}</div>
-                    </Col>
-                </Row>
-                <Row style={{marginTop:"40px"}}>
-                    <Col>
-                    <div>
-                        <Row style={{marginTop:"25px",width:"640px"}}>
-                            <Col> 
-                            <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px",width:"150px"}}>
-                                    <button className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrement}>
-                                        -
-                                    </button>
-                                    <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
-                                    <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{quantity}</span>
-                                    </div>
-                                    <FontAwesomeIcon icon={faShoppingCart}  style={{ color:"white" }}/>
-                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrement(producto)}>
-                                        +
-                                    </button>
-                                  
-                                </div>
-                                </Col>
-                            <Col>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <button onClick={() => addToCart(producto,quantity)} className="add-to-cart-btn" style={{ height: "60px", fontSize: "28px", width: "412px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
-                            </div>
-                            </Col>
-                        </Row>
-                    </div>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
-        <Row>
-            <Col className='text-start' style={{marginTop:"20px"}}>
-                <h1 style={{color:"#485550"}}>Comentarios</h1>
-                <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
-                    <Row>
-                    <Col className="text-start">
-                        <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
-                            <Col className="text-center">
-                                <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
-                                </div>
-                            </Col>
-                        </Row>
-                            <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>Tú</Col></Row>
-                    </Col>
+                </Col>
+                <Col >
+                    <Row style={{marginTop:"40px"}}>
                         <Col>
-                            <Row>
-                                <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px"}}>
-                                    <button className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrementRating}>
-                                        -
-                                    </button>
-                                    <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
-                                    <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{rating}</span>
-                                    </div>
-                                    <FontAwesomeIcon icon={faStar}  style={{ color:"white" }}/>
-                                    <button className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrementRating()}>
-                                        +
-                                    </button>
-                                </div>
-                                </Col>
-                                <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                    <button onClick={handleSubmit} className="btn" type='submit' style={{backgroundColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white",width:"200px"}}>
-                                        Subir
-                                    </button>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
-                                    <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
+                            <div className="text-start" style={{color:"#485550",fontSize:"40px"}}>
+                                <label>{producto.name}</label>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row style={{marginTop:"40px"}}>
+                        <Col>
+                            <div className="text-start" style={{color:"#485550",fontSize:"32px"}}>
+                                <label> Descripción</label></div>
+                        </Col>
+                    </Row>
+                    <Row style={{marginTop:"40px"}}>
+                        <Col>
+                            <div className="text-start" style={{color:"#485550",fontSize:"24px"}}>
+                                <label>{producto.description}</label></div>
+                        </Col>
+                    </Row >
+                    <Row style={{marginTop:"40px"}}>
+                        <Col>
+                            <div className="text-start" style={{fontSize:"40px"}}>
+                                <label>₡{producto.outlet_price}</label></div>
+                        </Col>
+                    </Row>
+                    <Row style={{marginTop:"40px"}}>
+                        <Col>
+                            <div>
+                                <Row style={{marginTop:"25px",width:"640px"}}>
+                                    <Col>
+                                        <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px",width:"150px"}}>
+                                            <button aria-label="decrementar del carrito" className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrement}>
+                                                -
+                                            </button>
+                                            <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
+                                                <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{quantity}</span>
+                                            </div>
+                                            <FontAwesomeIcon icon={faShoppingCart}  style={{ color:"white" }}/>
+                                            <button aria-label="incrementar al carrito"  className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrement(producto)}>
+                                                +
+                                            </button>
+
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <button onClick={() => addToCart(producto,quantity)} className="add-to-cart-btn" style={{ height: "60px", fontSize: "28px", width: "412px", backgroundColor: "#99BA57", justifyContent: 'center', display: 'flex', alignItems: 'center' }}>Agregar al carrito</button>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Col className='text-start' style={{marginTop:"20px"}}>
+                    <h1 style={{color:"#485550"}}>Comentarios</h1>
+                    <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
+                        <Row>
+                            <Col className="text-start">
+                                <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
+                                    <Col className="text-center">
+                                        <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                            <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>Tú</Col></Row>
+                            </Col>
+                            <Col>
+                                <Row>
+                                    <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
+                                        <div className="d-flex align-items-center" style={{backgroundColor:"#99BA57", borderRadius:"10px"}}>
+                                            <button aria-label="decrementar calificación"  className="btn btn-outline-secondary" style={{borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={handleDecrementRating}>
+                                                -
+                                            </button>
+                                            <div style={{borderWidth:'5px',borderColor:"#99BA57"}}>
+                                                <span className="mx-2 text-center" style={{fontSize:"30px",color:"white"}} >{rating}</span>
+                                            </div>
+                                            <FontAwesomeIcon icon={faStar}  style={{ color:"white" }}/>
+                                            <button aria-label="incrementar calificación" className="btn btn-outline-secondary" style={{ borderColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white"}} onClick={() => handleIncrementRating()}>
+                                                +
+                                            </button>
+                                        </div>
+                                    </Col>
+                                    <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
+                                        <button onClick={handleSubmit} className="btn" type='submit' style={{backgroundColor:"#99BA57",borderWidth:'1px',fontSize:"28px",borderRadius:"10px",color:"white",width:"200px"}}>
+                                            Subir
+                                        </button>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
+                                        <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
                                         <textarea
                                             className="form-control"
                                             rows={3}
@@ -371,70 +371,71 @@ const ProductView = () => {
                                             style={{height:"150px"}}
                                             onChange={(e) => {setComments(e.target.value)}}
                                             maxLength={140}
-                                            />
-                                    </Form.Group>
-                                    
-                                </Col>
-                            </Row>
-                            
-                        </Col>
-                    </Row>
-                    
-                </div>
-            </Col>
-        </Row>
-        
-        {commentsP.filter(comment => comment.id === producto.id).map((comment, index) => (
-            
-            <Row key={index}>
-                <Col className='text-start' style={{marginTop:"20px"}}>
-                    <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
-                        <Row>
-                        <Col className="text-start">
-                            <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
-                                <Col className="text-center">
-                                    <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                        <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
-                                    </div>
-                                </Col>
-                            </Row>
-                                <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}}><Col>{comment.userName}</Col></Row>
-                        </Col>
-                            <Col>
-                                <Row>
-                                    <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
-                                    <div className="d-flex align-items-center justify-content-center text-center" style={{backgroundColor:"#99BA57", borderRadius:"10px", width:"250px"}}>
-                                        <div style={{borderWidth:'5px', borderColor:"#99BA57"}}>
-                                            <span className="mx-2 text-center" style={{fontSize:"30px", color:"white"}} >{comment.star_rating}</span>
-                                        </div>
-                                        <FontAwesomeIcon icon={faStar}  style={{color:"white"}} />
-                                    </div> 
+                                        />
+                                        </Form.Group>
+
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
-                                        <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
+
+                            </Col>
+                        </Row>
+
+                    </div>
+                </Col>
+            </Row>
+
+            {commentsP.filter(comment => comment.id === producto.id).map((comment, index) => (
+
+                <Row key={index}>
+                    <Col className='text-start' style={{marginTop:"20px"}}>
+                        <div style={{backgroundColor:"#F4F6F0",width:"1554px",height:"276px"}}>
+                            <Row>
+                                <Col className="text-start">
+                                    <Row className="align-items-center justify-content-center" style={{ height: "100px" }}>
+                                        <Col className="text-center">
+                                            <div style={{ maxWidth: "75%", maxHeight: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                <img src={Profile} alt="" style={{ maxWidth: "75%", maxHeight: "100%"}} />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row className="align-items-center px-5" style={{fontSize:"28px",marginTop:"100px",marginLeft:"50px"}} aria-label={comment.userName}><Col>{comment.userName}</Col></Row>
+                                </Col>
+                                <Col>
+                                    <Row>
+                                        <Col style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px"}}>
+                                            <div className="d-flex align-items-center justify-content-center text-center" style={{backgroundColor:"#99BA57", borderRadius:"10px", width:"250px"}}>
+                                                <div style={{borderWidth:'5px', borderColor:"#99BA57"}}>
+                                                    <span className="mx-2 text-center" style={{fontSize:"30px", color:"white"}} aria-label={comment.star_rating}>{comment.star_rating}</span>
+                                                </div>
+                                                <FontAwesomeIcon icon={faStar}  style={{color:"white"}} />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col className="mb-1 text-start"  style={{paddingRight:"100px"}}>
+                                            <Form.Group className="mb-1"  style={{paddingRight:"100px",backgroundColor:"#F4F6F0",width:"1102px",height:"150px"}}>
                                             <textarea
                                                 className="form-control"
                                                 rows={3}
                                                 placeholder="Comenta aquí"
                                                 disabled
+                                                aria-label={comment.star_rating}
                                                 value={comment.description}
                                                 maxLength={140}
-                                                />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                
-                            </Col>
-                        </Row>
-                        
-                    </div>
-                </Col>
-            </Row>
-              ))}
-    </div>
-  )
+                                            />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+
+                                </Col>
+                            </Row>
+
+                        </div>
+                    </Col>
+                </Row>
+            ))}
+        </div>
+    )
 }
 
 export default ProductView
