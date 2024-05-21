@@ -196,6 +196,20 @@ def get_products_images(engine):
             print(str(e))
             return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
+def get_sales(engine):
+    try:
+        conn = engine.connect()
+        result = conn.execute(text(f"EXEC SP_get_sales")).fetchall()
+        conn.commit()
+        conn.close()
+        sales_list = [{'image': base64.b64encode(row.image).decode('utf-8'),'cartId': row.cart_id, 'subtotal': row.subtotal, 'pName': row.pName,
+                        'product_id': row.product_id, 'userName': row.userName,
+                        'quantity': row.quantity,'email':row.email} for row in result]
+        print(sales_list)
+        return jsonify({'sales': sales_list}), 200
+    except Exception as e:
+            print(str(e))
+            return jsonify({"message": "Fallo inesperado en la conexión"}), 401
 
 def delete_image(engine):
     id = request.json["id"]
