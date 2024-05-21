@@ -39,7 +39,7 @@ const Products = () => {
             setSearchTerm(storedSearch)
         }
     }, []);
-    
+
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -96,7 +96,7 @@ const Products = () => {
                         setShowToast(true);
                     } else
                         setProducts(body.products);
-                        setFilteredProducts(body.products);
+                    setFilteredProducts(body.products);
                 }
             } catch (error) {
                 console.log(error);
@@ -107,7 +107,7 @@ const Products = () => {
         fetchProducts()
     }, []);
 
-    
+
 
     // Get the min and max for the price range
     useEffect(() => {
@@ -133,13 +133,13 @@ const Products = () => {
         });
         setFilteredProducts(filteredProducts);
     }, [price, products, selectedCategories, selectedBrands, searchTerm]);
-    
+
     const handleClick = (product) => {
         console.log("Producto seleccionado:", product);
         localStorage.setItem('producto', JSON.stringify(product));
         // Redireccionar a la vista del producto
         navigate("/view")
-      };
+    };
 
     const filterProductsByCategory = (product) => {
         if (selectedCategories.length === 0)
@@ -196,10 +196,10 @@ const Products = () => {
     ));
 
     return (
-      <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"50px",marginRight:"400px" }}>
+        <Container style={{ width: '1902px', paddingLeft: '0',marginTop:"50px",marginRight:"400px" }}>
             <Row>
                 <Col md={4} className='text-start' style={{ backgroundColor: "#F4F6F0", width: "497px", minHeight: "auto", paddingLeft: "0",marginRight:"50px" }}>
-                <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
+                    <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
                         <h1 className="display-6">Filtros</h1>
                         <Form>
                             <Form.Group className="mb-3">
@@ -212,7 +212,7 @@ const Products = () => {
                                     onChange={setPrice}
                                     min={minPrice}
                                     max={maxPrice}
-                                    />
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label className="h5 text-muted">Categoría</Form.Label>
@@ -225,16 +225,16 @@ const Products = () => {
                         </Form>
                     </div>
                 </Col>
-            <Col style={{width: "1095px" }}>
-                <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}>Productos</Col>
-                </Row>
-                <Row>
-                <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}>{filteredProducts.filter(product => product.amount > 0).length} resultados</Col>
-                </Row>
-                <Row>
-                <Col style={{width: "730px" }}>
-                <Form>
+                <Col style={{width: "1095px" }}>
+                    <Row>
+                        <Col className='poppins-regular text-start' style={{ fontSize: "40px" }}><h2>Productos</h2></Col>
+                    </Row>
+                    <Row>
+                        <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}><label>{filteredProducts.filter(product => product.amount > 0).length} resultados</label></Col>
+                    </Row>
+                    <Row>
+                        <Col style={{width: "730px" }}>
+                            <Form>
                                 <InputGroup>
                                     <InputGroup.Text className="bg-F4F6F0">
                                         <FontAwesomeIcon icon={faSearch} className="custom-icon-color"/>
@@ -248,75 +248,75 @@ const Products = () => {
                                     />
                                 </InputGroup>
                             </Form>
+                        </Col>
+                    </Row>
+
+                    {/*Productos */}
+                    <Row>
+                        <Col>
+                            {filteredProducts.filter(product => product.amount > 0).map((product, index) => (
+                                <div key={index} style={{
+                                    borderRadius:"10px",
+                                    backgroundColor:"#F4F6F0",
+                                    marginTop:"15px",
+                                    width:"100%",
+                                    height:"173px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}>
+                                    <Row style={{width:"720px"}}>
+                                        <Col>
+                                            <img
+                                                className="d-block w-50"
+                                                src={`data:image/png;base64,${product.image}`}
+                                            />
+                                        </Col>
+                                        <Col style={{width: "300px" }}>
+                                            <Row>
+                                                <Col>
+                                                    <div className='text-start' style={{fontSize:"26px"}}>
+                                                        <label aria-label={product.name}>{product.name}</label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <div className='text-start' style={{marginTop:"30px",fontSize:"32px"}}>
+                                                        <label aria-label={product.outlet_price}>₡{product.outlet_price}</label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col>
+                                            <Row>
+                                                <Col>
+                                                    <div className="text-end" >
+                                                        <Button variant="light" aria-label="agregar a favoritos" style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                                            <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
+                                                            {' '}
+                                                        </Button>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col onClick={() => handleClick(product,index)}>
+                                                    <div style={{marginTop:"40px"}}>
+                                                        <button  className="add-to-cart-btn" style={{backgroundColor:"#99BA57"}}>Agregar al carrito</button>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>
+                                </div>
+
+                            ))}
+                        </Col>
+                    </Row>
                 </Col>
-                </Row>
-                
-                {/*Productos */}
-                <Row>
-                <Col>
-                {filteredProducts.filter(product => product.amount > 0).map((product, index) => (
-                            <div key={index} style={{ 
-                            borderRadius:"10px",
-                            backgroundColor:"#F4F6F0",
-                            marginTop:"15px",
-                            width:"100%",
-                            height:"173px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center"
-                            }}>
-                            <Row style={{width:"720px"}}>
-                                <Col>
-                                <img
-                                    className="d-block w-50"
-                                    src={`data:image/png;base64,${product.image}`}          
-                                />
-                                </Col>
-                                <Col style={{width: "300px" }}>
-                                    <Row>
-                                        <Col>
-                                            <div className='text-start' style={{fontSize:"26px"}}>
-                                                {product.name}
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <div className='text-start' style={{marginTop:"30px",fontSize:"32px"}}>
-                                                ₡{product.outlet_price}
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                                <Col>
-                                    <Row>
-                                        <Col>
-                                            <div className="text-end" >
-                                            <Button variant="light" style={{ backgroundColor: 'transparent', border: 'none' }}>
-                                                <img src={Heart} alt="Heart Icon" style={{ width: '30px', height: '30px', marginRight: '5px' }} />
-                                                {' '}
-                                            </Button>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col onClick={() => handleClick(product,index)}>
-                                            <div style={{marginTop:"40px"}}>
-                                                <button  className="add-to-cart-btn" style={{backgroundColor:"#99BA57"}}>Agregar al carrito</button>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </div>
-                        
-                                        ))}
-                </Col>
-                </Row>
-            </Col>
-        </Row>
-      </Container>
+            </Row>
+        </Container>
     )
-  }
+}
 
 export default Products

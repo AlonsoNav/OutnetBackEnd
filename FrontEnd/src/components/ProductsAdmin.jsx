@@ -224,6 +224,7 @@ const ProductsAdmin = () => {
     const categoriesCheckboxes = categories.map((category, index) => (
         <Form.Check key={`categoria_${index}`}
                     label={category.name}
+                    aria-label={category.name}
                     checked={selectedCategories.includes(category.name)}
                     onChange={() => handleCategoryChange(category.name)}
         />
@@ -232,6 +233,7 @@ const ProductsAdmin = () => {
     const brandsCheckboxes = brands.map((brand, index) => (
         <Form.Check key={`marca_${index}`}
                     label={brand.name}
+                    aria-label={brand.name}
                     checked={selectedBrands.includes(brand.name)}
                     onChange={() => handleBrandChange(brand.name)}/>
     ))
@@ -326,10 +328,10 @@ const ProductsAdmin = () => {
                                                 <td>{product.amount}</td>
                                                 <td>₡{product.outlet_price}</td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-primary me-1" onClick={() => handleEdit(product)}>
+                                                    <button className="btn btn-sm btn-primary me-1" aria-label={"Editar producto"} onClick={() => handleEdit(product)}>
                                                         <FontAwesomeIcon icon={faEdit}/>
                                                     </button>
-                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(product.id)}>
+                                                    <button className="btn btn-sm btn-danger" aria-label={"Borrar producto"} onClick={() => handleDelete(product.id)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </button>
                                                 </td>

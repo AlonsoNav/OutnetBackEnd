@@ -271,7 +271,8 @@ const ProductsAddAdmin = () => {
                                         <button
                                             className="btn btn-sm btn-danger position-absolute top-0 end-0 me-1 mt-1"
                                             style={{zIndex: 999}}
-                                            onClick={() => handleDeleteImage(image.id)}>
+                                            onClick={() => handleDeleteImage(image.id)}
+                                            aria-label={"Borrar imagen"}>
                                             <FontAwesomeIcon icon={faTrash}/>
                                         </button>
                                     </Carousel.Item>

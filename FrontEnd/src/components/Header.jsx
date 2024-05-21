@@ -45,7 +45,7 @@ const Header = () => {
                 <Nav className="ms-auto text-lg-end text-start">
                     <Nav.Link href="/Rating-history" className='custom-nav-link'>Pedidos y Deseos</Nav.Link>
                     <Nav.Link href="/" className='custom-nav-link'><FontAwesomeIcon icon={faHandHoldingUsd} className="me-1 fa-lg"/>Subastas</Nav.Link>
-                    <Nav.Link href="/cart" className='custom-nav-link'> <span className="fa badge me-0 p-0" value={cart.length}><FontAwesomeIcon icon={faCartShopping} className="fa-lg"/></span>Carrito</Nav.Link>
+                    <Nav.Link href="/cart" className='custom-nav-link'> <span className="fa badge me-0 p-0" value={cart.length}><FontAwesomeIcon icon={faCartShopping} className="fa-lg me-1"/></span>Carrito</Nav.Link>
                     <Nav.Link href="/profile" className='custom-nav-link'><FontAwesomeIcon icon={faUser} className="me-1 fa-lg" />{name}</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

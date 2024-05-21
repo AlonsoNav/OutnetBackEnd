@@ -37,15 +37,15 @@ const Payment = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [cvc, setCVC] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-     // Variables for the modal
-     const [showModal, setShowModal] = useState(false)
-     const [modalBody, setModalBody] = useState('')
-     const [modalTitle, setModalTitle] = useState('')
-     const [modalBtn1Style, setModalBtn1Style] = useState('')
-     const [modalBtn2Style, setModalBtn2Style] = useState('')
-     const [modalBtn1Text, setModalBtn1Text] = useState('')
-     const [modalBtn2Text, setModalBtn2Text] = useState('')
-     const [modalBtn2Show, setModalBtn2Show] = useState(false)
+    // Variables for the modal
+    const [showModal, setShowModal] = useState(false)
+    const [modalBody, setModalBody] = useState('')
+    const [modalTitle, setModalTitle] = useState('')
+    const [modalBtn1Style, setModalBtn1Style] = useState('')
+    const [modalBtn2Style, setModalBtn2Style] = useState('')
+    const [modalBtn1Text, setModalBtn1Text] = useState('')
+    const [modalBtn2Text, setModalBtn2Text] = useState('')
+    const [modalBtn2Show, setModalBtn2Show] = useState(false)
 
     // Función de validación
     const handleChangeName= (newValue) => {
@@ -57,7 +57,7 @@ const Payment = () => {
     };
     const handleChangeCVC= (newValue) => {
         const cvcRegex = /^[0-9]{3,4}$/;
-        
+
         const isCVCValid = cvcRegex.test(cvc);
 
         if (isCVCValid)
@@ -118,7 +118,7 @@ const Payment = () => {
             e.stopPropagation();
             return;
         }
-        
+
         const cartProducts = cart.map(product => ({id :product.id, quantity:product.quantity}));
 
         let payload = {
@@ -128,7 +128,7 @@ const Payment = () => {
             shipping_cost: shipping_cost,
             carts: cartProducts
         }
-        
+
         try {
             let response = await postController(payload, "create_sale")
 
@@ -141,8 +141,8 @@ const Payment = () => {
                 const body = await response.json();
                 if (response.ok){
                     messageFromAPI('Compra exitosa', 'Compra realizada con exito')
-                    
-                    
+
+
                 }
                 else{
                     setToastBg("danger")
@@ -156,207 +156,210 @@ const Payment = () => {
         }
     }
 
-  return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
+    return (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <Modal centered show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{modalBody}</Modal.Body>
                 <Modal.Footer>
                     <button className={modalBtn1Style} onClick={()=>{setShowModal(false),clearCart(),
-                    navigate('/products')}}>{modalBtn1Text}</button>
-                    
+                        navigate('/products')}}>{modalBtn1Text}</button>
+
                 </Modal.Footer>
             </Modal>
-    <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
-        <Container style={{ marginTop:"50px",marginRight: "550px", marginLeft: "0", maxWidth: "100%" }}>
-            <Row style={{ width:"1516px"}} >
-                <Col
-                    className="overflow-auto"
-                    style={{
-                    backgroundColor: "#F4F6F0",
-                    height: "818px",
-                    borderRadius: "10px",
-                    width: "996px",
-                    }}
-                >
-                    <div
-                    style={{
-                        marginTop: "40px",
-                        margin: "40px",
-                        borderRadius: "10px",
-                        alignItems: "center",
-                        padding: "20px",
-                    }}
-                    >
-                    
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <div className="text-start" style={{ marginBottom: "20px" }}>
-                            <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de envío</h4>
-                            <div
+            <div style={{ maxWidth: "1516px", width: "100%", margin: "0 auto" }}>
+                <Container style={{ marginTop:"50px",marginRight: "550px", marginLeft: "0", maxWidth: "100%" }}>
+                    <Row style={{ width:"1516px"}} >
+                        <Col
+                            className="overflow-auto"
                             style={{
-                                width:"881px",height:"1px",backgroundColor:"#485550"
+                                backgroundColor: "#F4F6F0",
+                                height: "818px",
+                                borderRadius: "10px",
+                                width: "996px",
                             }}
-                            />
-                           <Form.Group className="mb-3">
-                                
-                                <Form.Control
-                                    required
-                                    disabled
-                                    readOnly
-                                    value={address}
-                                    placeholder="Dirección"
-                                    type="text"
-                                    
-                                />
-                                <Form.Control.Feedback type={"invalid"}>Por favor, dirijase a perfil e ingrese una dirección.</Form.Control.Feedback>
-                            </Form.Group>
-                        </div>
-                        <div className="text-start" style={{ marginBottom: "20px",marginTop:"20px"}}>
-                            <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de pago</h4>
+                        >
                             <div
-                            style={{
-                                width:"881px",height:"1px",backgroundColor:"#485550"
-                            }}
-                            />
-                            <div>
-                            <label style={{color:"#485550",fontSize:"24px"}}>Nombre en la tarjeta</label><br></br>
-                                <Form.Group className="mb-3">
-                                
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        placeholder="Nombre y apellidos"
-                                     
-                                        onChange={(e) => handleChangeName(e.target.value)}
-                                        maxLength={30}
-                                        
-                                    />
-                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un nombre válido].</Form.Control.Feedback>
-                                </Form.Group>
-                            </div>
-                            <div>
-                            <label style={{color:"#485550",fontSize:"24px"}}>Número de tarjeta</label><br></br>
-                            <Form.Group className="mb-3">
-                                    
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        onChange={(e) => handleChangeCard(e.target.value)}
-                                        placeholder="1234567890123456"
-                                        maxLength={16}
-                                        
-                                    />
-                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un número de tarjeta válido.</Form.Control.Feedback>
-                                </Form.Group>
-                            </div>
-                            <div style={{ display: "flex" }}>
-                            <div style={{ marginRight: "10px" }}>
-                                <label style={{color:"#485550",fontSize:"24px"}}>Fecha de vencimiento</label><br></br>
-                                <Form.Group className="mb-3">
-                                
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        placeholder="MM/AA"
-                                      
-                                        onChange={(e) => handleChangeExpDate(e.target.value)}
-                                        maxLength={5}
-                                        
-                                    />
-                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba una fecha de vencimiento válida.</Form.Control.Feedback>
-                                </Form.Group>
-                            </div>
-                            <div  style={{ marginLeft: "270px" }}>
-                                <label style={{ color: "#485550", fontSize: "24px" }}>CVC</label><br />
-                                <Form.Group className="mb-4">
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        placeholder="123"
-                                        maxLength={3}
-                                        onChange={(e) => handleChangeCVC(e.target.value)}
-                                    />
-                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un CVC válido.</Form.Control.Feedback>
-                                </Form.Group>
-                            </div>
-                            </div>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                            <button
-                                type='submit'
                                 style={{
-                                    backgroundColor: "#99BA57",
-                                    color: "#FFFFFF",
-                                    border: "none",
-                                    marginLeft:"45px",
+                                    marginTop: "40px",
+                                    margin: "40px",
                                     borderRadius: "10px",
-                                    cursor: "pointer",
-                                    minWidth:"881px", 
-                                    height:"71px",
-                                    fontSize:"32px",
-                                    display: "flex",
                                     alignItems: "center",
-                                    justifyContent: "center"
+                                    padding: "20px",
                                 }}
-                                
                             >
-                                Pagar
-                            </button>
-                        </div>
-                    
-            
-                        </Form>
-                    </div>
-                </Col>
-            
-                <Col md={4} style={{ marginLeft: "50px", backgroundColor: "#99BA57", maxHeight: "482px", borderRadius: "10px", maxWidth: "487px" }}>
-                    <Col>
-                    <div style={{ marginLeft:"20px",marginTop: "40px", backgroundColor: "#FFFF", borderRadius: "10px", width: "431px",minHeight:"402px", justifyContent: "center", alignItems: "center" }}>
-                        <Row>
-                        <Col>
-                            <div className='poppins-regular' style={{ fontSize:"48px", justifyContent: "center"}}>
-                            Orden
+
+                                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                                    <div className="text-start" style={{ marginBottom: "20px" }}>
+                                        <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de envío</h4>
+                                        <div
+                                            style={{
+                                                width:"881px",height:"1px",backgroundColor:"#485550"
+                                            }}
+                                        />
+                                        <Form.Group className="mb-3">
+
+                                            <Form.Control
+                                                required
+                                                disabled
+                                                readOnly
+                                                value={address}
+                                                placeholder="Dirección"
+                                                type="text"
+
+                                            />
+                                            <Form.Control.Feedback type={"invalid"}>Por favor, dirijase a perfil e ingrese una dirección.</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </div>
+                                    <div className="text-start" style={{ marginBottom: "20px",marginTop:"20px"}}>
+                                        <h4 style={{color:"#485550",fontSize:"44px"}}>Detalles de pago</h4>
+                                        <div
+                                            style={{
+                                                width:"881px",height:"1px",backgroundColor:"#485550"
+                                            }}
+                                        />
+                                        <div>
+                                            <label style={{color:"#485550",fontSize:"24px"}}>Nombre en la tarjeta</label><br></br>
+                                            <Form.Group className="mb-3">
+
+                                                <Form.Control
+                                                    required
+                                                    type="text"
+                                                    placeholder="Nombre y apellidos"
+                                                    aria-label="nombre en la tarjeta"
+                                                    onChange={(e) => handleChangeName(e.target.value)}
+                                                    maxLength={30}
+
+                                                />
+                                                <Form.Control.Feedback type={"invalid"}>Por favor escriba un nombre válido].</Form.Control.Feedback>
+                                            </Form.Group>
+                                        </div>
+                                        <div>
+                                            <label style={{color:"#485550",fontSize:"24px"}}>Número de tarjeta</label><br></br>
+                                            <Form.Group className="mb-3">
+
+                                                <Form.Control
+                                                    required
+                                                    type="text"
+                                                    onChange={(e) => handleChangeCard(e.target.value)}
+
+                                                    aria-label="numero de tarjeta"
+                                                    maxLength={16}
+
+                                                />
+                                                <Form.Control.Feedback type={"invalid"}>Por favor escriba un número de tarjeta válido.</Form.Control.Feedback>
+                                            </Form.Group>
+                                        </div>
+                                        <div style={{ display: "flex" }}>
+                                            <div style={{ marginRight: "10px" }}>
+                                                <label style={{color:"#485550",fontSize:"24px"}}>Fecha de vencimiento</label><br></br>
+                                                <Form.Group className="mb-3">
+
+                                                    <Form.Control
+                                                        required
+                                                        type="text"
+
+                                                        aria-label="fecha de vencimiento"
+                                                        onChange={(e) => handleChangeExpDate(e.target.value)}
+                                                        maxLength={5}
+
+                                                    />
+                                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba una fecha de vencimiento válida.</Form.Control.Feedback>
+                                                </Form.Group>
+                                            </div>
+                                            <div  style={{ marginLeft: "270px" }}>
+                                                <label style={{ color: "#485550", fontSize: "24px" }}>CVC</label><br />
+                                                <Form.Group className="mb-4">
+                                                    <Form.Control
+                                                        required
+                                                        type="text"
+
+                                                        aria-label="cvc"
+                                                        maxLength={3}
+                                                        onChange={(e) => handleChangeCVC(e.target.value)}
+                                                    />
+                                                    <Form.Control.Feedback type={"invalid"}>Por favor escriba un CVC válido.</Form.Control.Feedback>
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
+                                        <button
+                                            type='submit'
+                                            style={{
+                                                backgroundColor: "#99BA57",
+                                                color: "#FFFFFF",
+                                                border: "none",
+                                                marginLeft:"45px",
+                                                borderRadius: "10px",
+                                                cursor: "pointer",
+                                                minWidth:"881px",
+                                                height:"71px",
+                                                fontSize:"32px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center"
+                                            }}
+                                            aria-label="PAGAR"
+
+                                        >
+                                            Pagar
+                                        </button>
+                                    </div>
+
+
+                                </Form>
                             </div>
                         </Col>
-                        </Row>
-                        {cart.forEach(product => {
-                            const productSubtotal = product.outlet_price * product.quantity;
-                            subtotal += productSubtotal;
-                        })}
-                            <Row style={{marginTop:"32px"}}>
+
+                        <Col md={4} style={{ marginLeft: "50px", backgroundColor: "#99BA57", maxHeight: "482px", borderRadius: "10px", maxWidth: "487px" }}>
                             <Col>
-                                <div className="text-start" style={{fontSize:"32px"}}>
-                                    <div style={{marginLeft:"20px"}}>
-                                    SubTotal:₡{subtotal}
+                                <div style={{ marginLeft:"20px",marginTop: "40px", backgroundColor: "#FFFF", borderRadius: "10px", width: "431px",minHeight:"402px", justifyContent: "center", alignItems: "center" }}>
+                                    <Row>
+                                        <Col>
+                                            <div className='poppins-regular' style={{ fontSize:"48px", justifyContent: "center"}}>
+                                                Orden
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    {cart.forEach(product => {
+                                        const productSubtotal = product.outlet_price * product.quantity;
+                                        subtotal += productSubtotal;
+                                    })}
+                                    <Row style={{marginTop:"32px"}}>
+                                        <Col>
+                                            <div className="text-start" style={{fontSize:"32px"}}>
+                                                <div style={{marginLeft:"20px"}}>
+                                                    SubTotal:₡{subtotal}
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row style={{marginTop:"32px"}}>
+                                        <Col>
+                                            <div className="text-start" style={{fontSize:"32px"}}>
+                                                <div style={{marginLeft:"20px"}}>
+                                                    Envio: Gratis
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
+                                        <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
+                                            Total:₡{subtotal}
+                                        </div>
                                     </div>
                                 </div>
                             </Col>
-                            </Row>
-                            <Row style={{marginTop:"32px"}}>
-                            <Col>
-                                <div className="text-start" style={{fontSize:"32px"}}>
-                                    <div style={{marginLeft:"20px"}}>
-                                    Envio: Gratis
-                                    </div>
-                                </div>
-                            </Col>
-                            </Row>
-                            <div className="text-start" style={{ fontSize:"32px", backgroundColor:"#D3D6CF", height:"110px", marginTop:"60px", borderBottomLeftRadius:"10px", borderBottomRightRadius:"10px", display: "flex", alignItems: "center" }}>
-                                <div style={{ margin:"20px", marginTop:"20px", marginLeft:"20px" }}>
-                                    Total:₡{subtotal}
-                                </div>
-                            </div>
-                         </div>   
-                    </Col>
-                </Col>
-            </Row>
-    </Container>
-    </div>
-    </div>
-    
-  )
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+        </div>
+
+    )
 }
 
 export default Payment
