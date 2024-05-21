@@ -200,7 +200,7 @@ const Products = () => {
             <Row classsName='d-flex flex-column justify-content-center'>
                 <Col md={4} className='text-start bg-F4F6F0 p-3'>
                 <div className="bg-F4F6F0 py-2 px-3 text-start div-scroll">
-                        <h1 className="display-6">Filtros</h1>
+                        <h2 className="display-6">Filtros</h2>
                         <Form>
                             <Form.Group className="mb-3">
                                 <Form.Label className="h5 text-muted">Precio<br/>
@@ -227,7 +227,7 @@ const Products = () => {
                 </Col>
             <Col className='sm p-4'>
                 <Row>
-                <Col className='h1 poppins-regular text-start' style={{ fontSize: "40px" }}>Productos</Col>
+                <Col className='h1 poppins-regular text-start' style={{ fontSize: "40px" }}><h1>Productos</h1></Col>
                 </Row>
                 <Row>
                 <Col className='poppins-regular text-start' style={{ fontSize: "20px", color: "#485550" }}><label>{filteredProducts.filter(product => product.amount > 0).length} resultados</label></Col>
